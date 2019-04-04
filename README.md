@@ -17,9 +17,9 @@ Any questions please just ask :)
 
 ## Technologies
 
-- Angular
+- Angular (typescript)
 - Material Design
-- Firebase
+- Firebase (typescript)
 
 ## Platforms
 
