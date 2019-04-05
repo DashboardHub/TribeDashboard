@@ -29,7 +29,8 @@ Any questions please just ask :)
 
 ## Quickstart
 
-- Navigate to the `web` directory for the angular project, then run `npm start`
+- Navigate to the `web` directory for the Angular project, then run `npm start`
+- Navigate to the `functions` directory for Firebase cloud functions (typescript)
 
 ## Milestones / Project boards
 
