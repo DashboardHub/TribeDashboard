@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "TribeDashbboard": {
+    "TribeDashboard": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/TribeDashbboard",
+            "outputPath": "dist/TribeDashboard",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "TribeDashbboard:build"
+            "browserTarget": "TribeDashboard:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "TribeDashbboard:build:production"
+              "browserTarget": "TribeDashboard:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "TribeDashbboard:build"
+            "browserTarget": "TribeDashboard:build"
           }
         },
         "test": {
@@ -107,7 +107,7 @@
         }
       }
     },
-    "TribeDashbboard-e2e": {
+    "TribeDashboard-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -116,11 +116,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "TribeDashbboard:serve"
+            "devServerTarget": "TribeDashboard:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "TribeDashbboard:serve:production"
+              "devServerTarget": "TribeDashboard:serve:production"
             }
           }
         },
@@ -136,5 +136,5 @@
       }
     }
   },
-  "defaultProject": "TribeDashbboard"
+  "defaultProject": "TribeDashboard"
 }

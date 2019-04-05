@@ -10,7 +10,7 @@
     ]
   },
   "hosting": {
-    "public": "web/dist",
+    "public": "web/dist/TribeDashboard",
     "ignore": [
       "firebase.json",
       "**/.*",
