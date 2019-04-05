@@ -29,5 +29,5 @@ Any questions please just ask :)
 
 ## Milestones / Project boards
 
-- [Sprint 1](https://github.com/DashboardHub/TribeDashboard/milestone/1) / [Project board](https://github.com/DashboardHub/TribeDashboard/projects/1)
+- [Sprint 1 Milestone](https://github.com/DashboardHub/TribeDashboard/milestone/1) / [Sprint 1 Project board](https://github.com/DashboardHub/TribeDashboard/projects/1)
 - [Sprint 2](https://github.com/DashboardHub/TribeDashboard/milestone/2)
