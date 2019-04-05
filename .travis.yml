@@ -18,6 +18,8 @@ script:
   - (cd web; npm run lint && npm run build:dev)
 
 before_deploy:
+  - (cd web/src/environments; sed -i 's/x\.x\.x/v0.1.'$TRAVIS_BUILD_NUMBER'-ALPHA/g' environment.ts)
+  - (cd web/src/environments; sed -i 's/x\.x\.x/v0.1.'$TRAVIS_BUILD_NUMBER'-ALPHA/g' environment.prod.ts)
   - (cd functions; npm install)
   - (cd web; npm run build:dev)
 
@@ -25,7 +27,7 @@ deploy:
   - provider: firebase
     skip_cleanup: true
     token:
-      secure: $FIREBASE_DEVELOP_TOKEN
+      secure: $FIREBASE_TOKEN
     project: 'tribedashboard-develop'
     on:
       branch: develop
