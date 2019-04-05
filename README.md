@@ -27,6 +27,10 @@ Any questions please just ask :)
 - TravisCI
 - Firebase
 
+## Quickstart
+
+- Navigate to the `web` directory for the angular project, then run `npm start`
+
 ## Milestones / Project boards
 
 - [Sprint 1 Milestone](https://github.com/DashboardHub/TribeDashboard/milestone/1) / [Sprint 1 Project board](https://github.com/DashboardHub/TribeDashboard/projects/1)
