@@ -27,6 +27,11 @@ Any questions please just ask :)
 - TravisCI
 - Firebase
 
+## Quickstart
+
+- Navigate to the `web` directory for the Angular project, then run `npm start`
+- Navigate to the `functions` directory for Firebase cloud functions (typescript)
+
 ## Milestones / Project boards
 
 - [Sprint 1 Milestone](https://github.com/DashboardHub/TribeDashboard/milestone/1) / [Sprint 1 Project board](https://github.com/DashboardHub/TribeDashboard/projects/1)
