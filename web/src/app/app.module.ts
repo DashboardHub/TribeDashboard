@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule, routingComponent } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './app.material-module';
-import { LoginPageComponent } from './components/login-page/login-page.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -14,6 +14,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
     BrowserModule,
     AppRoutingModule,
     AppMaterialModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
