@@ -7,14 +7,19 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login-page.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
+
 export class LoginPageComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
+
   loginWithGithub() {
-    this.authService.signInWithGithub();
+    this.authService.signInWithGithub()
+    .subscribe((result) => {
+      console.log('result', result); // TODO: remove after firestore implementation
+    });
   }
 
 }
