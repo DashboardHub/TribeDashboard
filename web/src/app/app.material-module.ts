@@ -21,11 +21,11 @@ export class AppMaterialModule {
   constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
       'github',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/Github.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/github.svg')
     );
     this.matIconRegistry.addSvgIcon(
       'instagram',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/Instagram.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/instagram.svg')
     );
     this.matIconRegistry.addSvgIcon(
       'youtube',

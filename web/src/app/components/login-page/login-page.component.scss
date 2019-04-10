@@ -20,11 +20,11 @@
         @extend .button-height;
     }
     .mat-icon{
-        padding-right:20px;
+        padding-right:2.5rem;
     }
 
     .card {
-        padding: 40px 20px;
+        padding: 2.5rem 1.25rem;
 
         .github {
             background-color: $github-primary;
