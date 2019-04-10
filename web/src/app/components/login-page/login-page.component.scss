@@ -1,33 +1,57 @@
+@import "../../../styles/variables.scss";
+
 .center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.button-height {
+    height: $button-height;
+}
+
 .card-container {
-  @extend .center;
-  width:100%;
-  height:100%;
-  .card{
-    padding:40px 20px;
-  .github {
-    background-color: black;
-    color: white;
-    height:45px;
-  }
-  .youtube{
-    background-color:#FF0000;
-    color:white;
-    height:45px;
-  }
-  .twitter{
-    background-color:#1DA1F2;
-    color:white;
-    height:45px;
-  }
-  .instagram{
-    background-color:rgba(248,248,248,0.3);
-    color:black;
-    height:45px;
-  }
-}
+    @extend .center;
+
+    width: 100%;
+    height: 100%;
+
+    .card > button {
+        @extend .button-height;
+    }
+    .mat-icon{
+        padding-right:2.5rem;
+    }
+
+    .card {
+        padding: 2.5rem 1.25rem;
+
+        .github {
+            background-color: $github-primary;
+            color: $text-color-accent;
+
+            @extend .button-height;
+        }
+
+        .youtube {
+            background-color: $youtube-primary;
+            color: $text-color-accent;
+
+            @extend .button-height;
+        }
+
+        .twitter {
+            background-color: $twitter-primary;
+            color: $text-color-accent;
+
+            @extend .button-height;
+        }
+
+        .instagram {
+            background-color: $instagram-primary;
+            color: $text-color-primary;
+
+            @extend .button-height;
+        }
+    }
 }
