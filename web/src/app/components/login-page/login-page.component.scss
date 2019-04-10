@@ -19,6 +19,9 @@
     .card > button {
         @extend .button-height;
     }
+    .mat-icon{
+        padding-right:20px;
+    }
 
     .card {
         padding: 40px 20px;
