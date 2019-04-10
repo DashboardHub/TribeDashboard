@@ -15,5 +15,8 @@ export class LoginPageComponent implements OnInit {
   loginWithGithub() {
     this.authService.signInWithGithub();
   }
+  loginWithTwitter(){
+    this.authService.signInWithTwitter();
+  }
 
 }
