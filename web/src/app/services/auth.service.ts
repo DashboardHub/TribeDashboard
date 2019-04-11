@@ -13,7 +13,7 @@ export class AuthService {
     ));
   }
 
-  signInWithTwitter() {
+  signInWithTwitter(): Observable<any>{
     return from(this.firebaseAuth.auth.signInWithPopup(
       new firebase.auth.TwitterAuthProvider()
     ));
