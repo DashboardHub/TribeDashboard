@@ -5,6 +5,15 @@
 export const environment = {
   production: false,
   version: 'x.x.x',
+  // Add dev firebase credentials
+  firebase: {
+    apiKey: '',
+    authDomain: '',
+    databaseURL: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: ''
+  }
 };
 
 /*
