@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule, routingComponent } from './app-routing.module';
+import { AppRoutingModule, RoutingComponent } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './app.material-module';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -9,11 +9,11 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { AuthService } from './services/auth.service';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
-    routingComponent,
-
+    RoutingComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +23,7 @@ import { AuthService } from './services/auth.service';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    HttpClientModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
