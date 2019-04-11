@@ -12,4 +12,10 @@ export class AuthService {
       new firebase.auth.GithubAuthProvider()
     ));
   }
+
+  signInWithTwitter(): Observable<any> {
+    return from(this.firebaseAuth.auth.signInWithPopup(
+      new firebase.auth.TwitterAuthProvider()
+    ));
+  }
 }
