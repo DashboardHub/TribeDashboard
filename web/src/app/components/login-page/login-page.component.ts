@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -17,12 +17,16 @@ export class LoginPageComponent implements OnInit {
 
   loginWithGithub() {
     this.authService.signInWithGithub()
-    .subscribe((result) => {
-      console.log('result', result); // TODO: remove after firestore implementation
-    });
+      .subscribe((result) => {
+        console.log('result', result); // TODO: remove after firestore implementation
+      });
   }
-  loginWithTwitter(){
-    this.authService.signInWithTwitter();
+
+  loginWithTwitter() {
+    this.authService.signInWithTwitter()
+      .subscribe((result) => {
+        console.log('login with twitter', result);
+      });
   }
 
 }

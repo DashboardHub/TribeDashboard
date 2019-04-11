@@ -12,11 +12,10 @@ export class AuthService {
       new firebase.auth.GithubAuthProvider()
     ));
   }
+
   signInWithTwitter() {
-    return this._firebaseAuth.auth.signInWithPopup(
+    return from(this.firebaseAuth.auth.signInWithPopup(
       new firebase.auth.TwitterAuthProvider()
-    ).then((result)=>{
-      console.log('user logged in with twitter', result);
-    })
+    ));
   }
 }
