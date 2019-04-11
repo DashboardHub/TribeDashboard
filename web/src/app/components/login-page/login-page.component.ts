@@ -25,7 +25,7 @@ export class LoginPageComponent implements OnInit {
   loginWithTwitter() {
     this.authService.signInWithTwitter()
       .subscribe((result) => {
-        console.log('login with twitter', result);
+        console.log('login with twitter', result); // TODO: remove after firestore implementation
       });
   }
 
