@@ -1,9 +1,9 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
-import * as firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
+import { AppStateService } from './services/app-state.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,22 +17,21 @@ export class AppComponent implements OnInit {
     public router: Router,
     public afAuth: AngularFireAuth,
     public zone: NgZone,
+    public appState: AppStateService,
   ) {
     this.version = environment.version;
     this.router = router;
   }
 
   ngOnInit() {
-    console.log('router', this.router);
     this.afAuth.auth.onAuthStateChanged((user) => {
       if (user) {
-        this.zone.runOutsideAngular(()=> {
+        this.zone.run(() => {
           this.router.navigate(['/dashboard']);
-        })
+        });
+        this.appState.authState = true;
       } else {
-        // No user is signed in.
-        console.log('else part');
-        // this.router.navigate(['/login'])
+        this.appState.authState = false;
       }
     });
   }

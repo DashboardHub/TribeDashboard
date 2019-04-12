@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { from } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { ErrorService } from 'src/app/services/error.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,23 +10,19 @@ import { ErrorService } from 'src/app/services/error.service';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    public afAuth: AngularFireAuth,
+    public authService: AuthService,
     public router: Router,
-    private errorService: ErrorService
   ) { }
 
   ngOnInit() {}
 
   logout() {
-    from(this.afAuth.auth.signOut())
-      .pipe(
-        map(()=> (this.navigateTologin())),
-        catchError(err => this.errorService.logError(err))
-      );
+      this.authService.signOutUser()
+        .subscribe(() => this.navigateTologin());
   }
 
   navigateTologin() {
-    this.router.navigate(['/login'])
+    this.router.navigate(['/login']);
   }
-  
+
 }

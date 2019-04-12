@@ -4,51 +4,25 @@ import * as firebase from 'firebase/app';
 import { Observable, from } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { ErrorService } from './error.service';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class AuthService {
   constructor(
     private firebaseAuth: AngularFireAuth,
-    // private db:AngularFirestore
     private errorService: ErrorService,
   ) {
-    // this.user = db.collection('github');
+
 
   }
 
-  // signInWithGithub(): Observable<any> {
-  //   return from(this.firebaseAuth.auth.signInWithPopup(
-  //     new firebase.auth.GithubAuthProvider()
-  //   ));
-  // }
-
-  signInWithGithub(): Observable<any> {
+  signInWithGithub(): Observable<User> {
     return from(this.firebaseAuth.auth.signInWithPopup(
       new firebase.auth.GithubAuthProvider()))
       .pipe(
         map((user) => this.formatUserResponse(user)),
         catchError((error) => this.errorService.logError(error))
-      )
-    //  ).then((userData)=>{
-    //    const { credential,  additionalUserInfo, user: { displayName, photoURL, uid } } = userData;
-    //    console.log('userData', userData);
-    //    const user = {
-    //       displayName,
-    //       photoURL,
-    //       uid,
-    //       credential: {...credential},
-    //       additionalUserInfo: {...additionalUserInfo}
-    //     }
-
-    //    console.log('credential', user);
-    //   this.user.add({user})
-    //   .then((status)=>{
-    //     console.log('status',status)
-    //   })
-    //   .catch((err)=>{
-    //     console.error(err)
-    //   })
-    //  }
+      );
   }
 
   signInWithTwitter() {
@@ -56,27 +30,34 @@ export class AuthService {
       .signInWithPopup(new firebase.auth.TwitterAuthProvider()));
   }
 
-  formatUserResponse(user) {
+  signOutUser() {
+    return from(this.firebaseAuth.auth.signOut())
+      .pipe(
+        catchError(err => this.errorService.logError(err))
+      );
+  }
+
+  formatUserResponse(user): User {
     const {
       credential,
       additionalUserInfo,
-      user: { displayName, uid, photoURL },
-      metadata: { creationTime: { creationAt }, lastSignInTime: { lastSignInAt } },
+      user: { displayName, uid, photoURL: photoUrl,
+        metadata: { creationTime: creationAt, lastSignInTime: lastSignInAt }, refreshToken },
     } = user;
 
     const { profile: {
-      created_at: { createdAt },
-      updated_at: { updatedAt },
+      created_at: createdAt,
+      updated_at: updatedAt,
       followers,
       following,
-      avatar_url: { avatarURL }
+      avatar_url: avatarUrl
     },
       username,
     } = additionalUserInfo;
 
     const {
       accessToken,
-      providerId: { providerID }
+      providerId,
     } = credential;
 
     const filteredUserInfo = {
@@ -85,28 +66,26 @@ export class AuthService {
         updatedAt,
         followers,
         following,
-        avatarURL
+        avatarUrl
       },
       username,
-    }
+    };
 
     const credentials = {
       accessToken,
-      providerID
-    }
+      providerId,
+      refreshToken
+    };
 
     const normalisedUser = {
       displayName,
       uid,
-      photoURL,
+      photoUrl,
       creationAt,
       lastSignInAt,
       additionalUserInfo: filteredUserInfo,
       credentials
-    }
+    };
     return normalisedUser;
   }
-
-
-
 }
