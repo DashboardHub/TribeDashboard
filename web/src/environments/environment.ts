@@ -13,12 +13,6 @@ export const environment = {
     // projectId: '',
     // storageBucket: '',
     // messagingSenderId: ''
-    apiKey: 'AIzaSyA_YnmL2hlmjNi1J6i47PJwR6yOwsuSrdk',
-    authDomain: 'tribedashboard-dev.firebaseapp.com',
-    databaseURL: 'https://tribedashboard-dev.firebaseio.com',
-    projectId: 'tribedashboard-dev',
-    storageBucket: 'tribedashboard-dev.appspot.com',
-    messagingSenderId: '180845259287'
   }
 };
 
