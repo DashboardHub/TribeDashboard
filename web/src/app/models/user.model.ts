@@ -14,8 +14,8 @@ export interface User {
     profile: {
       createdAt: string,
       updatedAt: string,
-      followers: 0,
-      following: 0,
+      followers: number,
+      following: number,
       avatarUrl: string
     },
     username: string

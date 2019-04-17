@@ -1,33 +1,49 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
-import { Observable, from } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
+import { map, catchError, switchMap } from 'rxjs/operators';
 import { ErrorService } from './error.service';
 import { User } from '../models/user.model';
 
 @Injectable()
 export class AuthService {
+
+  user: Observable<User>;
+
   constructor(
     private firebaseAuth: AngularFireAuth,
     private errorService: ErrorService,
+    private firestore: AngularFirestore
   ) {
-
-
+    this.user = this.firebaseAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          return this.firestore.doc<User>(`user/${user.uid}`).snapshotChanges();
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
 
   signInWithGithub(): Observable<User> {
     return from(this.firebaseAuth.auth.signInWithPopup(
       new firebase.auth.GithubAuthProvider()))
       .pipe(
-        map((user) => this.formatUserResponse(user)),
+        map((user) => this.formatUserResponse(user, 'github')),
         catchError((error) => this.errorService.logError(error))
       );
   }
 
   signInWithTwitter() {
     return from(this.firebaseAuth.auth
-      .signInWithPopup(new firebase.auth.TwitterAuthProvider()));
+      .signInWithPopup(new firebase.auth.TwitterAuthProvider()))
+      .pipe(
+        map((user) => this.formatUserResponse(user, 'twitter')),
+        catchError((error) => this.errorService.logError(error))
+      );
   }
 
   signOutUser() {
@@ -37,7 +53,17 @@ export class AuthService {
       );
   }
 
-  formatUserResponse(user): User {
+  formatUserResponse(user, provider): User {
+    let normalisedUser = {};
+    switch (provider) {
+      case 'github':
+        return normalisedUser = this.normaliseGithubUser(user);
+      default:
+        return null;
+    }
+  }
+
+  normaliseGithubUser(user): User {
     const {
       credential,
       additionalUserInfo,

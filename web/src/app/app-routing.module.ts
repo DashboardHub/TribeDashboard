@@ -6,15 +6,17 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthGuardService } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginPageComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [ AuthGuardService ] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes,
-    // {enableTracing: true}
+  imports: [
+    RouterModule.forRoot(
+      routes,
+      // {enableTracing: true}
     )
   ],
   exports: [RouterModule]

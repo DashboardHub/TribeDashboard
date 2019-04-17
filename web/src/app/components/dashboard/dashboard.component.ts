@@ -10,15 +10,15 @@ import { AuthService } from 'src/app/services/auth.service';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    public authService: AuthService,
-    public router: Router,
+    private authService: AuthService,
+    private router: Router,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   logout() {
-      this.authService.signOutUser()
-        .subscribe(() => this.navigateTologin());
+    this.authService.signOutUser()
+      .subscribe(() => this.navigateTologin());
   }
 
   navigateTologin() {

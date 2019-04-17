@@ -1,12 +1,12 @@
 export interface UserSocial {
   github: {
     updatedAt: string,
-    followers: any,
-    following: any,
+    followers: number,
+    following: number,
   };
   twitter: {
     updatedAt: string,
-    followers: any,
-    following: any,
+    followers: number,
+    following: number,
   };
 }

@@ -20,7 +20,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { ErrorService } from './services/error.service';
-import { AppStateService } from './services/app-state.service';
 import { AuthGuardService } from './guards/auth.guard';
 
 @NgModule({
@@ -44,7 +43,6 @@ import { AuthGuardService } from './guards/auth.guard';
     AuthService,
     UserService,
     ErrorService,
-    AppStateService,
     AuthGuardService,
   ],
   bootstrap: [AppComponent]

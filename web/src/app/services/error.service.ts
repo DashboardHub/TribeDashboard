@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ErrorService {
-  constructer() {}
+  constructer() { }
 
   logError(error: any): Promise<any> {
     console.error(error);

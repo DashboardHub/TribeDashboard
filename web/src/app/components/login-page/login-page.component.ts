@@ -12,7 +12,7 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    ) {}
+  ) {}
 
   public hasError = false;
   public errorMessage = '';

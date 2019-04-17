@@ -9,13 +9,12 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   constructor(
-    public router: Router
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {}
 
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
-
 }

@@ -7,12 +7,12 @@ export const environment = {
   version: 'x.x.x',
   // Add dev firebase credentials
   firebase: {
-    // apiKey: '',
-    // authDomain: '',
-    // databaseURL: '',
-    // projectId: '',
-    // storageBucket: '',
-    // messagingSenderId: ''
+    apiKey: '',
+    authDomain: '',
+    databaseURL: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: ''
   }
 };
 

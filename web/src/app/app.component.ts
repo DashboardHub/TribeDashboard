@@ -2,7 +2,6 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AppStateService } from './services/app-state.service';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +13,11 @@ export class AppComponent implements OnInit {
   public version: string;
 
   constructor(
-    public router: Router,
-    public afAuth: AngularFireAuth,
-    public zone: NgZone,
-    public appState: AppStateService,
+    private router: Router,
+    private afAuth: AngularFireAuth,
+    private zone: NgZone,
   ) {
     this.version = environment.version;
-    this.router = router;
   }
 
   ngOnInit() {
@@ -29,9 +26,6 @@ export class AppComponent implements OnInit {
         this.zone.run(() => {
           this.router.navigate(['/dashboard']);
         });
-        this.appState.authState = true;
-      } else {
-        this.appState.authState = false;
       }
     });
   }

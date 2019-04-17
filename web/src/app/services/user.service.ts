@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import {
   AngularFirestore,
@@ -12,25 +11,23 @@ import { ErrorService } from './error.service';
 export class UserService {
   public user: AngularFirestoreCollection;
   public userSocial: AngularFirestoreCollection;
+
   constructor(
-    private firebaseAuth: AngularFireAuth,
-    private db: AngularFirestore,
-    private errorService: ErrorService,
-    ) {
+    db: AngularFirestore,
+    private errorService: ErrorService ) {
     this.userSocial = db.collection('userSocial');
     this.user = db.collection('user');
   }
-
   saveUser(user) {
     return from(this.user.add({ user }))
-        .pipe(
-          map((response) => this.addRefID(response, user)),
-          catchError((err) => this.errorService.logError(err)),
-          );
+      .pipe(
+        map((response) => this.addRefID(response, user)),
+        catchError((err) => this.errorService.logError(err)),
+      );
   }
 
   addRefID(response, user) {
-    const normalisedResponse = {...user.additionalUserInfo.profile, reference: response.id};
+    const normalisedResponse = { ...user.additionalUserInfo.profile, reference: response.id };
     return normalisedResponse;
   }
 
