@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class AuthGuardService implements CanActivate {
   constructor(
-    private  auth: AuthService,
+    private auth: AuthService,
     private router: Router,
   ) { }
 
@@ -19,11 +19,9 @@ export class AuthGuardService implements CanActivate {
     return this.auth.user.pipe(
       take(1),
       map(authUser => {
-        console.log('user in map', authUser);
         return !!authUser;
       }),
       tap(loggedIn => {
-        console.log('loggedIn', loggedIn);
         if (!loggedIn) {
           this.router.navigate(['/login']);
         }

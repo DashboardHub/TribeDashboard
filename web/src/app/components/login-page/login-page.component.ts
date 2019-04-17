@@ -12,24 +12,23 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-  ) {}
+  ) { }
 
   public hasError = false;
   public errorMessage = '';
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   loginWithGithub() {
     this.authService.signInWithGithub()
       .subscribe((user) => {
+        console.log('inside loginwith github subscirbe', user);
         if (!user) {
           this.hasError = true;
           this.errorMessage = 'Something went wrong. Please try again';
           return;
         }
-        if (user) {
-          this.saveUser(user, 'github');
-        }
+        this.saveUser(user, 'github');
       });
   }
 

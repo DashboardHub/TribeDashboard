@@ -53,63 +53,50 @@ export class AuthService {
       );
   }
 
-  formatUserResponse(user, provider): User {
+  formatUserResponse(response, provider): User {
     let normalisedUser = {};
+
+    if (typeof (response) === 'undefined') {
+      return null;
+    }
+
     switch (provider) {
       case 'github':
-        return normalisedUser = this.normaliseGithubUser(user);
+        return normalisedUser = this.normaliseGithubUser(response);
       default:
         return null;
     }
   }
 
-  normaliseGithubUser(user): User {
-    const {
-      credential,
-      additionalUserInfo,
-      user: { displayName, uid, photoURL: photoUrl,
-        metadata: { creationTime: creationAt, lastSignInTime: lastSignInAt }, refreshToken },
-    } = user;
-
-    const { profile: {
-      created_at: createdAt,
-      updated_at: updatedAt,
-      followers,
-      following,
-      avatar_url: avatarUrl
-    },
-      username,
-    } = additionalUserInfo;
-
-    const {
-      accessToken,
-      providerId,
-    } = credential;
-
-    const filteredUserInfo = {
-      profile: {
-        createdAt,
-        updatedAt,
-        followers,
-        following,
-        avatarUrl
-      },
-      username,
-    };
+  normaliseGithubUser(response): User {
+    const user = response.user;
 
     const credentials = {
-      accessToken,
-      providerId,
-      refreshToken
+      accessToken: response.credential.accessToken,
+      providerId: response.credential.providerId,
+      refreshToken: response.user.refreshToken
+    }
+
+    const profile = {
+      createdAt: response.additionalUserInfo.profile.created_at,
+      updatedAt: response.additionalUserInfo.profile.updated_at,
+      followers: response.additionalUserInfo.profile.followers,
+      following: response.additionalUserInfo.profile.following,
+      avatarUrl: response.additionalUserInfo.profile.avatar_url
+    }
+
+    const additionalUserInfo = {
+      username: response.additionalUserInfo.username,
+      profile
     };
 
     const normalisedUser = {
-      displayName,
-      uid,
-      photoUrl,
-      creationAt,
-      lastSignInAt,
-      additionalUserInfo: filteredUserInfo,
+      displayName: user.displayName,
+      uid: user.uid,
+      photoUrl: user.photoURL,
+      creationAt: user.metadata.creationTime,
+      lastSignInAt: user.metadata.lastSignInTime,
+      additionalUserInfo,
       credentials
     };
     return normalisedUser;
