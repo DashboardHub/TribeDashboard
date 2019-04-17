@@ -53,7 +53,7 @@ export class AuthService {
       );
   }
 
-  formatUserResponse(response, provider): User {
+  formatUserResponse(response, provider): User | null {
     let normalisedUser = {};
 
     if (typeof (response) === 'undefined') {
