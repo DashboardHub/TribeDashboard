@@ -19,13 +19,17 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() { }
 
+  showErrorMessage() {
+    this.hasError = true;
+    this.errorMessage = 'Something went wrong. Please try again';
+  }
+
   loginWithGithub() {
     this.authService.signInWithGithub()
       .subscribe((user) => {
         console.log('inside loginwith github subscirbe', user);
         if (!user) {
-          this.hasError = true;
-          this.errorMessage = 'Something went wrong. Please try again';
+          this.showErrorMessage();
           return;
         }
         this.saveUser(user, 'github');
@@ -35,9 +39,11 @@ export class LoginPageComponent implements OnInit {
   loginWithTwitter() {
     this.authService.signInWithTwitter()
       .subscribe((user) => {
-        if (user) {
-          this.saveUser(user, 'twitter');
+        if (!user) {
+          this.showErrorMessage();
+          return;
         }
+        this.saveUser(user, 'twitter');
       });
   }
 

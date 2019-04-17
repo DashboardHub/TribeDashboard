@@ -37,7 +37,7 @@ export class AuthService {
       );
   }
 
-  signInWithTwitter() {
+  signInWithTwitter(): Observable<User> {
     return from(this.firebaseAuth.auth
       .signInWithPopup(new firebase.auth.TwitterAuthProvider()))
       .pipe(
@@ -46,7 +46,7 @@ export class AuthService {
       );
   }
 
-  signOutUser() {
+  signOutUser(): Observable<null> {
     return from(this.firebaseAuth.auth.signOut())
       .pipe(
         catchError(err => this.errorService.logError(err))
@@ -55,7 +55,6 @@ export class AuthService {
 
   formatUserResponse(response, provider): User | null {
     let normalisedUser = {};
-
     if (typeof (response) === 'undefined') {
       return null;
     }
@@ -63,6 +62,8 @@ export class AuthService {
     switch (provider) {
       case 'github':
         return normalisedUser = this.normaliseGithubUser(response);
+      case 'twitter':
+        return normalisedUser = this.normaliseTwitterUser(response);
       default:
         return null;
     }
@@ -101,4 +102,38 @@ export class AuthService {
     };
     return normalisedUser;
   }
+
+  normaliseTwitterUser(response): User {
+    const user = response.user;
+
+    const credentials = {
+      accessToken: response.credential.accessToken,
+      providerId: response.credential.providerId,
+      secret: response.credential.secret,
+    };
+
+    const profile = {
+      createdAt: response.additionalUserInfo.profile.created_at,
+      followers: response.additionalUserInfo.profile.followers_count,
+      following: response.additionalUserInfo.profile.friends_count,
+      avatarUrl: response.additionalUserInfo.profile.profile_image_url
+    };
+
+    const additionalUserInfo = {
+      username: response.additionalUserInfo.username,
+      profile
+    };
+
+    const normalisedUser = {
+      displayName: user.displayName,
+      uid: user.uid,
+      photoUrl: user.photoURL,
+      creationAt: user.metadata.creationTime,
+      lastSignInAt: user.metadata.lastSignInTime,
+      additionalUserInfo,
+      credentials
+    };
+    return normalisedUser;
+  }
+
 }

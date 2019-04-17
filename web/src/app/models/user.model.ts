@@ -7,13 +7,13 @@ export interface User {
   credentials: {
     accessToken: string,
     providerId: string,
-    refreshToken: string,
+    refreshToken?: string,
     secret?: string,  // Optional field
   };
   additionalUserInfo: {
     profile: {
       createdAt: string,
-      updatedAt: string,
+      updatedAt?: string,
       followers: number,
       following: number,
       avatarUrl: string
