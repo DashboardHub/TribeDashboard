@@ -75,7 +75,7 @@ export class AuthService {
       accessToken: response.credential.accessToken,
       providerId: response.credential.providerId,
       refreshToken: response.user.refreshToken
-    }
+    };
 
     const profile = {
       createdAt: response.additionalUserInfo.profile.created_at,
@@ -83,7 +83,7 @@ export class AuthService {
       followers: response.additionalUserInfo.profile.followers,
       following: response.additionalUserInfo.profile.following,
       avatarUrl: response.additionalUserInfo.profile.avatar_url
-    }
+    };
 
     const additionalUserInfo = {
       username: response.additionalUserInfo.username,
