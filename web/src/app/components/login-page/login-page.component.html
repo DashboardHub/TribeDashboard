@@ -1,4 +1,7 @@
 <div class="card-container">
+  <div *ngIf="hasError">
+    {{errorMessage}}
+  </div>
   <mat-card class="card" fxFlex="30">
     <mat-card-content fxLayout="column" fxLayoutAlign="space-between space-between" fxLayoutGap="20px">
       <mat-card-title fxLayoutAlign="center">Sign into Dashboard</mat-card-title>
