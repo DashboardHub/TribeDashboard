@@ -1,8 +1,9 @@
 <div fxLayout="column">
   <div class="app-nav" fxFlex="30">
-    <app-navbar></app-navbar>
+    <app-navbar>
+    </app-navbar>
   </div>
-  <div class="cards">
+  <div class="cards" *ngIf="!isResponseLoading">
     <div class="overview">Overview</div>
     <mat-card class="outer-container" fxLayout="row" fxLayoutGap="20px">
       <mat-card fxFlex="25">
@@ -29,5 +30,8 @@
         </mat-card-content>
       </mat-card>
     </mat-card>
+  </div>
+  <div *ngIf="isResponseLoading" fxLayout fxLayoutAlign="center center">
+    <mat-spinner strokeWidth="4"></mat-spinner>
   </div>
 </div>

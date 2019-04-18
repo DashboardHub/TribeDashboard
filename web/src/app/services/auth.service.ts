@@ -20,7 +20,7 @@ export class AuthService {
     this.user = this.firebaseAuth.authState.pipe(
       switchMap(user => {
         if (user) {
-          return this.firestore.doc<User>(`user/${user.uid}`).snapshotChanges();
+          return this.firestore.doc<User>(`user/${user.uid}`).valueChanges();
         } else {
           return of(null);
         }
@@ -135,5 +135,4 @@ export class AuthService {
     };
     return normalisedUser;
   }
-
 }
