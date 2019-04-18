@@ -21,13 +21,15 @@ import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { ErrorService } from './services/error.service';
 import { AuthGuardService } from './guards/auth.guard';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
     DashboardComponent,
-    HomeComponent
+    HomeComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

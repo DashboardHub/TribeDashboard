@@ -1,6 +1,33 @@
-<p>
-  dashboard works!
-</p>
-<button mat-flat-button class="primary" (click)="logout()">
-  Logout
-</button>
+<div fxLayout="column">
+  <div class="app-nav" fxFlex="30">
+    <app-navbar></app-navbar>
+  </div>
+  <div class="cards">
+    <div class="overview">Overview</div>
+    <mat-card class="outer-container" fxLayout="row" fxLayoutGap="20px">
+      <mat-card fxFlex="25">
+        <mat-icon svgIcon="instagram" class="instagram"></mat-icon>
+        <mat-card-title>641</mat-card-title>
+        <mat-card-subtitle>Followers</mat-card-subtitle>
+      </mat-card>
+      <mat-card fxFlex="25">
+        <mat-card-content>
+          <mat-card-title>Connect twitter to see your statistics</mat-card-title>
+          <button mat-flat-button class="twitter">Connect to twitter</button>
+        </mat-card-content>
+      </mat-card>
+      <mat-card fxFlex="25">
+        <mat-card-content>
+          <mat-card-title>Connect youtube to see your statistics</mat-card-title>
+          <button mat-flat-button class="youtube">Connect to youtube</button>
+        </mat-card-content>
+      </mat-card>
+      <mat-card fxFlex="25">
+        <mat-card-content>
+          <mat-card-title>Connect github to see your statistics</mat-card-title>
+          <button mat-flat-button class="github">Connect to github</button>
+        </mat-card-content>
+      </mat-card>
+    </mat-card>
+  </div>
+</div>
