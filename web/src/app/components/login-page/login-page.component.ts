@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
+import { UserSocial } from '../../models/userSocial.model';
 
 @Component({
   selector: 'app-login-page',
@@ -27,7 +29,6 @@ export class LoginPageComponent implements OnInit {
   loginWithGithub() {
     this.authService.signInWithGithub()
       .subscribe((user) => {
-        console.log('inside loginwith github subscirbe', user);
         if (!user) {
           this.showErrorMessage();
           return;
@@ -47,20 +48,17 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
-  saveUser(user, provider) {
+  saveUser(user: User, provider: string) {
     this.userService.saveUser(user)
       .subscribe((userData) => {
         this.saveUserSocialDetails(userData, provider);
       });
   }
 
-  saveUserSocialDetails(userData, provider) {
+  saveUserSocialDetails(userData: User, provider: string) {
     const socialDetails = {};
     socialDetails[provider] = userData;
     this.userService.saveUserSocial(socialDetails)
-      .subscribe((socialData) => {
-        console.log('userSocialData', socialData); // TODO: store after dashboard count implementation.
-      });
+      .subscribe(); // TODO: Handle success and error scenarios after social doc changes.
   }
-
 }
