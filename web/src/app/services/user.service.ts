@@ -52,9 +52,7 @@ export class UserService {
     if (!response) {
       return null;
     }
-    response.docs.forEach((doc) => {
-      social = doc.data();
-    });
+    social = response.docs.pop().data();
     return social;
   }
 
