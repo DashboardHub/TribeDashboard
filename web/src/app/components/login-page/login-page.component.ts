@@ -59,6 +59,6 @@ export class LoginPageComponent implements OnInit {
     const socialDetails = {};
     socialDetails[provider] = userData;
     this.userService.saveUserSocial(socialDetails)
-      .subscribe();
+      .subscribe(); // TODO: Handle success and error scenarios after social doc changes.
   }
 }
