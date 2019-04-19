@@ -55,7 +55,7 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
-  saveUserSocialDetails(userData: object, provider: string) {
+  saveUserSocialDetails(userData: User, provider: string) {
     const socialDetails = {};
     socialDetails[provider] = userData;
     this.userService.saveUserSocial(socialDetails)
