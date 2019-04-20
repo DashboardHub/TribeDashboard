@@ -1,93 +1,89 @@
 <mat-card class="outer-container" fxLayout="row" fxLayoutGap="20px">
   <mat-card fxFlex="25">
-    <mat-card-content *ngIf="userSocial.github != undefined else github">
+    <mat-card-content *ngIf="userSocial.github">
       <mat-icon svgIcon="github" class="github"></mat-icon>
       <div fxLayout class="stats-wrapper">
         <div fxLayout="column" fxFlex="33">
-          <span class="stats-display">{{userSocial.github.followers}}</span>
+          <span class="stats-display">{{ userSocial.github.followers }}</span>
           <span class="stats-label">Followers</span>
         </div>
         <div fxLayout="column" fxFlex="33">
-          <span class="stats-display">{{userSocial.github.following}}</span>
+          <span class="stats-display">{{ userSocial.github.following }}</span>
           <span class="stats-label">Following</span>
         </div>
       </div>
     </mat-card-content>
-    <ng-template #github>
-      <mat-card-content>
-        <mat-card-title>Connect github to see your statistics</mat-card-title>
-        <button mat-flat-button *ngIf="userSocial" class="github">Connect to github</button>
-      </mat-card-content>
-    </ng-template>
+    <mat-card-content *ngIf="!userSocial.github">
+      <mat-card-title>Connect github to see your statistics</mat-card-title>
+      <button mat-flat-button *ngIf="userSocial" class="github">Connect to github</button>
+    </mat-card-content>
   </mat-card>
   <mat-card fxFlex="25">
-    <mat-card-content *ngIf="userSocial.twitter !== undefined else twitter">
+    <mat-card-content *ngIf="userSocial.twitter">
       <mat-icon svgIcon="twitter" class="twitter"></mat-icon>
       <div fxLayout class="stats-wrapper">
-        <div fxLayout="column">
-          <span class="stats-display">{{userSocial.twitter.followers}}</span>
+        <div fxLayout="column" fxFlex="33">
+          <span class="stats-display">{{ userSocial.twitter.followers }}</span>
           <span class="stats-label">Followers</span>
         </div>
-        <div fxLayout="column">
-          <span class="stats-display">{{userSocial.twitter.following}}</span>
+        <div fxLayout="column" fxFlex="33">
+          <span class="stats-display">{{ userSocial.twitter.following }}</span>
           <span class="stats-label">Following</span>
         </div>
       </div>
     </mat-card-content>
-    <ng-template #twitter>
+    <mat-card-content *ngIf="!userSocial.twitter">
       <mat-card-title>Connect twitter to see your statistics</mat-card-title>
       <button mat-flat-button class="twitter">Connect to twitter</button>
       <div fxLayout fxLayoutAlign="end end">
         <mat-icon svgIcon="twitter" class="twitter-icon"></mat-icon>
       </div>
-    </ng-template>
+    </mat-card-content>
   </mat-card>
   <mat-card fxFlex="25">
-    <mat-card-content *ngIf="userSocial.youtube !== undefined else youtube">
+    <mat-card-content *ngIf="userSocial.youtube">
       <mat-icon svgIcon="youtube-fill" class="youtube"></mat-icon>
       <div fxLayout class="stats-wrapper">
-        <div fxLayout="column">
-          <span class="stats-display">{{userSocial.youtube.followers}}</span>
+        <div fxLayout="column" fxFlex="33">
+          <span class="stats-display">{{ userSocial.youtube.followers }}</span>
           <span class="stats-label">Followers</span>
         </div>
-        <div fxLayout="column">
-          <span class="stats-display">{{userSocial.youtube.following}}</span>
+        <div fxLayout="column" fxFlex="33">
+          <span class="stats-display">{{ userSocial.youtube.following }}</span>
           <span class="stats-label">Following</span>
         </div>
       </div>
     </mat-card-content>
-    <ng-template #youtube>
+    <mat-card-content *ngIf="!userSocial.youtube">
       <mat-card-title>Connect youtube to see your statistics</mat-card-title>
       <button mat-flat-button class="youtube">Connect to youtube</button>
       <div fxLayout fxLayoutAlign="end end">
         <mat-icon svgIcon="youtube-fill" class="youtube-icon"></mat-icon>
       </div>
-    </ng-template>
+    </mat-card-content>
   </mat-card>
   <mat-card fxFlex="25">
-    <mat-card-content *ngIf="userSocial.instagram !== undefined else instagram">
+    <mat-card-content *ngIf="userSocial.instagram">
       <mat-icon svgIcon="instagram" class="instagram"></mat-icon>
       <div fxLayout class="stats-wrapper">
-        <div fxLayout="column">
-          <span class="stats-display">{{userSocial.instagram.followers}}</span>
+        <div fxLayout="column" fxFlex="33">
+          <span class="stats-display">{{ userSocial.instagram.followers }}</span>
           <span>Followers</span>
         </div>
-        <div fxLayout="column">
+        <div fxLayout="column" fxFlex="33">
           <span class="stats-display">
-            {{userSocial.instagram.following}}
+            {{ userSocial.instagram.following }}
           </span>
           <span>Following</span>
         </div>
       </div>
     </mat-card-content>
-    <ng-template #instagram>
-      <mat-card-content>
-        <mat-card-title>Connect instagram to see your statistics</mat-card-title>
-        <button mat-flat-button class="instagram">Connect to instagram</button>
-        <div fxLayout fxLayoutAlign="end end">
-          <mat-icon svgIcon="instagram"></mat-icon>
-        </div>
-      </mat-card-content>
-    </ng-template>
+    <mat-card-content *ngIf="!userSocial.instagram">
+      <mat-card-title>Connect instagram to see your statistics</mat-card-title>
+      <button mat-flat-button class="instagram">Connect to instagram</button>
+      <div fxLayout fxLayoutAlign="end end">
+        <mat-icon svgIcon="instagram"></mat-icon>
+      </div>
+    </mat-card-content>
   </mat-card>
 </mat-card>
