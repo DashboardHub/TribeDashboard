@@ -3,39 +3,7 @@
 .cards {
     background: #F9F9F9;
 
-    .mat-card-title {
-        font-size: 0.87rem;
-    }
-
-    .outer-container {
-        box-shadow: none;
-        background: #F9F9F9;
-
-        .mat-card {
-            box-shadow: none;
-        }
-    }
-
-    .instagram {
-        margin-bottom: 0.93rem;
-    }
-
     .overview {
         padding: 1rem 0rem 0rem 1rem;
-    }
-
-    .twitter {
-        background-color: $twitter-primary;
-        color: $text-color-accent;
-    }
-
-    .youtube {
-        background-color: $youtube-primary;
-        color: $text-color-accent;
-    }
-
-    .github {
-        background-color: $github-primary;
-        color: $text-color-accent;
     }
 }

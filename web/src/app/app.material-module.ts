@@ -34,6 +34,10 @@ export class AppMaterialModule {
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/youtube.svg')
     );
     this.matIconRegistry.addSvgIcon(
+      'youtube-fill',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/youtube_fill.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
       'twitter',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/twitter.svg')
     );

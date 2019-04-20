@@ -1,0 +1,57 @@
+@import "../../../styles/variables.scss";
+
+.outer-container {
+    box-shadow: none;
+    background: #F9F9F9;
+
+    .instagram {
+        margin-bottom: 0.93rem;
+        background-color: $instagram-primary;
+    }
+
+    .mat-card-title {
+        font-size: 0.87rem;
+    }
+
+    .mat-card {
+        box-shadow: none;
+    }
+
+    .twitter {
+        background-color: $twitter-primary;
+        color: $text-color-accent;
+    }
+
+    .youtube {
+        background-color: $youtube-primary;
+        color: $text-color-accent;
+    }
+
+    .github {
+        background-color: $github-primary;
+        color: $text-color-accent;
+    }
+
+    ::ng-deep .twitter-icon svg g {
+        fill: $twitter-primary;
+    }
+
+    ::ng-deep .youtube-icon svg g {
+        fill: $youtube-primary;
+    }
+
+    .stats-wrapper {
+        padding: 0.46rem 0;
+        line-height: 1.56rem;
+
+        .stats-display {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .stats-label {
+            color: $text-color-secondary;
+            opacity: 0.4;
+        }
+    }
+}
