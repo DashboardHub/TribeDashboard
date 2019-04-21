@@ -4,7 +4,7 @@ import { map, catchError } from 'rxjs/operators';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  AngularFirestoreDocument
+  QuerySnapshot,
 } from 'angularfire2/firestore';
 import { ErrorService } from './error.service';
 import { AuthService } from './auth.service';
@@ -40,7 +40,7 @@ export class UserService {
   }
 
   getUserSocialDetails(providerId: string, uid: string): Observable<UserSocial> {
-    return from(this.userSocial.ref.where(`${providerId}.reference`, '==', uid).get())
+    return from(this.userSocial.ref.where(`${providerId}.userId`, '==', uid).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
         catchError(error => this.errorService.logError(error))
@@ -57,11 +57,31 @@ export class UserService {
   }
 
   addRefID(user): UserSocial {
-    const normalisedResponse = { ...user.additionalUserInfo.profile, reference: user.uid };
+    const normalisedResponse = { ...user.additionalUserInfo.profile, userId: user.uid };
     return normalisedResponse;
   }
 
-  saveUserSocial(social): Observable<UserSocial> {
+  checkForSocialDoc(provider: string, userId: string): Observable<any> {
+    return from(this.userSocial.ref.where(`${provider}.userId`, '==', userId).get())
+      .pipe(
+        map((response: QuerySnapshot<UserSocial>) => {
+          if (response.empty) {
+            return { empty: response.empty };
+          }
+          return { empty: response.empty, id: response.docs.pop().id };
+        })
+      );
+  }
+
+  updateSocialDoc(id: string, social: UserSocial): Observable<UserSocial> {
+    return from(this.userSocial.doc(id).set(social))
+      .pipe(
+        map(response => this.formatUserSocial(response)),
+        catchError(err => this.errorService.logError(err))
+      );
+  }
+
+  addSocialDoc(social: UserSocial): Observable<UserSocial> {
     return from(this.userSocial.add(social))
       .pipe(
         map(response => this.formatUserSocial(response)),
