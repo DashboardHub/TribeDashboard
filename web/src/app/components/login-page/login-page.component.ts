@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { UserSocial } from '../../models/userSocial.model';
+import { SocialStatsService } from 'src/app/services/social-stats.service';
 
 @Component({
   selector: 'app-login-page',
@@ -14,6 +15,7 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private socialStatsService: SocialStatsService,
   ) { }
 
   public hasError = false;
@@ -52,13 +54,52 @@ export class LoginPageComponent implements OnInit {
     this.userService.saveUser(user)
       .subscribe((userData) => {
         this.saveUserSocialDetails(userData, provider);
+        this.saveUserSocialStats(userData, provider);
       });
   }
 
-  saveUserSocialDetails(userData: User, provider: string) {
+  saveUserSocialStats(userData, provider: string) {
+    const socialStats = { ...userData, ...{ provider, createdAt: new Date().toISOString() } };
+    this.socialStatsService.createSocialStats(socialStats)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('error in storing stats history');
+        }
+      });
+  }
+
+  saveUserSocialDetails(userData, provider: string) {
     const socialDetails = {};
     socialDetails[provider] = userData;
-    this.userService.saveUserSocial(socialDetails)
-      .subscribe(); // TODO: Handle success and error scenarios after social doc changes.
+    this.userService.checkForSocialDoc(provider, userData.userId)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('error in checking of existing social doc');
+          return;
+        }
+        if (response.empty) {
+          this.createUserSocialDetails(socialDetails);
+          return;
+        }
+        this.updateUserSocialDetails(response.id, socialDetails);
+      });
+  }
+
+  createUserSocialDetails(socialDetails: UserSocial) {
+    this.userService.addSocialDoc(socialDetails)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('error in creating social doc');
+        }
+      });
+  }
+
+  updateUserSocialDetails(id: string, socialDetails: UserSocial) {
+    this.userService.updateSocialDoc(id, socialDetails)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('error in updating user social doc');
+        }
+      });
   }
 }

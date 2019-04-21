@@ -58,7 +58,6 @@ export class AuthService {
     if (typeof (response) === 'undefined') {
       return null;
     }
-
     switch (provider) {
       case 'github':
         return normalisedUser = this.normaliseGithubUser(response);
