@@ -22,6 +22,7 @@ import { UserService } from './services/user.service';
 import { ErrorService } from './services/error.service';
 import { AuthGuardService } from './guards/auth.guard';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { SocialCardsComponent } from './components/social-cards/social-cards.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     LoginPageComponent,
     DashboardComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    SocialCardsComponent
   ],
   imports: [
     BrowserModule,
