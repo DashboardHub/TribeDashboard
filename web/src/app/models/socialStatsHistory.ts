@@ -3,7 +3,6 @@ export interface SocialStatsHistory {
   userId: string;
   followers: number;
   following: number;
-  repos?: number;
-  tweets?: number;
+  activityCount: number;
   createdAt: string;
 }

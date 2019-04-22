@@ -73,7 +73,7 @@ export class AuthService {
 
     const credentials = {
       accessToken: response.credential.accessToken,
-      providerId: response.credential.providerId,
+      provider: response.credential.providerId,
       refreshToken: response.user.refreshToken
     };
 
@@ -107,7 +107,7 @@ export class AuthService {
 
     const credentials = {
       accessToken: response.credential.accessToken,
-      providerId: response.credential.providerId,
+      provider: response.credential.providerId,
       secret: response.credential.secret,
     };
 
