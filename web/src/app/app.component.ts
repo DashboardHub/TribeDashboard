@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { UserService } from './services/user.service';
 import { UserSocial } from './models/userSocial.model';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -24,18 +25,21 @@ export class AppComponent implements OnInit {
       .subscribe((user) => {
         if (user) {
           const userSocial = this.userService.addRefID(user);
-          this.saveUserSocialDetails(userSocial, user.credentials.providerId.split('.')[0]);
+          this.saveUserSocialDetails(userSocial, user.credentials.provider.split('.')[0]);
         }
       });
   }
 
-  saveUserSocialDetails(userData, provider: string) {
-    const socialDetails = {};
-    socialDetails[provider] = userData;
-    this.userService.checkForSocialDoc(provider, userData.userId)
+  saveUserSocialDetails(userData: UserSocial, provider: string) {
+    const { uid, ...social } = userData;
+    const socialDetails = {
+      uid
+    };
+    socialDetails[provider] = social;
+    this.userService.checkForSocialDoc(provider, userData.uid)
       .subscribe((response) => {
         if (!response) {
-          console.error('error in checking of existing social doc');
+          console.error('Error in verifying if the user is an existing one');
           return;
         }
         if (response.empty) {

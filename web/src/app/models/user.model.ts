@@ -6,7 +6,7 @@ export interface User {
   lastSignInAt: string;
   credentials: {
     accessToken: string,
-    providerId: string,
+    provider: string,
     refreshToken?: string,
     secret?: string,  // Optional field
   };

@@ -39,8 +39,8 @@ export class UserService {
     );
   }
 
-  getUserSocialDetails(providerId: string, uid: string): Observable<UserSocial> {
-    return from(this.userSocial.ref.where(`${providerId}.userId`, '==', uid).get())
+  getUserSocialDetails(provider: string, uid: string): Observable<UserSocial> {
+    return from(this.userSocial.ref.where(`${provider}.userId`, '==', uid).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
         catchError(error => this.errorService.logError(error))
@@ -56,13 +56,13 @@ export class UserService {
     return social;
   }
 
-  addRefID(user): UserSocial {
-    const normalisedResponse = { ...user.additionalUserInfo.profile, userId: user.uid };
+  addRefID(user: User): UserSocial {
+    const normalisedResponse = { ...user.additionalUserInfo.profile, uid: user.uid };
     return normalisedResponse;
   }
 
-  checkForSocialDoc(provider: string, userId: string): Observable<any> {
-    return from(this.userSocial.ref.where(`${provider}.userId`, '==', userId).get())
+  checkForSocialDoc(provider: string, uid: string): Observable<any> {
+    return from(this.userSocial.ref.where(`${provider}.uid`, '==', uid).get())
       .pipe(
         map((response: QuerySnapshot<UserSocial>) => {
           if (response.empty) {
