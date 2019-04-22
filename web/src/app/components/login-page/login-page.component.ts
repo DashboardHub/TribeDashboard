@@ -53,7 +53,6 @@ export class LoginPageComponent implements OnInit {
   saveUser(user: User, provider: string) {
     this.userService.saveUser(user)
       .subscribe((userData) => {
-        this.saveUserSocialDetails(userData, provider);
         this.saveUserSocialStats(userData, provider);
       });
   }
@@ -64,41 +63,6 @@ export class LoginPageComponent implements OnInit {
       .subscribe((response) => {
         if (!response) {
           console.error('error in storing stats history');
-        }
-      });
-  }
-
-  saveUserSocialDetails(userData, provider: string) {
-    const socialDetails = {};
-    socialDetails[provider] = userData;
-    this.userService.checkForSocialDoc(provider, userData.userId)
-      .subscribe((response) => {
-        if (!response) {
-          console.error('error in checking of existing social doc');
-          return;
-        }
-        if (response.empty) {
-          this.createUserSocialDetails(socialDetails);
-          return;
-        }
-        this.updateUserSocialDetails(response.id, socialDetails);
-      });
-  }
-
-  createUserSocialDetails(socialDetails: UserSocial) {
-    this.userService.addSocialDoc(socialDetails)
-      .subscribe((response) => {
-        if (!response) {
-          console.error('error in creating social doc');
-        }
-      });
-  }
-
-  updateUserSocialDetails(id: string, socialDetails: UserSocial) {
-    this.userService.updateSocialDoc(id, socialDetails)
-      .subscribe((response) => {
-        if (!response) {
-          console.error('error in updating user social doc');
         }
       });
   }

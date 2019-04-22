@@ -76,7 +76,6 @@ export class UserService {
   updateSocialDoc(id: string, social: UserSocial): Observable<UserSocial> {
     return from(this.userSocial.doc(id).set(social))
       .pipe(
-        map(response => this.formatUserSocial(response)),
         catchError(err => this.errorService.logError(err))
       );
   }
