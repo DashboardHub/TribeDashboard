@@ -27,26 +27,19 @@ export class DashboardComponent implements OnInit {
           return;
         }
         this.user = { ...user };
-        this.getUserSocialDetails(this.normalizeProvider(user.credentials.provider), this.user.uid);
+        this.getUserSocialDetails(this.user.uid);
       });
   }
 
-  getUserSocialDetails(provider, uid: string) {
-    this.userService.getUserSocialDetails(provider, uid)
+  getUserSocialDetails(uid: string) {
+    this.userService.getUserSocialDetails(uid)
       .subscribe((userSocial) => {
         if (!userSocial) {
           console.error('error in fetching user social'); // TODO: Handle null social doc scenario in cards.
           return;
         }
-        this.userSocial = { ...userSocial };
+        this.userSocial = { ...userSocial.social };
         this.isResponseLoading = false;
       });
-  }
-
-  normalizeProvider(provider: string): string {
-    if (!provider) {
-      return '';
-    }
-    return provider.split('.')[0];
   }
 }
