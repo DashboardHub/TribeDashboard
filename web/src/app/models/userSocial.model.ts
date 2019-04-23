@@ -6,4 +6,6 @@ export interface UserSocial {
   youtube?: Social;
   instagram?: Social;
   uid: string;
+  id?: string;
+  empty?: boolean;
 }

@@ -34,11 +34,12 @@ export class DashboardComponent implements OnInit {
   getUserSocialDetails(uid: string) {
     this.userService.getUserSocialDetails(uid)
       .subscribe((userSocial) => {
+        const { id, ...social } = userSocial;
         if (!userSocial) {
           console.error('error in fetching user social'); // TODO: Handle null social doc scenario in cards.
           return;
         }
-        this.userSocial = { ...userSocial.social };
+        this.userSocial = { ...social };
         this.isResponseLoading = false;
       });
   }

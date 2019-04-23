@@ -39,7 +39,7 @@ export class UserService {
     );
   }
 
-  getUserSocialDetails(uid: string): Observable<DocumentData> {
+  getUserSocialDetails(uid: string): Observable<UserSocial> {
     return from(this.userSocial.ref.where('uid', '==', uid).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
@@ -47,7 +47,7 @@ export class UserService {
       );
   }
 
-  getSocialDataFromPayload(response): DocumentData | null {
+  getSocialDataFromPayload(response): UserSocial | null {
     let social;
     if (!response) {
       return null;
@@ -55,10 +55,7 @@ export class UserService {
     if (response.empty) {
       return response;
     }
-    social = {
-      social: response.docs.pop().data(),
-      id: response.docs.pop().id,
-    };
+    social = { ...response.docs.pop().data(), id: response.docs.pop().id, };
 
     return social;
   }
