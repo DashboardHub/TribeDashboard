@@ -4,7 +4,7 @@ import { map, catchError } from 'rxjs/operators';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  QuerySnapshot,
+  DocumentData,
 } from 'angularfire2/firestore';
 import { ErrorService } from './error.service';
 import { AuthService } from './auth.service';
@@ -39,20 +39,27 @@ export class UserService {
     );
   }
 
-  getUserSocialDetails(provider: string, uid: string): Observable<UserSocial> {
-    return from(this.userSocial.ref.where(`${provider}.userId`, '==', uid).get())
+  getUserSocialDetails(uid: string): Observable<DocumentData> {
+    return from(this.userSocial.ref.where('uid', '==', uid).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
         catchError(error => this.errorService.logError(error))
       );
   }
 
-  getSocialDataFromPayload(response): UserSocial | null {
+  getSocialDataFromPayload(response): DocumentData | null {
     let social;
     if (!response) {
       return null;
     }
-    social = response.docs.pop().data();
+    if (response.empty) {
+      return response;
+    }
+    social = {
+      social: response.docs.pop().data(),
+      id: response.docs.pop().id,
+    };
+
     return social;
   }
 
@@ -61,17 +68,7 @@ export class UserService {
     return normalisedResponse;
   }
 
-  checkForSocialDoc(provider: string, uid: string): Observable<any> {
-    return from(this.userSocial.ref.where(`${provider}.uid`, '==', uid).get())
-      .pipe(
-        map((response: QuerySnapshot<UserSocial>) => {
-          if (response.empty) {
-            return { empty: response.empty };
-          }
-          return { empty: response.empty, id: response.docs.pop().id };
-        })
-      );
-  }
+
 
   updateSocialDoc(id: string, social: UserSocial): Observable<UserSocial> {
     return from(this.userSocial.doc(id).set(social))

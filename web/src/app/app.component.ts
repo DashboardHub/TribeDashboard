@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
       uid
     };
     socialDetails[provider] = social;
-    this.userService.checkForSocialDoc(provider, userData.uid)
+    this.userService.getUserSocialDetails(userData.uid)
       .subscribe((response) => {
         if (!response) {
           console.error('Error in verifying if the user is an existing one');
