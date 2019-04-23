@@ -31,12 +31,12 @@ export class AppComponent implements OnInit {
   }
 
   saveUserSocialDetails(userData: UserSocial, provider: string) {
-    const { uid, ...social } = userData;
+    const { userId, ...social } = userData;
     const socialDetails = {
-      uid
+      userId
     };
     socialDetails[provider] = social;
-    this.userService.getUserSocialDetails(userData.uid)
+    this.userService.getUserSocialDetails(userData.userId)
       .subscribe((response) => {
         if (!response) {
           console.error('Error in verifying if the user is an existing one');
