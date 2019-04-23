@@ -4,6 +4,13 @@
 
 An Open Source Dashboard for my social tribe. A simple and FREE dashboard that displays my GitHub, Twitter, YouTube and Instagram tribe (subscribers / followers etc). With the ability to upgrade to PRO that gives the history of how your tribe has changed today since yesterday and to see historically who has unsubscribe / unfollowed.
 
+## Screenshots
+
+![Sign in](https://user-images.githubusercontent.com/624760/56564339-b5771400-65a5-11e9-8ff1-aac6c8c8680c.jpg)
+![Dashboard](https://user-images.githubusercontent.com/624760/56564299-a09a8080-65a5-11e9-9a85-732ae80e2099.jpeg)
+![Detailed Activity](https://user-images.githubusercontent.com/624760/56564325-ae500600-65a5-11e9-9dc7-62e87f577b25.jpg)
+![settings](https://user-images.githubusercontent.com/624760/56564310-a85a2500-65a5-11e9-8b72-abc267a315ed.jpg)
+
 ## Project guidelines
 
 - Use issues for **epics** and **stories**. **Epics** are high level and **stories** are epics broken down into actual work actions. Use the **epics** and **stories** to discuss high level and more details respectively 
