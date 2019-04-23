@@ -39,8 +39,8 @@ export class UserService {
     );
   }
 
-  getUserSocialDetails(uid: string): Observable<UserSocial> {
-    return from(this.userSocial.ref.where('uid', '==', uid).get())
+  getUserSocialDetails(userId: string): Observable<UserSocial> {
+    return from(this.userSocial.ref.where('userId', '==', userId).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
         catchError(error => this.errorService.logError(error))
@@ -61,7 +61,7 @@ export class UserService {
   }
 
   addRefID(user: User): UserSocial {
-    const normalisedResponse = { ...user.additionalUserInfo.profile, uid: user.uid };
+    const normalisedResponse = { ...user.additionalUserInfo.profile, userId: user.uid };
     return normalisedResponse;
   }
 

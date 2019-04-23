@@ -31,8 +31,8 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  getUserSocialDetails(uid: string) {
-    this.userService.getUserSocialDetails(uid)
+  getUserSocialDetails(userId: string) {
+    this.userService.getUserSocialDetails(userId)
       .subscribe((userSocial) => {
         const { id, ...social } = userSocial;
         if (!userSocial) {
