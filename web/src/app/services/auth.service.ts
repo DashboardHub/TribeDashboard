@@ -28,20 +28,20 @@ export class AuthService {
     );
   }
 
-  signInWithGithub(): Observable<User> {
+  signInWithGithub(isPrimary: boolean): Observable<User> {
     return from(this.firebaseAuth.auth.signInWithPopup(
       new firebase.auth.GithubAuthProvider()))
       .pipe(
-        map((user) => this.formatUserResponse(user, 'github')),
+        map((user) => this.formatUserResponse({...user, isPrimary}, 'github')),
         catchError((error) => this.errorService.logError(error))
       );
   }
 
-  signInWithTwitter(): Observable<User> {
+  signInWithTwitter(isPrimary: boolean): Observable<User> {
     return from(this.firebaseAuth.auth
       .signInWithPopup(new firebase.auth.TwitterAuthProvider()))
       .pipe(
-        map((user) => this.formatUserResponse(user, 'twitter')),
+        map((user) => this.formatUserResponse({...user, isPrimary}, 'twitter')),
         catchError((error) => this.errorService.logError(error))
       );
   }
@@ -97,14 +97,14 @@ export class AuthService {
       creationAt: user.metadata.creationTime,
       lastSignInAt: user.metadata.lastSignInTime,
       additionalUserInfo,
-      credentials
+      credentials,
+      isPrimary: response.isPrimary
     };
     return normalisedUser;
   }
 
   normaliseTwitterUser(response): User {
     const user = response.user;
-
     const credentials = {
       accessToken: response.credential.accessToken,
       provider: response.credential.providerId,
@@ -130,7 +130,8 @@ export class AuthService {
       creationAt: user.metadata.creationTime,
       lastSignInAt: user.metadata.lastSignInTime,
       additionalUserInfo,
-      credentials
+      credentials,
+      isPrimary: response.isPrimary
     };
     return normalisedUser;
   }
