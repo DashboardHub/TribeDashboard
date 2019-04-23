@@ -5,4 +5,7 @@ export interface UserSocial {
   twitter?: Social;
   youtube?: Social;
   instagram?: Social;
+  userId: string;
+  id?: string;
+  empty?: boolean;
 }

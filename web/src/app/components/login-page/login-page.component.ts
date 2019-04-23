@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { UserSocial } from '../../models/userSocial.model';
+import { SocialStatsService } from 'src/app/services/social-stats.service';
 
 @Component({
   selector: 'app-login-page',
@@ -14,6 +15,7 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private socialStatsService: SocialStatsService,
   ) { }
 
   public hasError = false;
@@ -51,14 +53,17 @@ export class LoginPageComponent implements OnInit {
   saveUser(user: User, provider: string) {
     this.userService.saveUser(user)
       .subscribe((userData) => {
-        this.saveUserSocialDetails(userData, provider);
+        this.saveUserSocialStats(userData, provider);
       });
   }
 
-  saveUserSocialDetails(userData: User, provider: string) {
-    const socialDetails = {};
-    socialDetails[provider] = userData;
-    this.userService.saveUserSocial(socialDetails)
-      .subscribe(); // TODO: Handle success and error scenarios after social doc changes.
+  saveUserSocialStats(userData, provider: string) {
+    const socialStats = { ...userData, ...{ provider, createdAt: new Date().toISOString() } };
+    this.socialStatsService.createSocialStats(socialStats)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('error in storing stats history');
+        }
+      });
   }
 }
