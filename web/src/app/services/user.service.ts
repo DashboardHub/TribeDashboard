@@ -4,7 +4,6 @@ import { map, catchError } from 'rxjs/operators';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  DocumentData,
 } from 'angularfire2/firestore';
 import { ErrorService } from './error.service';
 import { AuthService } from './auth.service';

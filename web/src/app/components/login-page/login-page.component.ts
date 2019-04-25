@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
-import { UserSocial } from '../../models/userSocial.model';
 import { SocialStatsService } from 'src/app/services/social-stats.service';
 
 @Component({
@@ -19,9 +18,12 @@ export class LoginPageComponent implements OnInit {
   ) { }
 
   public hasError = false;
+  private isPrimary: boolean;
   public errorMessage = '';
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.isPrimary = true;
+  }
 
   showErrorMessage() {
     this.hasError = true;
@@ -29,7 +31,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   loginWithGithub() {
-    this.authService.signInWithGithub()
+    this.authService.signInWithGithub(this.isPrimary)
       .subscribe((user) => {
         if (!user) {
           this.showErrorMessage();
@@ -40,7 +42,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   loginWithTwitter() {
-    this.authService.signInWithTwitter()
+    this.authService.signInWithTwitter(this.isPrimary)
       .subscribe((user) => {
         if (!user) {
           this.showErrorMessage();
