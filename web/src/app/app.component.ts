@@ -46,9 +46,10 @@ export class AppComponent implements OnInit {
           this.createUserSocialDetails(socialDetails);
           return;
         }
-        this.updateUserSocialDetails(response.id, socialDetails);
+        this.updateUserSocialDetails(response.id, { ...socialDetails, ...response });
       });
   }
+
 
   createUserSocialDetails(socialDetails: UserSocial) {
     this.userService.addSocialDoc(socialDetails)

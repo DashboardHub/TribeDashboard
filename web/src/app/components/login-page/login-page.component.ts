@@ -18,12 +18,9 @@ export class LoginPageComponent implements OnInit {
   ) { }
 
   public hasError = false;
-  private isPrimary: boolean;
   public errorMessage = '';
 
-  ngOnInit() {
-    this.isPrimary = true;
-  }
+  ngOnInit() { }
 
   showErrorMessage() {
     this.hasError = true;
@@ -31,7 +28,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   loginWithGithub() {
-    this.authService.signInWithGithub(this.isPrimary)
+    this.authService.signInWithGithub()
       .subscribe((user) => {
         if (!user) {
           this.showErrorMessage();
@@ -42,7 +39,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   loginWithTwitter() {
-    this.authService.signInWithTwitter(this.isPrimary)
+    this.authService.signInWithTwitter()
       .subscribe((user) => {
         if (!user) {
           this.showErrorMessage();
