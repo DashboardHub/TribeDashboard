@@ -55,7 +55,6 @@ export class UserService {
       return response;
     }
     social = { ...response.docs.pop().data(), id: response.docs.pop().id, };
-
     return social;
   }
 
@@ -64,10 +63,16 @@ export class UserService {
     return normalisedResponse;
   }
 
-
-
   updateSocialDoc(id: string, social: UserSocial): Observable<UserSocial> {
     return from(this.userSocial.doc(id).set(social))
+      .pipe(
+        catchError(err => this.errorService.logError(err))
+      );
+  }
+
+  addSocialProvider(userSocial: UserSocial): Observable<UserSocial> {
+    const { id, ...social } = userSocial;
+    return from(this.userSocial.doc(id).update(social))
       .pipe(
         catchError(err => this.errorService.logError(err))
       );

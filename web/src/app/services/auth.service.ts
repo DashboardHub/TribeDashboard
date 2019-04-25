@@ -28,20 +28,20 @@ export class AuthService {
     );
   }
 
-  signInWithGithub(isPrimary: boolean): Observable<User> {
+  signInWithGithub(): Observable<User> {
     return from(this.firebaseAuth.auth.signInWithPopup(
       new firebase.auth.GithubAuthProvider()))
       .pipe(
-        map((user) => this.formatUserResponse({...user, isPrimary}, 'github')),
+        map((user) => this.formatUserResponse(user, 'github')),
         catchError((error) => this.errorService.logError(error))
       );
   }
 
-  signInWithTwitter(isPrimary: boolean): Observable<User> {
+  signInWithTwitter(): Observable<User> {
     return from(this.firebaseAuth.auth
       .signInWithPopup(new firebase.auth.TwitterAuthProvider()))
       .pipe(
-        map((user) => this.formatUserResponse({...user, isPrimary}, 'twitter')),
+        map((user) => this.formatUserResponse(user, 'twitter')),
         catchError((error) => this.errorService.logError(error))
       );
   }
@@ -98,7 +98,6 @@ export class AuthService {
       lastSignInAt: user.metadata.lastSignInTime,
       additionalUserInfo,
       credentials,
-      isPrimary: response.isPrimary
     };
     return normalisedUser;
   }
@@ -131,7 +130,6 @@ export class AuthService {
       lastSignInAt: user.metadata.lastSignInTime,
       additionalUserInfo,
       credentials,
-      isPrimary: response.isPrimary
     };
     return normalisedUser;
   }
