@@ -55,7 +55,7 @@ export class SocialCardsComponent implements OnInit {
       });
   }
 
-  saveLinkUserSocialDetails(userData: any, provider: string) {
+  saveLinkUserSocialDetails(userData: UserSocial, provider: string) {
     const { userId, ...social } = userData;
     const socialDetails = {
       userId
