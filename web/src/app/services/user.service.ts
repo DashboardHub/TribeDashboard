@@ -24,7 +24,7 @@ export class UserService {
     this.user = this.db.collection('user');
   }
 
-  saveUser(user: User): Observable<User> {
+  saveUser(user: User): Observable<UserSocial> {
     return from(this.user.doc(user.uid).set({ user }))
       .pipe(
         map(() => this.addRefID(user)),
