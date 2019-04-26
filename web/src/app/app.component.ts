@@ -24,8 +24,9 @@ export class AppComponent implements OnInit {
     this.userService.getUser()
       .subscribe((user) => {
         if (user) {
-          const userSocial = this.userService.addRefID(user);
-          this.saveUserSocialDetails(userSocial, user.credentials.provider.split('.')[0]);
+          const provider = Object.keys(user);
+          const userSocial = this.userService.addRefID(user, provider[0]);
+          this.saveUserSocialDetails(userSocial, provider[0]);
         }
       });
   }

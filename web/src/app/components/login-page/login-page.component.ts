@@ -50,7 +50,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   saveUser(user: User, provider: string) {
-    this.userService.saveUser(user)
+    this.userService.saveUser(user, provider)
       .subscribe((userData) => {
         this.saveUserSocialStats(userData, provider);
       });
