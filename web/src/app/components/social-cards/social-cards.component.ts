@@ -37,19 +37,19 @@ export class SocialCardsComponent implements OnInit {
   addGithubAccount() {
     this.accountsService.linkWithGithub()
       .subscribe((response) => {
-        this.saveSecondaryUser(response);
+        this.saveSecondaryUser(response, 'github');
       });
   }
 
   addTwitterAccount() {
     this.accountsService.linkWithTwitter()
       .subscribe((response) => {
-        this.saveSecondaryUser(response);
+        this.saveSecondaryUser(response, 'twitter');
       });
   }
 
-  saveSecondaryUser(user: User) {
-    this.userService.saveUser(user)
+  saveSecondaryUser(user: User, provider) {
+    this.userService.saveLinkUser(user, provider)
       .subscribe((response) => {
         this.saveLinkUserSocialDetails(response, 'twitter');
       });
@@ -73,6 +73,5 @@ export class SocialCardsComponent implements OnInit {
             console.log('result', result); // TODO: Will remove in future
           });
       });
-
   }
 }

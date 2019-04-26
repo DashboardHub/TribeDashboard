@@ -90,15 +90,19 @@ export class AuthService {
       profile
     };
 
+
     const normalisedUser = {
-      displayName: user.displayName,
+      github: {
+        displayName: user.displayName,
+        photoUrl: user.photoURL,
+        creationAt: user.metadata.creationTime,
+        lastSignInAt: user.metadata.lastSignInTime,
+        additionalUserInfo,
+        credentials,
+      },
       uid: user.uid,
-      photoUrl: user.photoURL,
-      creationAt: user.metadata.creationTime,
-      lastSignInAt: user.metadata.lastSignInTime,
-      additionalUserInfo,
-      credentials,
     };
+
     return normalisedUser;
   }
 
@@ -123,13 +127,15 @@ export class AuthService {
     };
 
     const normalisedUser = {
-      displayName: user.displayName,
+      twitter: {
+        displayName: user.displayName,
+        photoUrl: user.photoURL,
+        creationAt: user.metadata.creationTime,
+        lastSignInAt: user.metadata.lastSignInTime,
+        additionalUserInfo,
+        credentials,
+      },
       uid: user.uid,
-      photoUrl: user.photoURL,
-      creationAt: user.metadata.creationTime,
-      lastSignInAt: user.metadata.lastSignInTime,
-      additionalUserInfo,
-      credentials,
     };
     return normalisedUser;
   }

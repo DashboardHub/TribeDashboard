@@ -24,10 +24,18 @@ export class UserService {
     this.user = this.db.collection('user');
   }
 
-  saveUser(user: User): Observable<UserSocial> {
-    return from(this.user.doc(user.uid).set({ user }))
+
+  saveUser(user: User, provider): Observable<UserSocial> {
+    return from(this.user.doc(user.uid).set(user))
       .pipe(
-        map(() => this.addRefID(user)),
+        map(() => this.addRefID(user, provider)),
+        catchError((err) => this.errorService.logError(err)),
+      );
+  }
+  saveLinkUser(user: User, provider): Observable<UserSocial> {
+    return from(this.user.doc(user.uid).update(user))
+      .pipe(
+        map(() => this.addRefID(user, provider)),
         catchError((err) => this.errorService.logError(err)),
       );
   }
@@ -58,8 +66,18 @@ export class UserService {
     return social;
   }
 
-  addRefID(user: User): UserSocial {
-    const normalisedResponse = { ...user.additionalUserInfo.profile, userId: user.uid };
+  addRefID(user: User, provider): UserSocial {
+    let normalisedResponse;
+    switch (provider) {
+      case 'github':
+        normalisedResponse = { ...user.github.additionalUserInfo.profile, userId: user.uid };
+        break;
+      case 'twitter':
+        normalisedResponse = { ...user.twitter.additionalUserInfo.profile, userId: user.uid };
+        break;
+      default:
+        break;
+    }
     return normalisedResponse;
   }
 
@@ -90,7 +108,7 @@ export class UserService {
     if (!response) {
       return null;
     }
-    return response.user;
+    return response;
   }
 
   formatUserSocial(response) {
