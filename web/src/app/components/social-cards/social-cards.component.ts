@@ -3,6 +3,7 @@ import { UserSocial } from 'src/app/models/userSocial.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
+import { AccountsService } from 'src/app/services/accounts.service';
 
 @Component({
   selector: 'app-social-cards',
@@ -12,16 +13,13 @@ import { User } from 'src/app/models/user.model';
 export class SocialCardsComponent implements OnInit {
 
   @Input() userSocial: UserSocial;
-  private isPrimary: boolean;
 
   constructor(
-    private authService: AuthService,
     private userService: UserService,
+    private accountsService: AccountsService,
   ) { }
 
-  ngOnInit() {
-    this.isPrimary = false;
-  }
+  ngOnInit() { }
 
   connectAccount(provider: string) {
     switch (provider) {
@@ -37,14 +35,14 @@ export class SocialCardsComponent implements OnInit {
   }
 
   addGithubAccount() {
-    this.authService.signInWithGithub(this.isPrimary)
+    this.accountsService.linkWithGithub()
       .subscribe((response) => {
         this.saveSecondaryUser(response);
       });
   }
 
   addTwitterAccount() {
-    this.authService.signInWithTwitter(this.isPrimary)
+    this.accountsService.linkWithTwitter()
       .subscribe((response) => {
         this.saveSecondaryUser(response);
       });
@@ -53,9 +51,28 @@ export class SocialCardsComponent implements OnInit {
   saveSecondaryUser(user: User) {
     this.userService.saveUser(user)
       .subscribe((response) => {
-        // TODO: store secondary user social and stats after successful storage of user details.
-        console.log('response after saving in firebase', response);
+        this.saveLinkUserSocialDetails(response, 'twitter');
       });
   }
 
+  saveLinkUserSocialDetails(userData: UserSocial, provider: string) {
+    const { userId, ...social } = userData;
+    const socialDetails = {
+      userId
+    };
+    socialDetails[provider] = social;
+    this.userService.getUserSocialDetails(userData.userId)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('Error in verifying if the user is an existing one');
+          return;
+        }
+        const userSocial = { ...socialDetails, ...response };
+        this.userService.addSocialProvider(userSocial)
+          .subscribe((result) => {
+            console.log('result', result); // TODO: Will remove in future
+          });
+      });
+
+  }
 }
