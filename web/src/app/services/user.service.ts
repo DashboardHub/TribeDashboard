@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -9,6 +9,7 @@ import { ErrorService } from './error.service';
 import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 import { UserSocial } from '../models/userSocial.model';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,7 @@ export class UserService {
     private db: AngularFirestore,
     private errorService: ErrorService,
     private authService: AuthService,
+    private router: Router,
   ) {
     this.userSocial = this.db.collection('userSocial');
     this.user = this.db.collection('user');
@@ -42,7 +44,7 @@ export class UserService {
 
   getUser(): Observable<User> {
     return this.authService.user.pipe(
-      map(response => this.formatResponse(response))
+      map(response => this.formatResponse(response)),
     );
   }
 
@@ -113,5 +115,43 @@ export class UserService {
 
   formatUserSocial(response) {
     return response;
+  }
+
+  saveUserSocialDetails(userData: UserSocial, provider: string) {
+    const { userId, ...social } = userData;
+    const socialDetails = {
+      userId
+    };
+    socialDetails[provider] = social;
+    this.getUserSocialDetails(userData.userId)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('Error in verifying if the user is an existing one');
+          return;
+        }
+        if (response.empty) {
+          this.createUserSocialDetails(socialDetails);
+          return;
+        }
+        this.updateUserSocialDetails(response.id, { ...socialDetails, ...response });
+      });
+  }
+
+  createUserSocialDetails(socialDetails: UserSocial) {
+    this.addSocialDoc(socialDetails)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('error in creating social doc');
+          return;
+        }
+        this.router.navigate(['/dashboard']);
+      });
+  }
+
+  updateUserSocialDetails(id: string, socialDetails: UserSocial) {
+    this.updateSocialDoc(id, socialDetails)
+      .subscribe(() => {
+        this.router.navigate(['/dashboard']);
+      });
   }
 }
