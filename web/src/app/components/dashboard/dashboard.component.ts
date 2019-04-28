@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { UserSocial } from 'src/app/models/userSocial.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,10 +17,17 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.isResponseLoading = true;
+    this.route.snapshot.paramMap.keys.length ?
+      this.renderUserDashboardDetails() :
+      this.renderUserDetails();
+  }
+
+  renderUserDetails() {
     this.userService.getUser()
       .subscribe((user) => {
         if (!user) {
@@ -28,6 +36,15 @@ export class DashboardComponent implements OnInit {
         }
         this.user = { ...user };
         this.getUserSocialDetails(this.user.uid);
+      });
+  }
+
+  renderUserDashboardDetails() {
+    const provider = this.route.snapshot.paramMap.get('provider');
+    const displayName = this.route.snapshot.paramMap.get('displayName');
+    this.userService.getUserDashboardDetails(provider, displayName)
+      .subscribe((value) => {
+        this.getUserSocialDetails(value.uid);
       });
   }
 
@@ -43,4 +60,5 @@ export class DashboardComponent implements OnInit {
         this.isResponseLoading = false;
       });
   }
+
 }
