@@ -52,7 +52,19 @@ export class LoginPageComponent implements OnInit {
   saveUser(user: User, provider: string) {
     this.userService.saveUser(user, provider)
       .subscribe((userData) => {
+        this.saveUserSocialDetails();
         this.saveUserSocialStats(userData, provider);
+      });
+  }
+
+  saveUserSocialDetails() {
+    this.userService.getUser()
+      .subscribe((user) => {
+        if (user) {
+          const provider = Object.keys(user);
+          const userSocial = this.userService.addRefID(user, provider[0]);
+          this.userService.saveUserSocialDetails(userSocial, provider[0]);
+        }
       });
   }
 
