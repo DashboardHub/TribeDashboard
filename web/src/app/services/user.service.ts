@@ -56,6 +56,15 @@ export class UserService {
       );
   }
 
+  getUserDashboardDetails(provider: string, userName: string) {
+    return from(this.user.ref.where(`${provider}.credentials.provider`, '==', `${provider}.com`)
+      .where(`${provider}.additionalUserInfo.username`, '==', userName).get())
+      .pipe(
+        map(response => this.getSocialDataFromPayload(response)),
+        catchError(error => this.errorService.logError(error))
+      );
+  }
+
   getSocialDataFromPayload(response): UserSocial | null {
     let social;
     if (!response) {

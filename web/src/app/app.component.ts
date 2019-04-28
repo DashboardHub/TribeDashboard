@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivationEnd } from '@angular/router';
 import { environment } from '../environments/environment';
 import { UserService } from './services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { UserService } from './services/user.service';
 export class AppComponent implements OnInit {
   public title = 'TribeDashboard';
   public version: string;
+  public params = {};
 
   constructor(
     private router: Router,
@@ -20,9 +22,15 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.router.events.subscribe((e) => {
+      if (e instanceof ActivationEnd) {
+        this.params = e.snapshot.params;
+      }
+    });
+
     this.userService.getUser()
       .subscribe((user) => {
-        if (user) {
+        if (user && !Object.keys(this.params).length) {
           this.router.navigate(['/dashboard']);
         }
       });

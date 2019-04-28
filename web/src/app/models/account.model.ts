@@ -4,19 +4,19 @@ export interface Account {
   creationAt: string;
   lastSignInAt: string;
   credentials: {
-    accessToken: string,
-    provider: string,
-    refreshToken?: string,
-    secret?: string,  // Optional field
+    accessToken: string;
+    provider: string;
+    refreshToken?: string;
+    secret?: string;  // Optional field
   };
   additionalUserInfo: {
     profile: {
-      createdAt: string,
-      updatedAt?: string,
-      followers: number,
-      following: number,
-      avatarUrl: string
+      createdAt: string;
+      updatedAt?: string;
+      followers: number;
+      following: number;
+      avatarUrl: string;
     },
-    username: string,
+    username: string;
   };
 }
