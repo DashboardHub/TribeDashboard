@@ -52,7 +52,7 @@ export class UserService {
     return from(this.userSocial.ref.where('userId', '==', userId).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
-        catchError(error => this.errorService.logError(error))
+        catchError(error => this.errorService.logError(error)),
       );
   }
 
@@ -61,7 +61,7 @@ export class UserService {
       .where(`${provider}.additionalUserInfo.username`, '==', userName).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
-        catchError(error => this.errorService.logError(error))
+        catchError(error => this.errorService.logError(error)),
       );
   }
 
@@ -95,7 +95,7 @@ export class UserService {
   updateSocialDoc(id: string, social: UserSocial): Observable<UserSocial> {
     return from(this.userSocial.doc(id).set(social))
       .pipe(
-        catchError(err => this.errorService.logError(err))
+        catchError(err => this.errorService.logError(err)),
       );
   }
 
@@ -103,7 +103,7 @@ export class UserService {
     const { id, ...social } = userSocial;
     return from(this.userSocial.doc(id).update(social))
       .pipe(
-        catchError(err => this.errorService.logError(err))
+        catchError(err => this.errorService.logError(err)),
       );
   }
 
@@ -111,7 +111,7 @@ export class UserService {
     return from(this.userSocial.add(social))
       .pipe(
         map(response => this.formatUserSocial(response)),
-        catchError(err => this.errorService.logError(err))
+        catchError(err => this.errorService.logError(err)),
       );
   }
 

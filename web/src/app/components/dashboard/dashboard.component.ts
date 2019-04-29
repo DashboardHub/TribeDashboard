@@ -3,6 +3,8 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { UserSocial } from 'src/app/models/userSocial.model';
 import { ActivatedRoute } from '@angular/router';
+import { map, catchError } from 'rxjs/operators';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +19,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private errorService: ErrorService
   ) { }
 
   ngOnInit() {
@@ -45,7 +48,11 @@ export class DashboardComponent implements OnInit {
     this.userService.getUserDashboardDetails(provider, displayName)
       .subscribe((value) => {
         this.getUserSocialDetails(value.uid);
-      });
+      },
+        error => {
+          this.errorService.logError(error);
+        }
+      );
   }
 
   getUserSocialDetails(userId: string) {
@@ -58,7 +65,11 @@ export class DashboardComponent implements OnInit {
         }
         this.userSocial = { ...social };
         this.isResponseLoading = false;
-      });
+      },
+        error => {
+          this.errorService.logError(error);
+        }
+      );
   }
 
 }

@@ -3,6 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { SocialStatsService } from 'src/app/services/social-stats.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-page',
@@ -59,12 +60,13 @@ export class LoginPageComponent implements OnInit {
 
   saveUserSocialDetails() {
     this.userService.getUser()
+      .pipe(
+        filter(user => user && Object.keys(user).length !== 0)
+      )
       .subscribe((user) => {
-        if (user) {
-          const provider = Object.keys(user);
-          const userSocial = this.userService.addRefID(user, provider[0]);
-          this.userService.saveUserSocialDetails(userSocial, provider[0]);
-        }
+        const provider = Object.keys(user);
+        const userSocial = this.userService.addRefID(user, provider[0]);
+        this.userService.saveUserSocialDetails(userSocial, provider[0]);
       });
   }
 
