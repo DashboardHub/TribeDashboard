@@ -33,7 +33,7 @@ export class AuthService {
       new firebase.auth.GithubAuthProvider()))
       .pipe(
         map((user) => this.formatUserResponse(user, 'github')),
-        catchError((error) => this.errorService.logError(error))
+        catchError((error) => this.errorService.logError(error)),
       );
   }
 
@@ -42,14 +42,14 @@ export class AuthService {
       .signInWithPopup(new firebase.auth.TwitterAuthProvider()))
       .pipe(
         map((user) => this.formatUserResponse(user, 'twitter')),
-        catchError((error) => this.errorService.logError(error))
+        catchError((error) => this.errorService.logError(error)),
       );
   }
 
   signOutUser(): Observable<null> {
     return from(this.firebaseAuth.auth.signOut())
       .pipe(
-        catchError(err => this.errorService.logError(err))
+        catchError(err => this.errorService.logError(err)),
       );
   }
 

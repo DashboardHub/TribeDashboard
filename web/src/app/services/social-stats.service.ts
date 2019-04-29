@@ -26,7 +26,7 @@ export class SocialStatsService {
     return from(this.socialStatsHistory.add(socialStat))
       .pipe(
         map(res => res),
-        catchError(error => this.errorService.logError(error))
+        catchError(error => this.errorService.logError(error)),
       );
   }
 }
