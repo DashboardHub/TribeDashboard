@@ -48,7 +48,7 @@ export class UserService {
     );
   }
 
-  getUserSocialDetails(userId: string): Observable<UserSocial> {
+  getUserSocialRecord(userId: string): Observable<UserSocial> {
     return from(this.userSocial.ref.where('userId', '==', userId).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
@@ -56,7 +56,7 @@ export class UserService {
       );
   }
 
-  getUserDashboardDetails(provider: string, userName: string) {
+  getUserDashboardRecord(provider: string, userName: string) {
     return from(this.user.ref.where(`${provider}.credentials.provider`, '==', `${provider}.com`)
       .where(`${provider}.additionalUserInfo.username`, '==', userName).get())
       .pipe(
@@ -126,28 +126,28 @@ export class UserService {
     return response;
   }
 
-  saveUserSocialDetails(userData: UserSocial, provider: string) {
+  saveUserSocialRecord(userData: UserSocial, provider: string) {
     const { userId, ...social } = userData;
-    const socialDetails = {
+    const socialRecord = {
       userId
     };
-    socialDetails[provider] = social;
-    this.getUserSocialDetails(userData.userId)
+    socialRecord[provider] = social;
+    this.getUserSocialRecord(userData.userId)
       .subscribe((response) => {
         if (!response) {
-          console.error('Error in verifying if the user is an existing one');
+          console.error('Error in verifying existing user');
           return;
         }
         if (response.empty) {
-          this.createUserSocialDetails(socialDetails);
+          this.createUserSocialRecord(socialRecord);
           return;
         }
-        this.updateUserSocialDetails(response.id, { ...socialDetails, ...response });
+        this.updateUserSocialRecord(response.id, { ...socialRecord, ...response });
       });
   }
 
-  createUserSocialDetails(socialDetails: UserSocial) {
-    this.addSocialDoc(socialDetails)
+  createUserSocialRecord(socialRecord: UserSocial) {
+    this.addSocialDoc(socialRecord)
       .subscribe((response) => {
         if (!response) {
           console.error('error in creating social doc');
@@ -157,10 +157,9 @@ export class UserService {
       });
   }
 
-  updateUserSocialDetails(id: string, socialDetails: UserSocial) {
-    this.updateSocialDoc(id, socialDetails)
-      .subscribe(() => {
-        this.router.navigate(['/dashboard']);
-      });
+  updateUserSocialRecord(id: string, socialRecord: UserSocial) {
+    this.updateSocialDoc(id, socialRecord)
+      .subscribe(() => this.router.navigate(['/dashboard'])
+      );
   }
 }

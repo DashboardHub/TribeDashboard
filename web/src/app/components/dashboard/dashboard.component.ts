@@ -26,38 +26,38 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.isResponseLoading = true;
     this.route.snapshot.paramMap.keys.length ?
-      this.renderUserDashboardDetails() :
-      this.renderUserDetails();
+      this.displayPublicDashboard() :
+      this.displayOwnDashboard();
   }
 
-  renderUserDetails() {
+  displayOwnDashboard() {
     this.userService.getUser()
       .subscribe((user) => {
         if (!user) {
-          console.error('error in fetching user'); // TODO: Handle null user scenario in dashboard UI
+          console.error('Error in fetching user'); // TODO: Handle null user scenario in dashboard UI
           return;
         }
         this.user = { ...user };
-        this.getUserSocialDetails(this.user.uid);
+        this.getUserSocialRecord(this.user.uid);
       });
   }
 
-  renderUserDashboardDetails() {
+  displayPublicDashboard() {
     const provider = this.route.snapshot.paramMap.get('provider');
-    const displayName = this.route.snapshot.paramMap.get('displayName');
-    this.userService.getUserDashboardDetails(provider, displayName)
+    const name = this.route.snapshot.paramMap.get('name');
+    this.userService.getUserDashboardRecord(provider, name)
       .pipe(
-        map(value => this.getUserSocialDetails(value.uid)),
+        map(value => this.getUserSocialRecord(value.uid)),
         catchError(error => this.errorService.logError(error))
       ).subscribe();
   }
 
-  getUserSocialDetails(userId: string) {
-    this.userService.getUserSocialDetails(userId)
+  getUserSocialRecord(userId: string) {
+    this.userService.getUserSocialRecord(userId)
       .subscribe((userSocial) => {
         const { id, ...social } = userSocial;
         if (!userSocial) {
-          console.error('error in fetching user social'); // TODO: Handle null social doc scenario in cards.
+          console.error('Error in fetching user social'); // TODO: Handle null social doc scenario in cards.
           return;
         }
         this.userSocial = { ...social };
