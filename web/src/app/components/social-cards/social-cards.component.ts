@@ -51,23 +51,23 @@ export class SocialCardsComponent implements OnInit {
   saveSecondaryUser(user: User, provider) {
     this.userService.saveLinkUser(user, provider)
       .subscribe((response) => {
-        this.saveLinkUserSocialDetails(response, 'twitter');
+        this.saveLinkUserSocialRecord(response, 'twitter');
       });
   }
 
-  saveLinkUserSocialDetails(userData: UserSocial, provider: string) {
+  saveLinkUserSocialRecord(userData: UserSocial, provider: string) {
     const { userId, ...social } = userData;
-    const socialDetails = {
+    const socialRecord = {
       userId
     };
-    socialDetails[provider] = social;
-    this.userService.getUserSocialDetails(userData.userId)
+    socialRecord[provider] = social;
+    this.userService.getUserSocialRecord(userData.userId)
       .subscribe((response) => {
         if (!response) {
           console.error('Error in verifying if the user is an existing one');
           return;
         }
-        const userSocial = { ...socialDetails, ...response };
+        const userSocial = { ...socialRecord, ...response };
         this.userService.addSocialProvider(userSocial)
           .subscribe((result) => {
             console.log('result', result); // TODO: Will remove in future

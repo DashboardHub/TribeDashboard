@@ -3,7 +3,8 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { SocialStatsService } from 'src/app/services/social-stats.service';
-import { filter } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-login-page',
@@ -16,6 +17,7 @@ export class LoginPageComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private socialStatsService: SocialStatsService,
+    private errorService: ErrorService
   ) { }
 
   public hasError = false;
@@ -53,29 +55,30 @@ export class LoginPageComponent implements OnInit {
   saveUser(user: User, provider: string) {
     this.userService.saveUser(user, provider)
       .subscribe((userData) => {
-        this.saveUserSocialDetails();
+        this.saveUserSocialRecord();
         this.saveUserSocialStats(userData, provider);
       });
   }
 
-  saveUserSocialDetails() {
+  saveUserSocialRecord() {
     this.userService.getUser()
       .pipe(
-        filter(user => user && Object.keys(user).length !== 0)
+        map(value => this.addProviderToUserSocial(value)),
+        catchError(error => this.errorService.logError(error))
       )
-      .subscribe((user) => {
-        const provider = Object.keys(user);
-        const userSocial = this.userService.addRefID(user, provider[0]);
-        this.userService.saveUserSocialDetails(userSocial, provider[0]);
-      });
+      .subscribe();
   }
-
+  addProviderToUserSocial(user) {
+    const provider = Object.keys(user)[0];
+    const userSocial = this.userService.addRefID(user, provider);
+    this.userService.saveUserSocialRecord(userSocial, provider);
+  }
   saveUserSocialStats(userData, provider: string) {
     const socialStats = { ...userData, ...{ provider, createdAt: new Date().toISOString() } };
     this.socialStatsService.createSocialStats(socialStats)
       .subscribe((response) => {
         if (!response) {
-          console.error('error in storing stats history');
+          console.error('Error in storing stats history');
         }
       });
   }
