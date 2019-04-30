@@ -46,13 +46,10 @@ export class DashboardComponent implements OnInit {
     const provider = this.route.snapshot.paramMap.get('provider');
     const displayName = this.route.snapshot.paramMap.get('displayName');
     this.userService.getUserDashboardDetails(provider, displayName)
-      .subscribe((value) => {
-        this.getUserSocialDetails(value.uid);
-      },
-        error => {
-          this.errorService.logError(error);
-        }
-      );
+      .pipe(
+        map(value => this.getUserSocialDetails(value.uid)),
+        catchError(error => this.errorService.logError(error))
+      ).subscribe();
   }
 
   getUserSocialDetails(userId: string) {
@@ -66,9 +63,7 @@ export class DashboardComponent implements OnInit {
         this.userSocial = { ...social };
         this.isResponseLoading = false;
       },
-        error => {
-          this.errorService.logError(error);
-        }
+        error => this.errorService.logError(error)
       );
   }
 
