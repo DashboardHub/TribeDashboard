@@ -3,8 +3,9 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { UserSocial } from 'src/app/models/userSocial.model';
 import { ActivatedRoute } from '@angular/router';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, mergeMap, tap } from 'rxjs/operators';
 import { ErrorService } from 'src/app/services/error.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,13 +33,19 @@ export class DashboardComponent implements OnInit {
 
   displayOwnDashboard() {
     this.userService.getUser()
-      .subscribe((user) => {
-        if (!user) {
-          console.error('Error in fetching user'); // TODO: Handle null user scenario in dashboard UI
+      .pipe(
+        tap(user => {
+          this.user = { ...user };
+        }),
+        mergeMap((user: User) => this.getUserSocialRecord(user.uid))
+      )
+      .subscribe((userSocial) => {
+        if (!userSocial) {
+          console.error('Error in fetching user social'); // TODO: Handle null user scenario in dashboard UI
           return;
         }
-        this.user = { ...user };
-        this.getUserSocialRecord(this.user.uid);
+        this.userSocial = { ...userSocial };
+        this.isResponseLoading = false;
       });
   }
 
@@ -47,14 +54,9 @@ export class DashboardComponent implements OnInit {
     const name = this.route.snapshot.paramMap.get('name');
     this.userService.getUserDashboardRecord(provider, name)
       .pipe(
-        map(value => this.getUserSocialRecord(value.uid)),
+        mergeMap(value => this.getUserSocialRecord(value.uid)),
         catchError(error => this.errorService.logError(error))
-      ).subscribe();
-  }
-
-  getUserSocialRecord(userId: string) {
-    this.userService.getUserSocialRecord(userId)
-      .subscribe((userSocial) => {
+      ).subscribe(userSocial => {
         const { id, ...social } = userSocial;
         if (!userSocial) {
           console.error('Error in fetching user social'); // TODO: Handle null social doc scenario in cards.
@@ -65,6 +67,10 @@ export class DashboardComponent implements OnInit {
       },
         error => this.errorService.logError(error)
       );
+  }
+
+  getUserSocialRecord(userId: string): Observable<UserSocial> {
+    return this.userService.getUserSocialRecord(userId);
   }
 
 }
