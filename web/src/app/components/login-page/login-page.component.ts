@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { SocialStatsService } from 'src/app/services/social-stats.service';
-import { map, catchError } from 'rxjs/operators';
+import { map, mergeAll } from 'rxjs/operators';
 import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
@@ -54,32 +54,29 @@ export class LoginPageComponent implements OnInit {
 
   saveUser(user: User, provider: string) {
     this.userService.saveUser(user, provider)
-      .subscribe((userData) => {
-        this.saveUserSocialRecord();
-        this.saveUserSocialStats(userData, provider);
-      });
+      .pipe(
+        map(value => this.saveUserSocialStats(value, provider)),
+        map(() => this.saveUserSocialRecord()),
+        mergeAll()
+      )
+      .subscribe((res) => {
+        this.addProviderToUserSocial(res);
+      }, error => this.errorService.logError(error));
   }
 
+
   saveUserSocialRecord() {
-    this.userService.getUser()
-      .pipe(
-        map(value => this.addProviderToUserSocial(value)),
-        catchError(error => this.errorService.logError(error))
-      )
-      .subscribe();
+    return this.userService.getUser();
   }
+
   addProviderToUserSocial(user) {
     const provider = Object.keys(user)[0];
     const userSocial = this.userService.addRefID(user, provider);
     this.userService.saveUserSocialRecord(userSocial, provider);
   }
+
   saveUserSocialStats(userData, provider: string) {
     const socialStats = { ...userData, ...{ provider, createdAt: new Date().toISOString() } };
-    this.socialStatsService.createSocialStats(socialStats)
-      .subscribe((response) => {
-        if (!response) {
-          console.error('Error in storing stats history');
-        }
-      });
+    return this.socialStatsService.createSocialStats(socialStats);
   }
 }
