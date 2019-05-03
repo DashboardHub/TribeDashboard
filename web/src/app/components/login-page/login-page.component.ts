@@ -5,6 +5,8 @@ import { User } from '../../models/user.model';
 import { SocialStatsService } from 'src/app/services/social-stats.service';
 import { map, mergeAll } from 'rxjs/operators';
 import { ErrorService } from 'src/app/services/error.service';
+import { Observable } from 'rxjs';
+import { SocialStatsHistory } from 'src/app/models/socialStatsHistory';
 
 @Component({
   selector: 'app-login-page',
@@ -55,17 +57,17 @@ export class LoginPageComponent implements OnInit {
   saveUser(user: User, provider: string) {
     this.userService.saveUser(user, provider)
       .pipe(
-        map(value => this.saveUserSocialStats(value, provider)),
-        map(() => this.saveUserSocialRecord()),
+        map(userStats => this.saveUserSocialStats(userStats, provider)),
+        map(() => this.getUser()),
         mergeAll()
       )
-      .subscribe((res) => {
-        this.addProviderToUserSocial(res);
-      }, error => this.errorService.logError(error));
+      .subscribe(
+        userSocial => this.addProviderToUserSocial(userSocial),
+        error => this.errorService.logError(error));
   }
 
 
-  saveUserSocialRecord() {
+  getUser(): Observable<User> {
     return this.userService.getUser();
   }
 
@@ -75,8 +77,8 @@ export class LoginPageComponent implements OnInit {
     this.userService.saveUserSocialRecord(userSocial, provider);
   }
 
-  saveUserSocialStats(userData, provider: string) {
-    const socialStats = { ...userData, ...{ provider, createdAt: new Date().toISOString() } };
+  saveUserSocialStats(userStats, provider: string): Observable<SocialStatsHistory> {
+    const socialStats = { ...userStats, ...{ provider, createdAt: new Date().toISOString() } };
     return this.socialStatsService.createSocialStats(socialStats);
   }
 }
