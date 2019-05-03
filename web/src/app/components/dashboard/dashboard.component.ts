@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
     const name = this.route.snapshot.paramMap.get('name');
     this.userService.getUserDashboardRecord(provider, name)
       .pipe(
-        mergeMap(value => this.getUserSocialRecord(value.uid)),
+        mergeMap(value => this.getUserSocialRecord(value.userId)),
         catchError(error => this.errorService.logError(error))
       ).subscribe(userSocial => {
         const { id, ...social } = userSocial;
