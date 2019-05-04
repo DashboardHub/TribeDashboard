@@ -49,7 +49,7 @@ export class AuthService {
   signOutUser(): Observable<null> {
     return from(this.firebaseAuth.auth.signOut())
       .pipe(
-        catchError(err => this.errorService.logError(err)),
+        catchError(error => this.errorService.logError(error)),
       );
   }
 

@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
       this.displayOwnDashboard();
   }
 
-  displayOwnDashboard() {
+  displayOwnDashboard(): void {
     this.userService.getUser()
       .pipe(
         tap(user => {
@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  displayPublicDashboard() {
+  displayPublicDashboard(): void {
     const provider = this.route.snapshot.paramMap.get('provider');
     const name = this.route.snapshot.paramMap.get('name');
     this.userService.getUserDashboardRecord(provider, name)
