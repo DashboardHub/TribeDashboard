@@ -3,6 +3,10 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { SocialStatsService } from 'src/app/services/social-stats.service';
+import { map, mergeAll } from 'rxjs/operators';
+import { ErrorService } from 'src/app/services/error.service';
+import { Observable } from 'rxjs';
+import { SocialStatsHistory } from 'src/app/models/socialStatsHistory';
 
 @Component({
   selector: 'app-login-page',
@@ -15,6 +19,7 @@ export class LoginPageComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private socialStatsService: SocialStatsService,
+    private errorService: ErrorService
   ) { }
 
   public hasError = false;
@@ -22,12 +27,12 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() { }
 
-  showErrorMessage() {
+  showErrorMessage(): void {
     this.hasError = true;
     this.errorMessage = 'Something went wrong. Please try again';
   }
 
-  loginWithGithub() {
+  loginWithGithub(): void {
     this.authService.signInWithGithub()
       .subscribe((user) => {
         if (!user) {
@@ -38,7 +43,7 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
-  loginWithTwitter() {
+  loginWithTwitter(): void {
     this.authService.signInWithTwitter()
       .subscribe((user) => {
         if (!user) {
@@ -49,20 +54,31 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
-  saveUser(user: User, provider: string) {
+  saveUser(user: User, provider: string): void {
     this.userService.saveUser(user, provider)
-      .subscribe((userData) => {
-        this.saveUserSocialStats(userData, provider);
-      });
+      .pipe(
+        map(userStats => this.saveUserSocialStats(userStats, provider)),
+        map(() => this.getUser()),
+        mergeAll()
+      )
+      .subscribe(
+        userSocial => this.addProviderToUserSocial(userSocial),
+        error => this.errorService.logError(error));
   }
 
-  saveUserSocialStats(userData, provider: string) {
-    const socialStats = { ...userData, ...{ provider, createdAt: new Date().toISOString() } };
-    this.socialStatsService.createSocialStats(socialStats)
-      .subscribe((response) => {
-        if (!response) {
-          console.error('error in storing stats history');
-        }
-      });
+
+  getUser(): Observable<User> {
+    return this.userService.getUser();
+  }
+
+  addProviderToUserSocial(user): void {
+    const provider = Object.keys(user)[0];
+    const userSocial = this.userService.addRefID(user, provider);
+    this.userService.saveUserSocialRecord(userSocial, provider);
+  }
+
+  saveUserSocialStats(userStats, provider: string): Observable<SocialStatsHistory> {
+    const socialStats = { ...userStats, ...{ provider, createdAt: new Date().toISOString() } };
+    return this.socialStatsService.createSocialStats(socialStats);
   }
 }

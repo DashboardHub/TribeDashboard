@@ -1,4 +1,5 @@
 import { Account } from './account.model';
+
 export interface User {
   github?: Account;
   twitter?: Account;

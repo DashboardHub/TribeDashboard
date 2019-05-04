@@ -32,7 +32,7 @@ export class AccountsService {
     return from(this.firebaseAuth.auth.currentUser.linkWithPopup(provider))
       .pipe(
         map((user) => this.authService.formatUserResponse(user, providerLabel)),
-        catchError((error) => this.errorService.logError(error))
+        catchError((error) => this.errorService.logError(error)),
       );
   }
 }

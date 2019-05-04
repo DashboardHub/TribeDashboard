@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -9,6 +9,7 @@ import { ErrorService } from './error.service';
 import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 import { UserSocial } from '../models/userSocial.model';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,7 @@ export class UserService {
     private db: AngularFirestore,
     private errorService: ErrorService,
     private authService: AuthService,
+    private router: Router,
   ) {
     this.userSocial = this.db.collection('userSocial');
     this.user = this.db.collection('user');
@@ -42,15 +44,24 @@ export class UserService {
 
   getUser(): Observable<User> {
     return this.authService.user.pipe(
-      map(response => this.formatResponse(response))
+      map(response => this.formatResponse(response)),
     );
   }
 
-  getUserSocialDetails(userId: string): Observable<UserSocial> {
+  getUserSocialRecord(userId: string): Observable<UserSocial> {
     return from(this.userSocial.ref.where('userId', '==', userId).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
-        catchError(error => this.errorService.logError(error))
+        catchError(error => this.errorService.logError(error)),
+      );
+  }
+
+  getUserDashboardRecord(provider: string, userName: string): Observable<UserSocial> {
+    return from(this.user.ref.where(`${provider}.credentials.provider`, '==', `${provider}.com`)
+      .where(`${provider}.additionalUserInfo.username`, '==', userName).get())
+      .pipe(
+        map(response => this.getSocialDataFromPayload(response)),
+        catchError(error => this.errorService.logError(error)),
       );
   }
 
@@ -84,7 +95,7 @@ export class UserService {
   updateSocialDoc(id: string, social: UserSocial): Observable<UserSocial> {
     return from(this.userSocial.doc(id).set(social))
       .pipe(
-        catchError(err => this.errorService.logError(err))
+        catchError(err => this.errorService.logError(err)),
       );
   }
 
@@ -92,7 +103,7 @@ export class UserService {
     const { id, ...social } = userSocial;
     return from(this.userSocial.doc(id).update(social))
       .pipe(
-        catchError(err => this.errorService.logError(err))
+        catchError(err => this.errorService.logError(err)),
       );
   }
 
@@ -100,7 +111,7 @@ export class UserService {
     return from(this.userSocial.add(social))
       .pipe(
         map(response => this.formatUserSocial(response)),
-        catchError(err => this.errorService.logError(err))
+        catchError(err => this.errorService.logError(err)),
       );
   }
 
@@ -111,7 +122,44 @@ export class UserService {
     return response;
   }
 
-  formatUserSocial(response) {
+  formatUserSocial(response): UserSocial {
     return response;
+  }
+
+  saveUserSocialRecord(userData: UserSocial, provider: string): void {
+    const { userId, ...social } = userData;
+    const socialRecord = {
+      userId
+    };
+    socialRecord[provider] = social;
+    this.getUserSocialRecord(userData.userId)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('Error in verifying existing user');
+          return;
+        }
+        if (response.empty) {
+          this.createUserSocialRecord(socialRecord);
+          return;
+        }
+        this.updateUserSocialRecord(response.id, { ...socialRecord, ...response });
+      });
+  }
+
+  createUserSocialRecord(socialRecord: UserSocial): void {
+    this.addSocialDoc(socialRecord)
+      .subscribe((response) => {
+        if (!response) {
+          console.error('error in creating social doc');
+          return;
+        }
+        this.router.navigate(['/dashboard']);
+      });
+  }
+
+  updateUserSocialRecord(id: string, socialRecord: UserSocial): void {
+    this.updateSocialDoc(id, socialRecord)
+      .subscribe(() => this.router.navigate(['/dashboard'])
+      );
   }
 }

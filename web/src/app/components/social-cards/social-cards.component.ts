@@ -21,7 +21,7 @@ export class SocialCardsComponent implements OnInit {
 
   ngOnInit() { }
 
-  connectAccount(provider: string) {
+  connectAccount(provider: string): void {
     switch (provider) {
       case 'github':
         this.addGithubAccount();
@@ -34,40 +34,40 @@ export class SocialCardsComponent implements OnInit {
     }
   }
 
-  addGithubAccount() {
+  addGithubAccount(): void {
     this.accountsService.linkWithGithub()
       .subscribe((response) => {
         this.saveSecondaryUser(response, 'github');
       });
   }
 
-  addTwitterAccount() {
+  addTwitterAccount(): void {
     this.accountsService.linkWithTwitter()
       .subscribe((response) => {
         this.saveSecondaryUser(response, 'twitter');
       });
   }
 
-  saveSecondaryUser(user: User, provider) {
+  saveSecondaryUser(user: User, provider): void {
     this.userService.saveLinkUser(user, provider)
       .subscribe((response) => {
-        this.saveLinkUserSocialDetails(response, 'twitter');
+        this.saveLinkUserSocialRecord(response, 'twitter');
       });
   }
 
-  saveLinkUserSocialDetails(userData: UserSocial, provider: string) {
+  saveLinkUserSocialRecord(userData: UserSocial, provider: string): void {
     const { userId, ...social } = userData;
-    const socialDetails = {
+    const socialRecord = {
       userId
     };
-    socialDetails[provider] = social;
-    this.userService.getUserSocialDetails(userData.userId)
+    socialRecord[provider] = social;
+    this.userService.getUserSocialRecord(userData.userId)
       .subscribe((response) => {
         if (!response) {
           console.error('Error in verifying if the user is an existing one');
           return;
         }
-        const userSocial = { ...socialDetails, ...response };
+        const userSocial = { ...socialRecord, ...response };
         this.userService.addSocialProvider(userSocial)
           .subscribe((result) => {
             console.log('result', result); // TODO: Will remove in future
