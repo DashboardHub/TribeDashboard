@@ -17,12 +17,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  logout() {
+  logout(): void {
     this.authService.signOutUser()
       .subscribe(() => this.navigateTologin());
   }
 
-  navigateTologin() {
+  navigateTologin(): void {
     this.router.navigate(['/login']);
   }
 }

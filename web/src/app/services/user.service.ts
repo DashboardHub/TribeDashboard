@@ -122,11 +122,11 @@ export class UserService {
     return response;
   }
 
-  formatUserSocial(response) {
+  formatUserSocial(response): UserSocial {
     return response;
   }
 
-  saveUserSocialRecord(userData: UserSocial, provider: string) {
+  saveUserSocialRecord(userData: UserSocial, provider: string): void {
     const { userId, ...social } = userData;
     const socialRecord = {
       userId
@@ -146,7 +146,7 @@ export class UserService {
       });
   }
 
-  createUserSocialRecord(socialRecord: UserSocial) {
+  createUserSocialRecord(socialRecord: UserSocial): void {
     this.addSocialDoc(socialRecord)
       .subscribe((response) => {
         if (!response) {
@@ -157,7 +157,7 @@ export class UserService {
       });
   }
 
-  updateUserSocialRecord(id: string, socialRecord: UserSocial) {
+  updateUserSocialRecord(id: string, socialRecord: UserSocial): void {
     this.updateSocialDoc(id, socialRecord)
       .subscribe(() => this.router.navigate(['/dashboard'])
       );

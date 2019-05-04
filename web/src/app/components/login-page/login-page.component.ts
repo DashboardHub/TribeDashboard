@@ -27,12 +27,12 @@ export class LoginPageComponent implements OnInit {
 
   ngOnInit() { }
 
-  showErrorMessage() {
+  showErrorMessage(): void {
     this.hasError = true;
     this.errorMessage = 'Something went wrong. Please try again';
   }
 
-  loginWithGithub() {
+  loginWithGithub(): void {
     this.authService.signInWithGithub()
       .subscribe((user) => {
         if (!user) {
@@ -43,7 +43,7 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
-  loginWithTwitter() {
+  loginWithTwitter(): void {
     this.authService.signInWithTwitter()
       .subscribe((user) => {
         if (!user) {
@@ -54,7 +54,7 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
-  saveUser(user: User, provider: string) {
+  saveUser(user: User, provider: string): void {
     this.userService.saveUser(user, provider)
       .pipe(
         map(userStats => this.saveUserSocialStats(userStats, provider)),
@@ -71,7 +71,7 @@ export class LoginPageComponent implements OnInit {
     return this.userService.getUser();
   }
 
-  addProviderToUserSocial(user) {
+  addProviderToUserSocial(user): void {
     const provider = Object.keys(user)[0];
     const userSocial = this.userService.addRefID(user, provider);
     this.userService.saveUserSocialRecord(userSocial, provider);
