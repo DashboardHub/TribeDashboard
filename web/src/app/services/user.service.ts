@@ -48,7 +48,7 @@ export class UserService {
     );
   }
 
-  getUserSocialRecord(userId: string) {
+  getUserSocialRecord(userId: string): Observable<UserSocial> {
     return from(this.userSocial.ref.where('userId', '==', userId).get())
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
