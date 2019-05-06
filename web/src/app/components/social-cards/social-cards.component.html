@@ -15,7 +15,8 @@
     </mat-card-content>
     <mat-card-content *ngIf="!userSocial.github">
       <mat-card-title>Connect github to see your statistics</mat-card-title>
-      <button mat-flat-button *ngIf="userSocial" (click)="connectAccount('github')" class="github">Connect to github</button>
+      <button mat-flat-button *ngIf="!userSocial.public" (click)="connectAccount('github')" class="github">Connect to
+        github</button>
     </mat-card-content>
   </mat-card>
   <mat-card fxFlex="25">
@@ -34,7 +35,8 @@
     </mat-card-content>
     <mat-card-content *ngIf="!userSocial.twitter">
       <mat-card-title>Connect twitter to see your statistics</mat-card-title>
-      <button mat-flat-button class="twitter" (click)="connectAccount('twitter')">Connect to twitter</button>
+      <button mat-flat-button class="twitter" *ngIf="!userSocial.public" (click)="connectAccount('twitter')">Connect to
+        twitter</button>
       <div fxLayout fxLayoutAlign="end end">
         <mat-icon svgIcon="twitter" class="twitter-icon"></mat-icon>
       </div>
@@ -56,7 +58,8 @@
     </mat-card-content>
     <mat-card-content *ngIf="!userSocial.youtube">
       <mat-card-title>Connect youtube to see your statistics</mat-card-title>
-      <button mat-flat-button class="youtube" (click)="connectAccount('youtube')">Connect to youtube</button>
+      <button mat-flat-button class="youtube" *ngIf="!userSocial.public" (click)="connectAccount('youtube')">Connect to
+        youtube</button>
       <div fxLayout fxLayoutAlign="end end">
         <mat-icon svgIcon="youtube-fill" class="youtube-icon"></mat-icon>
       </div>
@@ -80,7 +83,8 @@
     </mat-card-content>
     <mat-card-content *ngIf="!userSocial.instagram">
       <mat-card-title>Connect instagram to see your statistics</mat-card-title>
-      <button mat-flat-button class="instagram" (click)="connectAccount('instagram')">Connect to instagram</button>
+      <button mat-flat-button class="instagram" *ngIf="!userSocial.public" (click)="connectAccount('instagram')">Connect
+        to instagram</button>
       <div fxLayout fxLayoutAlign="end end">
         <mat-icon svgIcon="instagram"></mat-icon>
       </div>
