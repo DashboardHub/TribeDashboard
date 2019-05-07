@@ -4,6 +4,9 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { AccountsService } from 'src/app/services/accounts.service';
 import { Router } from '@angular/router';
+import { PROVIDERS } from '../../../constant';
+
+
 @Component({
   selector: 'app-social-cards',
   templateUrl: './social-cards.component.html',
@@ -24,10 +27,10 @@ export class SocialCardsComponent implements OnInit {
 
   connectAccount(provider: string): void {
     switch (provider) {
-      case 'github':
+      case PROVIDERS.GITHUB:
         this.addGithubAccount();
         break;
-      case 'twitter':
+      case PROVIDERS.TWITTER:
         this.addTwitterAccount();
         break;
       default:

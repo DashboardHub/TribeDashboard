@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 import { UserSocial } from '../models/userSocial.model';
 import { Router } from '@angular/router';
+import { PROVIDERS } from '../../constant';
 
 @Injectable()
 export class UserService {
@@ -37,10 +38,10 @@ export class UserService {
   removeLinkUser(id: string, provider: string): Observable<null> {
     let user;
     switch (provider) {
-      case 'github':
+      case PROVIDERS.GITHUB:
         user = { github: null };
         break;
-      case 'twitter':
+      case PROVIDERS.TWITTER:
         user = { twitter: null };
         break;
       default:
@@ -106,10 +107,10 @@ export class UserService {
   addRefID(user: User, provider): UserSocial {
     let normalisedResponse;
     switch (provider) {
-      case 'github':
+      case PROVIDERS.GITHUB:
         normalisedResponse = { ...user.github.additionalUserInfo.profile, userId: user.uid };
         break;
-      case 'twitter':
+      case PROVIDERS.TWITTER:
         normalisedResponse = { ...user.twitter.additionalUserInfo.profile, userId: user.uid };
         break;
       default:
