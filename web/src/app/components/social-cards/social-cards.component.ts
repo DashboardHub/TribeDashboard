@@ -51,8 +51,8 @@ export class SocialCardsComponent implements OnInit {
 
   disconnectAccount(provider: string): void {
     this.accountsService.disconnectAccount(provider)
-      .subscribe((value) => {
-        if (value) {
+      .subscribe((isConnected) => {
+        if (isConnected) {
           this.linkAccountRemoved.emit('reload');
           return;
         }
