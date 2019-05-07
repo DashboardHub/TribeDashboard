@@ -26,6 +26,32 @@ export class UserService {
     this.user = this.db.collection('user');
   }
 
+  removeUser(id: string): Observable<null> {
+    return from(this.userSocial.doc(id).delete())
+      .pipe(
+        map(() => this.user.doc(id).delete()),
+        catchError((err) => this.errorService.logError(err))
+      );
+  }
+
+  removeLinkUser(id: string, provider: string): Observable<null> {
+    let user;
+    switch (provider) {
+      case 'github':
+        user = { github: null };
+        break;
+      case 'twitter':
+        user = { twitter: null };
+        break;
+      default:
+        break;
+    }
+    return from(this.userSocial.doc(id).update(user))
+      .pipe(
+        map(() => this.user.doc(id).update(user)),
+        catchError((err) => this.errorService.logError(err))
+      );
+  }
 
   saveUser(user: User, provider): Observable<UserSocial> {
     return from(this.user.doc(user.uid).set(user))

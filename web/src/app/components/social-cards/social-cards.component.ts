@@ -1,10 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserSocial } from 'src/app/models/userSocial.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { AccountsService } from 'src/app/services/accounts.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-social-cards',
   templateUrl: './social-cards.component.html',
@@ -13,10 +12,12 @@ import { AccountsService } from 'src/app/services/accounts.service';
 export class SocialCardsComponent implements OnInit {
 
   @Input() userSocial: UserSocial;
+  @Output() linkAccountRemoved = new EventEmitter();
 
   constructor(
     private userService: UserService,
     private accountsService: AccountsService,
+    private router: Router,
   ) { }
 
   ngOnInit() { }
@@ -48,6 +49,17 @@ export class SocialCardsComponent implements OnInit {
       });
   }
 
+  disconnectAccount(provider: string): void {
+    this.accountsService.disconnectAccount(provider)
+      .subscribe((value) => {
+        if (value) {
+          this.linkAccountRemoved.emit('reload');
+          return;
+        }
+        this.router.navigate(['/login']);
+      });
+  }
+
   saveSecondaryUser(user: User, provider): void {
     this.userService.saveLinkUser(user, provider)
       .subscribe((response) => {
@@ -67,7 +79,7 @@ export class SocialCardsComponent implements OnInit {
           console.error('Error in verifying if the user is an existing one');
           return;
         }
-        const userSocial = { ...socialRecord, ...response };
+        const userSocial = { ...response, ...socialRecord };
         this.userService.addSocialProvider(userSocial)
           .subscribe((result) => {
             console.log('result', result); // TODO: Will remove in future

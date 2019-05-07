@@ -31,6 +31,11 @@ export class DashboardComponent implements OnInit {
       this.displayOwnDashboard();
   }
 
+  reload(): void {
+    this.isResponseLoading = true;
+    this.displayOwnDashboard();
+  }
+
   displayOwnDashboard(): void {
     this.userService.getUser()
       .pipe(
