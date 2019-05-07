@@ -78,7 +78,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   saveUserSocialStats(userStats, provider: string): Observable<SocialStatsHistory> {
-    const socialStats = { ...userStats, ...{ provider, createdAt: new Date().toISOString() } };
+    const socialStats = { ...userStats, provider, createdAt: new Date().toISOString() };
     return this.socialStatsService.createSocialStats(socialStats);
   }
 }

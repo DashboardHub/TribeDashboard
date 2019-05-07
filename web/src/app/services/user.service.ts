@@ -56,7 +56,7 @@ export class UserService {
       );
   }
 
-  getUserDashboardRecord(provider: string, userName: string): Observable<UserSocial> {
+  getUserDashboardRecord(provider: string, userName: string): Observable<User> {
     return from(this.user.ref.where(`${provider}.credentials.provider`, '==', `${provider}.com`)
       .where(`${provider}.additionalUserInfo.username`, '==', userName).get())
       .pipe(
@@ -108,7 +108,7 @@ export class UserService {
   }
 
   addSocialDoc(social: UserSocial): Observable<UserSocial> {
-    return from(this.userSocial.add(social))
+    return from(this.userSocial.doc(social.userId).set(social))
       .pipe(
         map(response => this.formatUserSocial(response)),
         catchError(err => this.errorService.logError(err)),

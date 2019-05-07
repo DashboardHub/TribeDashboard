@@ -34,9 +34,7 @@ export class DashboardComponent implements OnInit {
   displayOwnDashboard(): void {
     this.userService.getUser()
       .pipe(
-        tap(user => {
-          this.user = { ...user };
-        }),
+        tap(user => this.user = { ...user }),
         mergeMap((user: User) => this.getUserSocialRecord(user.uid))
       )
       .subscribe((userSocial) => {
@@ -54,7 +52,7 @@ export class DashboardComponent implements OnInit {
     const name = this.route.snapshot.paramMap.get('name');
     this.userService.getUserDashboardRecord(provider, name)
       .pipe(
-        mergeMap(value => this.getUserSocialRecord(value.userId)),
+        mergeMap(value => this.getUserSocialRecord(value.uid)),
         catchError(error => this.errorService.logError(error))
       ).subscribe(userSocial => {
         const { id, ...social } = userSocial;
@@ -62,7 +60,7 @@ export class DashboardComponent implements OnInit {
           console.error('Error in fetching user social'); // TODO: Handle null social doc scenario in cards.
           return;
         }
-        this.userSocial = { ...social };
+        this.userSocial = { ...social, public: true };
         this.isResponseLoading = false;
       },
         error => this.errorService.logError(error)
