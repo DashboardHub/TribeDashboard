@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UserSocial } from 'src/app/models/userSocial.model';
-import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { AccountsService } from 'src/app/services/accounts.service';
+import { Router } from '@angular/router';
+import { PROVIDERS } from '../../../constant';
+
 
 @Component({
   selector: 'app-social-cards',
@@ -13,20 +15,22 @@ import { AccountsService } from 'src/app/services/accounts.service';
 export class SocialCardsComponent implements OnInit {
 
   @Input() userSocial: UserSocial;
+  @Output() linkAccountRemoved = new EventEmitter();
 
   constructor(
     private userService: UserService,
     private accountsService: AccountsService,
+    private router: Router,
   ) { }
 
   ngOnInit() { }
 
   connectAccount(provider: string): void {
     switch (provider) {
-      case 'github':
+      case PROVIDERS.GITHUB:
         this.addGithubAccount();
         break;
-      case 'twitter':
+      case PROVIDERS.TWITTER:
         this.addTwitterAccount();
         break;
       default:
@@ -45,6 +49,17 @@ export class SocialCardsComponent implements OnInit {
     this.accountsService.linkWithTwitter()
       .subscribe((response) => {
         this.saveSecondaryUser(response, 'twitter');
+      });
+  }
+
+  disconnectAccount(provider: string): void {
+    this.accountsService.disconnectAccount(provider)
+      .subscribe((isConnected) => {
+        if (isConnected) {
+          this.linkAccountRemoved.emit('reload');
+          return;
+        }
+        this.router.navigate(['/login']);
       });
   }
 
@@ -67,7 +82,7 @@ export class SocialCardsComponent implements OnInit {
           console.error('Error in verifying if the user is an existing one');
           return;
         }
-        const userSocial = { ...socialRecord, ...response };
+        const userSocial = { ...response, ...socialRecord };
         this.userService.addSocialProvider(userSocial)
           .subscribe((result) => {
             console.log('result', result); // TODO: Will remove in future

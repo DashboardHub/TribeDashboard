@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 import { User } from '../models/user.model';
 import { UserSocial } from '../models/userSocial.model';
 import { Router } from '@angular/router';
+import { PROVIDERS } from '../../constant';
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,32 @@ export class UserService {
     this.user = this.db.collection('user');
   }
 
+  removeUser(id: string): Observable<null> {
+    return from(this.userSocial.doc(id).delete())
+      .pipe(
+        map(() => this.user.doc(id).delete()),
+        catchError((err) => this.errorService.logError(err))
+      );
+  }
+
+  removeLinkUser(id: string, provider: string): Observable<null> {
+    let user;
+    switch (provider) {
+      case PROVIDERS.GITHUB:
+        user = { github: null };
+        break;
+      case PROVIDERS.TWITTER:
+        user = { twitter: null };
+        break;
+      default:
+        break;
+    }
+    return from(this.userSocial.doc(id).update(user))
+      .pipe(
+        map(() => this.user.doc(id).update(user)),
+        catchError((err) => this.errorService.logError(err))
+      );
+  }
 
   saveUser(user: User, provider): Observable<UserSocial> {
     return from(this.user.doc(user.uid).set(user))
@@ -80,10 +107,10 @@ export class UserService {
   addRefID(user: User, provider): UserSocial {
     let normalisedResponse;
     switch (provider) {
-      case 'github':
+      case PROVIDERS.GITHUB:
         normalisedResponse = { ...user.github.additionalUserInfo.profile, userId: user.uid };
         break;
-      case 'twitter':
+      case PROVIDERS.TWITTER:
         normalisedResponse = { ...user.twitter.additionalUserInfo.profile, userId: user.uid };
         break;
       default:

@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore } from 'angularfire2/firestore';
+import {
+  AngularFirestore,
+} from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 import { Observable, from, of } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
 import { ErrorService } from './error.service';
 import { User } from '../models/user.model';
+import { PROVIDERS } from '../../constant';
 
 @Injectable()
 export class AuthService {
@@ -59,9 +62,9 @@ export class AuthService {
       return null;
     }
     switch (provider) {
-      case 'github':
+      case PROVIDERS.GITHUB:
         return normalisedUser = this.normaliseGithubUser(response);
-      case 'twitter':
+      case PROVIDERS.TWITTER:
         return normalisedUser = this.normaliseTwitterUser(response);
       default:
         return null;

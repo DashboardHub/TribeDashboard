@@ -1,7 +1,10 @@
 <mat-card class="outer-container" fxLayout="row" fxLayoutGap="20px">
   <mat-card fxFlex="25">
     <mat-card-content *ngIf="userSocial.github">
-      <mat-icon svgIcon="github" class="github"></mat-icon>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <mat-icon svgIcon="github" class="github"></mat-icon>
+        <button mat-button (click)="disconnectAccount('github')">Disconnect</button>
+      </div>
       <div fxLayout class="stats-wrapper">
         <div fxLayout="column" fxFlex="33">
           <span class="stats-display">{{ userSocial.github.followers }}</span>
@@ -21,7 +24,10 @@
   </mat-card>
   <mat-card fxFlex="25">
     <mat-card-content *ngIf="userSocial.twitter">
-      <mat-icon svgIcon="twitter" class="twitter"></mat-icon>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <mat-icon svgIcon="twitter" class="twitter"></mat-icon>
+        <button mat-button (click)="disconnectAccount('twitter')">Disconnect</button>
+      </div>
       <div fxLayout class="stats-wrapper">
         <div fxLayout="column" fxFlex="33">
           <span class="stats-display">{{ userSocial.twitter.followers }}</span>
@@ -44,7 +50,10 @@
   </mat-card>
   <mat-card fxFlex="25">
     <mat-card-content *ngIf="userSocial.youtube">
-      <mat-icon svgIcon="youtube-fill" class="youtube"></mat-icon>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <mat-icon svgIcon="youtube-fill" class="youtube"></mat-icon>
+        <button mat-button>Disconnect</button>
+      </div>
       <div fxLayout class="stats-wrapper">
         <div fxLayout="column" fxFlex="33">
           <span class="stats-display">{{ userSocial.youtube.followers }}</span>
@@ -67,7 +76,10 @@
   </mat-card>
   <mat-card fxFlex="25">
     <mat-card-content *ngIf="userSocial.instagram">
-      <mat-icon svgIcon="instagram" class="instagram"></mat-icon>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <mat-icon svgIcon="instagram" class="instagram"></mat-icon>
+        <button mat-button>Disconnect</button>
+      </div>
       <div fxLayout class="stats-wrapper">
         <div fxLayout="column" fxFlex="33">
           <span class="stats-display">{{ userSocial.instagram.followers }}</span>
