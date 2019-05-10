@@ -48,6 +48,7 @@ import { SocialCardsComponent } from './components/social-cards/social-cards.com
     UserService,
     ErrorService,
     AuthGuardService,
+    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

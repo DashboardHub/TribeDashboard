@@ -54,6 +54,13 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
+  loginWithYoutube(): void {
+    this.authService.signInWithGoogle()
+      .subscribe((user) => {
+        this.saveUser(user, 'youtube');
+      });
+  }
+
   saveUser(user: User, provider: string): void {
     this.userService.saveUser(user, provider)
       .pipe(
@@ -72,7 +79,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   addProviderToUserSocial(user): void {
-    const provider = Object.keys(user)[0];
+    const provider = Object.keys(user)[0] === 'uid' ? Object.keys(user)[1] : Object.keys(user)[0];
     const userSocial = this.userService.addRefID(user, provider);
     this.userService.saveUserSocialRecord(userSocial, provider);
   }
