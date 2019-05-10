@@ -3,10 +3,11 @@ import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from './auth.service';
 import { Observable, from } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, mergeAll, tap } from 'rxjs/operators';
 import { User } from '../models/user.model';
 import { ErrorService } from './error.service';
 import { UserService } from 'src/app/services/user.service';
+import { PROVIDERS } from 'src/constant';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,18 @@ export class AccountsService {
 
   linkWithTwitter(): Observable<User> {
     const provider = new firebase.auth.TwitterAuthProvider();
-    return this.linkAccount(provider, 'twitter');
+    return this.linkAccount(provider, PROVIDERS.TWITTER);
   }
 
   linkWithGithub(): Observable<User> {
     const provider = new firebase.auth.GithubAuthProvider();
-    return this.linkAccount(provider, 'github');
+    return this.linkAccount(provider, PROVIDERS.GITHUB);
+  }
+
+  linkWithYoutube(): Observable<User> {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope(PROVIDERS.YOUTUBE_READ_ONLY_SCOPE);
+    return this.linkYoutubeAccount(provider, PROVIDERS.YOUTUBE);
   }
 
   linkAccount(provider, providerLabel): Observable<User> {
@@ -35,6 +42,17 @@ export class AccountsService {
       .pipe(
         map((user) => this.authService.formatUserResponse(user, providerLabel)),
         catchError((error) => this.errorService.logError(error)),
+      );
+  }
+
+  linkYoutubeAccount(provider, providerLabel): Observable<User> {
+    let userRecord;
+    return from(this.firebaseAuth.auth.currentUser.linkWithPopup(provider))
+      .pipe(
+        tap((user) => userRecord = user),
+        map((user) => this.authService.getYoutubeUser(user)),
+        mergeAll(),
+        map((response) => this.authService.formatUserResponse({ ...response, ...userRecord }, providerLabel))
       );
   }
 

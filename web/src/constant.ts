@@ -1,4 +1,7 @@
 export const PROVIDERS = {
   GITHUB: 'github',
-  TWITTER: 'twitter'
+  TWITTER: 'twitter',
+  YOUTUBE: 'youtube',
+  YOUTUBE_READ_ONLY_SCOPE: 'https://www.googleapis.com/auth/youtube.readonly',
+  YOUTUBE_CHANNELS_API: 'https://www.googleapis.com/youtube/v3/channels?part=snippet&mySubscribers=true'
 };
