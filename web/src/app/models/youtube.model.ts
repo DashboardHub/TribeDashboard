@@ -1,6 +1,6 @@
 export interface Youtube {
   etag: string;
-  items: Array<string>;
+  items: string[];
   kind: string;
   pageInfo: {
     totalResults?: number,

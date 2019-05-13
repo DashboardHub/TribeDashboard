@@ -117,12 +117,12 @@ export class AuthService {
         response.pageInfo.totalResults,
       following: response.additionalUserInfo.profile.following ? response.additionalUserInfo.profile.following : 0,
       avatarUrl: response.additionalUserInfo.profile.avatar_url ? response.additionalUserInfo.profile.avatar_url :
-        response.additionalUserInfo.profile.picture
+        response.additionalUserInfo.profile.picture,
     };
 
     const additionalUserInfo = {
       username: response.additionalUserInfo.profile.name,
-      profile
+      profile,
     };
 
 
@@ -147,7 +147,7 @@ export class AuthService {
     const credentials = {
       accessToken: response.credential.accessToken,
       provider: response.credential.providerId,
-      refreshToken: response.user.refreshToken
+      refreshToken: response.user.refreshToken,
     };
 
     const profile = {
@@ -155,12 +155,12 @@ export class AuthService {
       updatedAt: response.additionalUserInfo.profile.updated_at,
       followers: response.additionalUserInfo.profile.followers,
       following: response.additionalUserInfo.profile.following,
-      avatarUrl: response.additionalUserInfo.profile.avatar_url
+      avatarUrl: response.additionalUserInfo.profile.avatar_url,
     };
 
     const additionalUserInfo = {
       username: response.additionalUserInfo.username,
-      profile
+      profile,
     };
 
 
@@ -196,7 +196,7 @@ export class AuthService {
 
     const additionalUserInfo = {
       username: response.additionalUserInfo.username,
-      profile
+      profile,
     };
 
     const normalisedUser = {
