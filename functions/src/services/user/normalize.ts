@@ -1,7 +1,7 @@
 import { User } from '../../models/user.model';
-import * as request from 'request';
+import * as request from 'request-promise-native';
 
-const formatGithubResponse = (userCred: request.Response, document: User): User | null => {
+const formatGithubResponse = (userCred: request.FullResponse, document: User): User | null => {
   const user = JSON.parse(userCred.body);
   if (document.github) {
     const credentials = {
@@ -40,7 +40,7 @@ const formatGithubResponse = (userCred: request.Response, document: User): User 
   return null;
 }
 
-const formatTwitterResponse = (userCred: request.Response, document: User): User | null =>{
+const formatTwitterResponse = (userCred: request.FullResponse, document: User): User | null => {
   const user = JSON.parse(userCred.body);
   if (document.twitter) {
     const credentials = {
@@ -79,7 +79,7 @@ const formatTwitterResponse = (userCred: request.Response, document: User): User
   return null;
 }
 
-export  const normalizeSocialResponse = {
+export const normalizeSocialResponse = {
   formatGithubResponse,
   formatTwitterResponse
 }

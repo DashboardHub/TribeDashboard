@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin';
 import { UserSocial } from '../../models/userSocial.model';
 import { User } from '../../models/user.model';
+import { getAccountStats } from './getAccountStats';
 
 
 const saveUserSocialRecord = async (social: UserSocial) => {
@@ -22,49 +23,20 @@ const saveUserRecord = async (record: User) => {
   }
 }
 
-const getGithubStats = (user: User, social: UserSocial): UserSocial | null => {
-  if (user.github) {
-    return {
-      ...social,
-      github: {
-        following: user.github.additionalUserInfo.profile.following,
-        followers: user.github.additionalUserInfo.profile.followers,
-        updatedAt: (user.github.additionalUserInfo.profile.updatedAt ? user.github.additionalUserInfo.profile.updatedAt : new Date().toISOString())
-      },
-      userId: user.uid
-    }
-  }
-  return null;
-}
-
-const getTwitterStats = (user: User,social:UserSocial): UserSocial | null => {
-  if (user.twitter) {
-    return {
-      ...social,
-      twitter: {
-        following: user.twitter.additionalUserInfo.profile.following,
-        followers: user.twitter.additionalUserInfo.profile.followers,
-        updatedAt: (user.twitter.additionalUserInfo.profile.updatedAt ? user.twitter.additionalUserInfo.profile.updatedAt : new Date().toISOString())
-      },
-      userId: user.uid
-    }
-  }
-  return null;
-}
 const normalizeUserSocial = (user: User, social: UserSocial, provider: string): UserSocial | null => {
   switch (provider) {
     case 'github':
-      return getGithubStats(user,social);
+      return getAccountStats.githubStats(user, social);
     case 'twitter':
-      return getTwitterStats(user,social);
+      return getAccountStats.twitterStats(user, social);
     default:
       return null;
   }
 }
 
-const getUserSocialDoc = async(userId: String): Promise<UserSocial> => {
+const getUserSocialDoc = async (userId: String): Promise<UserSocial> => {
   try {
-    let socialRecord : UserSocial;
+    let socialRecord: UserSocial;
     const document = await admin.firestore().doc(`userSocial/${userId}`).get();
     socialRecord = (document.data() as UserSocial);
     return socialRecord;
@@ -77,7 +49,7 @@ const getUserSocialDoc = async(userId: String): Promise<UserSocial> => {
 
 const setUserProvider = async (user: User, provider: string) => {
   try {
-    const social: UserSocial =  await getUserSocialDoc(user.uid)
+    const social: UserSocial = await getUserSocialDoc(user.uid)
     const socialRecord: UserSocial | null = normalizeUserSocial(user, social, provider);
     if (socialRecord && Object.keys(socialRecord).length) {
       await saveUserSocialRecord(socialRecord);
