@@ -7,7 +7,7 @@ export interface Account {
     accessToken: string;
     provider: string;
     refreshToken?: string;
-    secret?: string;  // Optional field
+    secret?: string;
   };
   additionalUserInfo: {
     profile: {

@@ -1,4 +1,4 @@
-import * as request from 'request';
+import * as request from 'request-promise-native';
 import { normalizeSocialResponse } from './normalize';
 import { saveUser } from './saveUser';
 import constant from '../../constant';
@@ -13,9 +13,9 @@ const saveRecord = async (record: User, provider: string) => {
     console.log('Error record does not exists', err);
     throw new Error('Record does not exists');
   }
-
 }
-const fetchGithubRecord = async (userName: string, document: User, provider: string) => {
+
+const fetchGithubRecord = (userName: string, document: User, provider: string) => {
   const uri = constant.githubUrl + userName;
   const options = {
     headers: {
@@ -25,39 +25,44 @@ const fetchGithubRecord = async (userName: string, document: User, provider: str
     uri: uri
   }
   try {
-    request.get(options, async (error, githubResponse) => {
+    request.get(options).then((githubResponse) => {
       if (githubResponse) {
         const record = normalizeSocialResponse.formatGithubResponse(githubResponse, document);
         record ? saveRecord(record, provider) : null;
       }
     })
+      .catch((err) => {
+        console.log('Error in reqesting github record', err);
+      })
   }
   catch (err) {
-    console.error('Error in fetchingGithubUser', err, userName);
+    console.log('Error in fetchingGithubUser', err, userName);
     throw err;
   }
 }
 
-const fetchTwitterRecord = async (userName: string, document: User, provider: string) => {
+const fetchTwitterRecord = (userName: string, document: User, provider: string) => {
   const endPoint = constant.twitterUrl + userName
   const options = {
     headers: { 'Authorization': 'Bearer ' }, // Fetch Token using firebase environment
     uri: endPoint
   }
   try {
-    request.get(options, async (error, twitterResponse) => {
+    request.get(options).then((twitterResponse) => {
       if (twitterResponse) {
         const record = normalizeSocialResponse.formatTwitterResponse(twitterResponse, document);
-        record ? await saveRecord(record, provider) : null;
+        record ? saveRecord(record, provider) : null;
       }
     })
+      .catch((err) => {
+        console.error('Error in fetchTwitter Record', err);
+      })
   }
   catch (err) {
     console.error('Error in fetchingGithubUser', err, userName);
     throw err;
   }
 }
-
 
 export const fetchUser = {
   fetchGithubRecord,
