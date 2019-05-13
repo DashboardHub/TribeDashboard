@@ -32,6 +32,7 @@ import { SocialCardsComponent } from './components/social-cards/social-cards.com
     HomeComponent,
     NavbarComponent,
     SocialCardsComponent,
+    HttpClientModule
   ],
   imports: [
     BrowserModule,
