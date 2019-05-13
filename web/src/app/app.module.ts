@@ -31,7 +31,7 @@ import { SocialCardsComponent } from './components/social-cards/social-cards.com
     DashboardComponent,
     HomeComponent,
     NavbarComponent,
-    SocialCardsComponent
+    SocialCardsComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,14 +41,12 @@ import { SocialCardsComponent } from './components/social-cards/social-cards.com
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    HttpClientModule
   ],
   providers: [
     AuthService,
     UserService,
     ErrorService,
     AuthGuardService,
-    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

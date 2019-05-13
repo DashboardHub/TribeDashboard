@@ -42,23 +42,17 @@ export class SocialCardsComponent implements OnInit {
 
   addGithubAccount(): void {
     this.accountsService.linkWithGithub()
-      .subscribe((response) => {
-        this.saveSecondaryUser(response, 'github');
-      });
+      .subscribe((response) => this.saveSecondaryUser(response, 'github'));
   }
 
   addTwitterAccount(): void {
     this.accountsService.linkWithTwitter()
-      .subscribe((response) => {
-        this.saveSecondaryUser(response, 'twitter');
-      });
+      .subscribe((response) => this.saveSecondaryUser(response, 'twitter'));
   }
 
   addYoutubeAccount(): void {
     this.accountsService.linkWithYoutube()
-      .subscribe((response) => {
-        this.saveSecondaryUser(response, 'youtube');
-      });
+      .subscribe((response) => this.saveSecondaryUser(response, 'youtube'));
   }
 
 
