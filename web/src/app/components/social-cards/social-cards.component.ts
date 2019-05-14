@@ -6,7 +6,6 @@ import { AccountsService } from 'src/app/services/accounts.service';
 import { Router } from '@angular/router';
 import { PROVIDERS } from '../../../constant';
 
-
 @Component({
   selector: 'app-social-cards',
   templateUrl: './social-cards.component.html',
@@ -33,6 +32,9 @@ export class SocialCardsComponent implements OnInit {
       case PROVIDERS.TWITTER:
         this.addTwitterAccount();
         break;
+      case PROVIDERS.YOUTUBE:
+        this.addYoutubeAccount();
+        break;
       default:
         break;
     }
@@ -40,17 +42,19 @@ export class SocialCardsComponent implements OnInit {
 
   addGithubAccount(): void {
     this.accountsService.linkWithGithub()
-      .subscribe((response) => {
-        this.saveSecondaryUser(response, 'github');
-      });
+      .subscribe((response) => this.saveSecondaryUser(response, 'github'));
   }
 
   addTwitterAccount(): void {
     this.accountsService.linkWithTwitter()
-      .subscribe((response) => {
-        this.saveSecondaryUser(response, 'twitter');
-      });
+      .subscribe((response) => this.saveSecondaryUser(response, 'twitter'));
   }
+
+  addYoutubeAccount(): void {
+    this.accountsService.linkWithYoutube()
+      .subscribe((response) => this.saveSecondaryUser(response, 'youtube'));
+  }
+
 
   disconnectAccount(provider: string): void {
     this.accountsService.disconnectAccount(provider)
@@ -66,7 +70,7 @@ export class SocialCardsComponent implements OnInit {
   saveSecondaryUser(user: User, provider): void {
     this.userService.saveLinkUser(user, provider)
       .subscribe((response) => {
-        this.saveLinkUserSocialRecord(response, 'twitter');
+        this.saveLinkUserSocialRecord(response, provider);
       });
   }
 

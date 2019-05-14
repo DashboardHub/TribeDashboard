@@ -113,6 +113,9 @@ export class UserService {
       case PROVIDERS.TWITTER:
         normalisedResponse = { ...user.twitter.additionalUserInfo.profile, userId: user.uid };
         break;
+      case PROVIDERS.YOUTUBE:
+        normalisedResponse = { ...user.youtube.additionalUserInfo.profile, userId: user.uid };
+        break;
       default:
         break;
     }
@@ -176,7 +179,7 @@ export class UserService {
   createUserSocialRecord(socialRecord: UserSocial): void {
     this.addSocialDoc(socialRecord)
       .subscribe((response) => {
-        if (!response) {
+        if (response) {
           console.error('error in creating social doc');
           return;
         }
