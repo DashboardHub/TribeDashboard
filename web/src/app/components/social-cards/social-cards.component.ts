@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { UserSocial } from 'src/app/models/userSocial.model';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
@@ -23,6 +23,7 @@ export class SocialCardsComponent implements OnInit {
     private accountsService: AccountsService,
     private matDialog: MatDialog,
     private router: Router,
+    private zone: NgZone,
   ) { }
 
   ngOnInit() { }
@@ -53,9 +54,23 @@ export class SocialCardsComponent implements OnInit {
       .subscribe((response) => this.saveSecondaryUser(response, 'twitter'));
   }
 
+  showErrorPopup(error) {
+    let dialogRef;
+    dialogRef = this.matDialog.open(AlertComponent, {
+      data: { message: error }
+    });
+    dialogRef.afterClosed()
+      .subscribe();
+  }
+
   addYoutubeAccount(): void {
     this.accountsService.linkWithYoutube()
-      .subscribe((response) => this.saveSecondaryUser(response, 'youtube'));
+      .subscribe((response) => {
+        return this.saveSecondaryUser(response, 'youtube');
+      },
+        (error) => {
+          this.zone.run(() => this.showErrorPopup(error.message));
+        });
   }
 
 
@@ -112,6 +127,7 @@ export class SocialCardsComponent implements OnInit {
         const userSocial = { ...response, ...socialRecord };
         this.userService.addSocialProvider(userSocial)
           .subscribe((result) => {
+            this.linkAccountRemoved.emit('reload');
             console.log('result', result); // TODO: Will remove in future
           });
       });

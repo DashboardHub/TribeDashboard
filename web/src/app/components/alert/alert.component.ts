@@ -12,14 +12,14 @@ export class AlertComponent implements OnInit {
   constructor(private dialogRef: MatDialogRef<AlertComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onOkay() {
     this.dialogRef.close('continue');
   }
 
   onCancel() {
-    this.dialogRef.close('cancel');
+     this.dialogRef.close('cancel');
   }
 
 }

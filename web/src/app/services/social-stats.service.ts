@@ -23,7 +23,7 @@ export class SocialStatsService {
   }
 
   createSocialStats(socialStat: SocialStatsHistory): Observable<SocialStatsHistory> {
-    return from(this.socialStatsHistory.add(socialStat))
+    return from(this.socialStatsHistory.doc(socialStat.userId).set(socialStat))
       .pipe(
         map(res => res),
         catchError(error => this.errorService.logError(error)),
