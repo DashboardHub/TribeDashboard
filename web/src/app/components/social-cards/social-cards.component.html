@@ -3,7 +3,7 @@
     <mat-card-content *ngIf="userSocial.github">
       <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-icon svgIcon="github" class="github"></mat-icon>
-        <button mat-button (click)="disconnectAccount('github')">Disconnect</button>
+        <button mat-button (click)="showDisconnectPopup('github')">Disconnect</button>
       </div>
       <div fxLayout class="stats-wrapper">
         <div fxLayout="column" fxFlex="33">
@@ -26,7 +26,7 @@
     <mat-card-content *ngIf="userSocial.twitter">
       <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-icon svgIcon="twitter" class="twitter"></mat-icon>
-        <button mat-button (click)="disconnectAccount('twitter')">Disconnect</button>
+        <button mat-button (click)="showDisconnectPopup('twitter')">Disconnect</button>
       </div>
       <div fxLayout class="stats-wrapper">
         <div fxLayout="column" fxFlex="33">

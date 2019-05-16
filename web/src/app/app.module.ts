@@ -23,6 +23,7 @@ import { ErrorService } from './services/error.service';
 import { AuthGuardService } from './guards/auth.guard';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SocialCardsComponent } from './components/social-cards/social-cards.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SocialCardsComponent } from './components/social-cards/social-cards.com
     HomeComponent,
     NavbarComponent,
     SocialCardsComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +50,9 @@ import { SocialCardsComponent } from './components/social-cards/social-cards.com
     UserService,
     ErrorService,
     AuthGuardService,
+  ],
+  entryComponents: [
+    AlertComponent,
   ],
   bootstrap: [AppComponent]
 })
