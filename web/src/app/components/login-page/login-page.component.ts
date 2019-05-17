@@ -13,7 +13,7 @@ import { SocialStatsHistory } from 'src/app/models/socialStatsHistory';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent {
 
   constructor(
     private authService: AuthService,
@@ -24,8 +24,6 @@ export class LoginPageComponent implements OnInit {
 
   public hasError = false;
   public errorMessage = '';
-
-  ngOnInit() { }
 
   showErrorMessage(): void {
     this.hasError = true;

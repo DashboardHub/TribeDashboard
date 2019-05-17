@@ -51,10 +51,10 @@ export class DashboardComponent implements OnInit {
         providerId = value[currentUserProvider].credentials.provider;
         if (userName === name && `${provider}.com` === providerId) {
           this.displayOwnDashboard();
-        } else {
-          this.displayPublicDashboard();
+          return;
         }
       });
+    this.displayPublicDashboard();
   }
 
   displayOwnDashboard(): void {
@@ -72,7 +72,6 @@ export class DashboardComponent implements OnInit {
         this.isResponseLoading = false;
       });
   }
-
 
   displayPublicDashboard(): void {
     const provider = this.route.snapshot.paramMap.get('provider');

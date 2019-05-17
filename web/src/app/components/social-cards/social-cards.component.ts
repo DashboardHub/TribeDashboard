@@ -13,7 +13,7 @@ import { AlertComponent } from '../alert/alert.component';
   templateUrl: './social-cards.component.html',
   styleUrls: ['./social-cards.component.scss']
 })
-export class SocialCardsComponent implements OnInit {
+export class SocialCardsComponent {
 
   @Input() userSocial: UserSocial;
   @Output() linkAccountRemoved = new EventEmitter();
@@ -25,8 +25,6 @@ export class SocialCardsComponent implements OnInit {
     private router: Router,
     private zone: NgZone,
   ) { }
-
-  ngOnInit() { }
 
   connectAccount(provider: string): void {
     switch (provider) {
