@@ -1,3 +1,3 @@
 export interface DialogData {
-   message: string;
-  }
+  message: string;
+}

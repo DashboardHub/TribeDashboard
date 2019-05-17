@@ -7,19 +7,16 @@ import { DialogData } from '../../models/alertdialog.model';
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.scss']
 })
-export class AlertComponent implements OnInit {
+export class AlertComponent {
 
   constructor(private dialogRef: MatDialogRef<AlertComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
   }
-
-  ngOnInit() {}
 
   onOkay() {
     this.dialogRef.close('continue');
   }
 
   onCancel() {
-     this.dialogRef.close('cancel');
+    this.dialogRef.close('cancel');
   }
-
 }
