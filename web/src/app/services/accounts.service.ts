@@ -41,7 +41,7 @@ export class AccountsService {
     return from(this.firebaseAuth.auth.currentUser.linkWithPopup(provider))
       .pipe(
         map((user) => this.authService.formatUserResponse(user, providerLabel)),
-        catchError((error) => this.errorService.logError(error)),
+        catchError(error => this.errorService.logError(error)),
       );
   }
 
@@ -54,6 +54,11 @@ export class AccountsService {
         mergeAll(),
         map((response) => this.authService.formatUserResponse({ ...response, ...userRecord }, providerLabel))
       );
+  }
+
+  checkPrimaryOrLinkAccount(provider) {
+    const providerData = this.firebaseAuth.auth.currentUser.providerData;
+    return !(providerData[0].providerId === `${provider}.com`);
   }
 
   disconnectAccount(provider: string): Observable<boolean> {

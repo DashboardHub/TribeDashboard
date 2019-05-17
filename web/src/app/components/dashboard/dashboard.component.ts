@@ -21,19 +21,40 @@ export class DashboardComponent implements OnInit {
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
-    private errorService: ErrorService
+    private errorService: ErrorService,
   ) { }
 
   ngOnInit() {
     this.isResponseLoading = true;
-    this.route.snapshot.paramMap.keys.length ?
-      this.displayPublicDashboard() :
-      this.displayOwnDashboard();
+    if (this.route.snapshot.paramMap.keys.length) {
+      const provider = this.route.snapshot.paramMap.get('provider');
+      const name = this.route.snapshot.paramMap.get('name');
+      this.checkOwnOrPublicDashboard(name, provider);
+      return;
+    }
+    this.displayOwnDashboard();
   }
 
   reload(): void {
     this.isResponseLoading = true;
     this.displayOwnDashboard();
+  }
+
+  checkOwnOrPublicDashboard(name, provider): void {
+    let userName;
+    let providerId;
+    let currentUserProvider;
+    this.userService.getUser()
+      .subscribe((value) => {
+        currentUserProvider = Object.keys(value)[0];
+        userName = value[currentUserProvider].additionalUserInfo.username;
+        providerId = value[currentUserProvider].credentials.provider;
+        if (userName === name && `${provider}.com` === providerId) {
+          this.displayOwnDashboard();
+          return;
+        }
+      });
+    this.displayPublicDashboard();
   }
 
   displayOwnDashboard(): void {
@@ -75,5 +96,4 @@ export class DashboardComponent implements OnInit {
   getUserSocialRecord(userId: string): Observable<UserSocial> {
     return this.userService.getUserSocialRecord(userId);
   }
-
 }

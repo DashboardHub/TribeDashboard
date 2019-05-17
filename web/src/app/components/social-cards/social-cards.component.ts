@@ -1,17 +1,19 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
 import { UserSocial } from 'src/app/models/userSocial.model';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { AccountsService } from 'src/app/services/accounts.service';
-import { Router } from '@angular/router';
 import { PROVIDERS } from '../../../constant';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-social-cards',
   templateUrl: './social-cards.component.html',
   styleUrls: ['./social-cards.component.scss']
 })
-export class SocialCardsComponent implements OnInit {
+export class SocialCardsComponent {
 
   @Input() userSocial: UserSocial;
   @Output() linkAccountRemoved = new EventEmitter();
@@ -19,10 +21,10 @@ export class SocialCardsComponent implements OnInit {
   constructor(
     private userService: UserService,
     private accountsService: AccountsService,
+    private matDialog: MatDialog,
     private router: Router,
+    private zone: NgZone,
   ) { }
-
-  ngOnInit() { }
 
   connectAccount(provider: string): void {
     switch (provider) {
@@ -50,13 +52,47 @@ export class SocialCardsComponent implements OnInit {
       .subscribe((response) => this.saveSecondaryUser(response, 'twitter'));
   }
 
+  showErrorPopup(error) {
+    let dialogRef;
+    dialogRef = this.matDialog.open(AlertComponent, {
+      data: { message: error }
+    });
+    dialogRef.afterClosed()
+      .subscribe();
+  }
+
   addYoutubeAccount(): void {
     this.accountsService.linkWithYoutube()
-      .subscribe((response) => this.saveSecondaryUser(response, 'youtube'));
+      .subscribe((response) => {
+        return this.saveSecondaryUser(response, 'youtube');
+      },
+        (error) => {
+          this.zone.run(() => this.showErrorPopup(error.message));
+        });
   }
 
 
-  disconnectAccount(provider: string): void {
+  showDisconnectPopup(provider: string): void {
+    const userType = this.accountsService.checkPrimaryOrLinkAccount(provider);
+    let dialogRef;
+    if (userType) {
+      dialogRef = this.matDialog.open(AlertComponent, {
+        data: { message: 'Do you want to remove it ?' }
+      });
+    } else {
+      dialogRef = this.matDialog.open(AlertComponent, {
+        data: { message: 'This is primary account.Do you want to remove it ?' }
+      });
+    }
+    dialogRef.afterClosed()
+      .subscribe((action: string) => {
+        if (action === 'continue') {
+          this.disconnectAccount(provider);
+        }
+      });
+  }
+
+  disconnectAccount(provider: string) {
     this.accountsService.disconnectAccount(provider)
       .subscribe((isConnected) => {
         if (isConnected) {
@@ -89,6 +125,7 @@ export class SocialCardsComponent implements OnInit {
         const userSocial = { ...response, ...socialRecord };
         this.userService.addSocialProvider(userSocial)
           .subscribe((result) => {
+            this.linkAccountRemoved.emit('reload');
             console.log('result', result); // TODO: Will remove in future
           });
       });

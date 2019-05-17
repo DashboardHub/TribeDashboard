@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { map, catchError, tap, filter } from 'rxjs/operators';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -11,11 +11,11 @@ import { User } from '../models/user.model';
 import { UserSocial } from '../models/userSocial.model';
 import { Router } from '@angular/router';
 import { PROVIDERS } from '../../constant';
-
 @Injectable()
 export class UserService {
   public user: AngularFirestoreCollection;
   public userSocial: AngularFirestoreCollection;
+  public userStats: AngularFirestoreCollection;
 
   constructor(
     private db: AngularFirestore,
@@ -25,12 +25,16 @@ export class UserService {
   ) {
     this.userSocial = this.db.collection('userSocial');
     this.user = this.db.collection('user');
+    this.userStats = db.collection('socialStatsHistory');
   }
 
   removeUser(id: string): Observable<null> {
     return from(this.userSocial.doc(id).delete())
       .pipe(
-        map(() => this.user.doc(id).delete()),
+        map(() => {
+          this.user.doc(id).delete();
+          this.userStats.doc(id).delete();
+        }),
         catchError((err) => this.errorService.logError(err))
       );
   }
@@ -72,6 +76,7 @@ export class UserService {
   getUser(): Observable<User> {
     return this.authService.user.pipe(
       map(response => this.formatResponse(response)),
+      filter(user => user !== null),
     );
   }
 
