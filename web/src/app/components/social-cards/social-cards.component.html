@@ -52,7 +52,7 @@
     <mat-card-content *ngIf="userSocial.youtube">
       <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-icon svgIcon="youtube-fill" class="youtube"></mat-icon>
-        <button mat-button>Disconnect</button>
+        <button mat-button (click)="showDisconnectPopup('google')">Disconnect</button>
       </div>
       <div fxLayout class="stats-wrapper">
         <div fxLayout="column" fxFlex="33">

@@ -27,12 +27,5 @@ export class AppComponent implements OnInit {
         this.params = e.snapshot.params;
       }
     });
-
-    this.userService.getUser()
-      .subscribe((user) => {
-        if (user && !Object.keys(this.params).length) {
-          this.router.navigate(['/dashboard']);
-        }
-      });
   }
 }

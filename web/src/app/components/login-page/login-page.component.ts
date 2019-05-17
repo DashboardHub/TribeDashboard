@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { SocialStatsService } from 'src/app/services/social-stats.service';
-import { map, mergeAll } from 'rxjs/operators';
+import { map, mergeAll, filter } from 'rxjs/operators';
 import { ErrorService } from 'src/app/services/error.service';
 import { Observable } from 'rxjs';
 import { SocialStatsHistory } from 'src/app/models/socialStatsHistory';
