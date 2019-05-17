@@ -55,6 +55,13 @@ export class AccountsService {
         map((response) => this.authService.formatUserResponse({ ...response, ...userRecord }, providerLabel))
       );
   }
+  checkPrimaryOrLinkAccount(provider) {
+    const providerData = this.firebaseAuth.auth.currentUser.providerData;
+    if (providerData[0].providerId === `${provider}.com`) {
+      return false;
+    }
+    return true;
+  }
 
   disconnectAccount(provider: string): Observable<boolean> {
     const providerData = this.firebaseAuth.auth.currentUser.providerData;

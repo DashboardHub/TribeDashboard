@@ -1,10 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { UserSocial } from 'src/app/models/userSocial.model';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user.model';
 import { AccountsService } from 'src/app/services/accounts.service';
-import { Router } from '@angular/router';
 import { PROVIDERS } from '../../../constant';
+import { AlertComponent } from '../alert/alert.component';
 
 @Component({
   selector: 'app-social-cards',
@@ -19,6 +21,7 @@ export class SocialCardsComponent implements OnInit {
   constructor(
     private userService: UserService,
     private accountsService: AccountsService,
+    private matDialog: MatDialog,
     private router: Router,
   ) { }
 
@@ -56,7 +59,27 @@ export class SocialCardsComponent implements OnInit {
   }
 
 
-  disconnectAccount(provider: string): void {
+  showDisconnectPopup(provider: string): void {
+    const userType = this.accountsService.checkPrimaryOrLinkAccount(provider);
+    let dialogRef;
+    if (userType) {
+      dialogRef = this.matDialog.open(AlertComponent, {
+        data: { message: 'Do you want to remove it ?' }
+      });
+    } else {
+      dialogRef = this.matDialog.open(AlertComponent, {
+        data: { message: 'This is primary account.Do you want to remove it ?' }
+      });
+    }
+    dialogRef.afterClosed()
+      .subscribe((action: string) => {
+        if (action === 'continue') {
+          this.disconnectAccount(provider);
+        }
+      });
+  }
+
+  disconnectAccount(provider: string) {
     this.accountsService.disconnectAccount(provider)
       .subscribe((isConnected) => {
         if (isConnected) {
