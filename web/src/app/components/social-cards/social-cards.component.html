@@ -1,5 +1,5 @@
 <mat-card class="outer-container" fxLayout="row" fxLayoutGap="20px">
-  <mat-card fxFlex="25">
+  <mat-card fxFlex="33">
     <mat-card-content *ngIf="userSocial.github">
       <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-icon svgIcon="github" class="github"></mat-icon>
@@ -17,12 +17,13 @@
       </div>
     </mat-card-content>
     <mat-card-content *ngIf="!userSocial.github">
-      <mat-card-title>Connect github to see your statistics</mat-card-title>
+      <mat-card-title *ngIf="!userSocial.public">Connect github to see your statistics</mat-card-title>
+      <mat-card-title *ngIf="userSocial.public"> login to github to see your statistics</mat-card-title>
       <button mat-flat-button *ngIf="!userSocial.public" (click)="connectAccount('github')" class="github">Connect to
         github</button>
     </mat-card-content>
   </mat-card>
-  <mat-card fxFlex="25">
+  <mat-card fxFlex="33">
     <mat-card-content *ngIf="userSocial.twitter">
       <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-icon svgIcon="twitter" class="twitter"></mat-icon>
@@ -40,7 +41,8 @@
       </div>
     </mat-card-content>
     <mat-card-content *ngIf="!userSocial.twitter">
-      <mat-card-title>Connect twitter to see your statistics</mat-card-title>
+      <mat-card-title *ngIf="!userSocial.public">Connect twitter to see your statistics</mat-card-title>
+      <mat-card-title *ngIf="userSocial.public">login to twitter to see your statistics</mat-card-title>
       <button mat-flat-button class="twitter" *ngIf="!userSocial.public" (click)="connectAccount('twitter')">Connect to
         twitter</button>
       <div fxLayout fxLayoutAlign="end end">
@@ -48,7 +50,7 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <mat-card fxFlex="25">
+  <mat-card fxFlex="33">
     <mat-card-content *ngIf="userSocial.youtube">
       <div fxLayout="row" fxLayoutAlign="space-between">
         <mat-icon svgIcon="youtube-fill" class="youtube"></mat-icon>
@@ -66,39 +68,12 @@
       </div>
     </mat-card-content>
     <mat-card-content *ngIf="!userSocial.youtube">
-      <mat-card-title>Connect youtube to see your statistics</mat-card-title>
+      <mat-card-title *ngIf="!userSocial.public">Connect youtube to see your statistics</mat-card-title>
+      <mat-card-title *ngIf="userSocial.public">login to youtube to see your statistics</mat-card-title>
       <button mat-flat-button class="youtube" *ngIf="!userSocial.public" (click)="connectAccount('youtube')">Connect to
         youtube</button>
       <div fxLayout fxLayoutAlign="end end">
         <mat-icon svgIcon="youtube-fill" class="youtube-icon"></mat-icon>
-      </div>
-    </mat-card-content>
-  </mat-card>
-  <mat-card fxFlex="25">
-    <mat-card-content *ngIf="userSocial.instagram">
-      <div fxLayout="row" fxLayoutAlign="space-between">
-        <mat-icon svgIcon="instagram" class="instagram"></mat-icon>
-        <button mat-button>Disconnect</button>
-      </div>
-      <div fxLayout class="stats-wrapper">
-        <div fxLayout="column" fxFlex="33">
-          <span class="stats-display">{{ userSocial.instagram.followers }}</span>
-          <span>Followers</span>
-        </div>
-        <div fxLayout="column" fxFlex="33">
-          <span class="stats-display">
-            {{ userSocial.instagram.following }}
-          </span>
-          <span>Following</span>
-        </div>
-      </div>
-    </mat-card-content>
-    <mat-card-content *ngIf="!userSocial.instagram">
-      <mat-card-title>Connect instagram to see your statistics</mat-card-title>
-      <button mat-flat-button class="instagram" *ngIf="!userSocial.public" (click)="connectAccount('instagram')">Connect
-        to instagram</button>
-      <div fxLayout fxLayoutAlign="end end">
-        <mat-icon svgIcon="instagram"></mat-icon>
       </div>
     </mat-card-content>
   </mat-card>

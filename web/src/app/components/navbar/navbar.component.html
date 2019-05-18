@@ -1,4 +1,5 @@
 <div class="nav" fxLayout fxLayoutAlign="space-between space-between">
   <div fxFlex="30" class="dashboard"> My Dashboard </div>
-  <button fxFlex="20" mat-button color="primary" (click)="logout()">Logout</button>
+  <button fxFlex="20" mat-button color="primary" *ngIf="isLogin" (click)="logout()">Logout</button>
+  <button fxFlex="20" mat-button color="primary" *ngIf="!isLogin" (click)="navigateTologin()">Login</button>
 </div>
