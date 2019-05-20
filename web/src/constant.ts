@@ -3,5 +3,6 @@ export const PROVIDERS = {
   TWITTER: 'twitter',
   YOUTUBE: 'youtube',
   YOUTUBE_READ_ONLY_SCOPE: 'https://www.googleapis.com/auth/youtube.readonly',
-  YOUTUBE_CHANNELS_API: 'https://www.googleapis.com/youtube/v3/channels?part=snippet&mySubscribers=true'
+  YOUTUBE_CHANNELS_API: 'https://www.googleapis.com/youtube/v3/channels?part=snippet&mySubscribers=true',
+  TRIBE_COUNT_API: '' // place the cloud function url
 };

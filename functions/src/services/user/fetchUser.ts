@@ -3,6 +3,7 @@ import { normalizeSocialResponse } from './normalize';
 import { saveUser } from './saveUser';
 import constant from '../../constant';
 import { User } from '../../models/user.model';
+import { UserSocial } from '../../models/userSocial.model';
 
 const saveRecord = async (record: User, provider: string) => {
   try {
@@ -64,7 +65,26 @@ const fetchTwitterRecord = (userName: string, document: User, provider: string) 
   }
 }
 
+const calculateFollowersCount = (userSocial: UserSocial) => {
+  let githubCount = 0;
+  let twitterCount = 0;
+  let youtubeCount = 0;
+
+  if (userSocial['github']) {
+    githubCount = userSocial['github'].followers;
+  }
+  if (userSocial['twitter']) {
+    twitterCount = userSocial['twitter'].followers;
+  }
+  if (userSocial['youtube']) {
+    youtubeCount = userSocial['youtube'].followers;
+  }
+  const totalFollowers = githubCount + twitterCount + youtubeCount;
+  return { ...userSocial, totalFollowers };
+}
+
 export const fetchUser = {
   fetchGithubRecord,
   fetchTwitterRecord,
+  calculateFollowersCount
 }
