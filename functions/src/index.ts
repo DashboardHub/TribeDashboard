@@ -20,7 +20,6 @@ export const cron = functions.https.onRequest(async (request, response) => {
     console.log('Entered into firbease functions');
     const snapshot = await admin.firestore().collection('user').get();
     if (snapshot.docs.length) {
-      console.log('enterd into if condition');
       snapshot.docs.forEach((doc) => {
         const user: User = ({ ...doc.data() }) as User;
         accountType.updateUser(user);
