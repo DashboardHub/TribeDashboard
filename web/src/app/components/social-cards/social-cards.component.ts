@@ -80,7 +80,7 @@ export class SocialCardsComponent {
       });
     } else {
       dialogRef = this.matDialog.open(AlertComponent, {
-        data: { message: 'This is your primary account.Do you want to remove it ?' }
+        data: { message: 'This is your primary account. Do you want to remove it ?' }
       });
     }
     dialogRef.afterClosed()
