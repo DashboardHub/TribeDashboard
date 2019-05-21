@@ -17,7 +17,6 @@ admin.initializeApp({
 
 export const cron = functions.https.onRequest(async (request, response) => {
   try {
-    console.log('Entered into firbease functions');
     const snapshot = await admin.firestore().collection('user').get();
     if (snapshot.docs.length) {
       snapshot.docs.forEach((doc) => {

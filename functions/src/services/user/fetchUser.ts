@@ -70,14 +70,14 @@ const calculateFollowersCount = (userSocial: UserSocial) => {
   let twitterCount = 0;
   let youtubeCount = 0;
 
-  if (userSocial['github']) {
-    githubCount = userSocial['github'].followers;
+  if (userSocial.github) {
+    githubCount = userSocial.github.followers;
   }
-  if (userSocial['twitter']) {
-    twitterCount = userSocial['twitter'].followers;
+  if (userSocial.twitter) {
+    twitterCount = userSocial.twitter.followers;
   }
-  if (userSocial['youtube']) {
-    youtubeCount = userSocial['youtube'].followers;
+  if (userSocial.youtube) {
+    youtubeCount = userSocial.youtube.followers;
   }
   const totalFollowers = githubCount + twitterCount + youtubeCount;
   return { ...userSocial, totalFollowers };

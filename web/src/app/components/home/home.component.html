@@ -4,12 +4,12 @@
     <div class="primary-text">Connect your socials in one place</div>
     <button class="get-started-button" mat-button cdkFocusInitial
       (click)="navigateToLogin()">Get Started</button><br />
-    <img class="pattern-right" src="../../../assets/images/OvalPattern.svg" />
+    <img class="pattern-right" src="assets/images/OvalPattern.svg" />
   </div>
   <div>
-    <img class="pattern-left" src="../../../assets/images/OvalPattern.svg" />
+    <img class="pattern-left" src="assets/images/OvalPattern.svg" />
   </div>
-  <img class="dashboard-img" src="../../../assets/images/Dashboard.png" />
+  <img class="dashboard-img" src="assets/images/Dashboard.png" />
   <div class="primary-text">Makers around the globe are onto it! </div>
   <mat-card>
     <mat-card *ngFor="let user of users" fxFlex="20">
@@ -21,7 +21,7 @@
           </div>
           <div *ngSwitchCase="'twitter'">
             <img [src]="user.twitter.avatarUrl" />
-            <div>User name</div> <!-- Hard coded text will remove it in the next PR-->
+            <div>User name</div> <!-- @TODO Hard coded text will remove it in the next PR -->
           </div>
           <div *ngSwitchCase="'youtube'">
             <img [src]="user.youtube.avatarUrl" />

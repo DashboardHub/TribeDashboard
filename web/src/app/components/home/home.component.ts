@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { UserSocial } from 'src/app/models/userSocial.model';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -14,9 +15,7 @@ export class HomeComponent {
     private userService: UserService
   ) {
     this.userService.getUsersWithMaxFollowers()
-      .subscribe((value) => {
-        this.users = value;
-      });
+      .subscribe((tribeUsers: UserSocial[]) => this.users = tribeUsers);
   }
 
   navigateToLogin(): void {
