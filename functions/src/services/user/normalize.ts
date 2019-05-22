@@ -1,8 +1,8 @@
 import { User } from '../../models/user.model';
 import * as request from 'request-promise-native';
 
-const formatGithubResponse = (userCred: request.FullResponse, document: User): User | null => {
-  const user = JSON.parse(userCred.body);
+const formatGithubResponse = (userCred: string , document: User): User | null => {
+  const user = JSON.parse(userCred);
   if (document.github) {
     const credentials = {
       accessToken: document.github.credentials.accessToken,
@@ -41,7 +41,7 @@ const formatGithubResponse = (userCred: request.FullResponse, document: User): U
 }
 
 const formatTwitterResponse = (userCred: request.FullResponse, document: User): User | null => {
-  const user = JSON.parse(userCred.body);
+  const user = userCred.body;
   if (document.twitter) {
     const credentials = {
       accessToken: document.twitter.credentials.accessToken,
