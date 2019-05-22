@@ -2,9 +2,10 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import { accountType } from './services/user/getAccountType';
 import { User } from './models/user.model';
-// import serviceAccount from './dashboard-dev.json'; // Replace the firebase json file here
+// import serviceAccount from './dashboard-dev.json'; // TODO: Replace the service account json file here
 import { fetchUser } from './services/user/fetchUser';
 import { UserSocial } from './models/userSocial.model';
+import Constant from './constant';
 
 admin.initializeApp({
   // credential: admin.credential.cert((serviceAccount) as admin.ServiceAccount),
@@ -36,6 +37,10 @@ export const cron = functions.https.onRequest(async (request, response) => {
 })
 
 export const getStats = functions.https.onRequest(async (request, response) => {
+  if (!request.headers || request.headers['authorization'] !== Constant.authorizationPassword) {
+    response.send("User not authorized to hit the API");
+    return;
+  }
   try {
     const snapshot = await admin.firestore().collection('userSocial').get();
     const userSocial = snapshot.docs.map((doc) => {

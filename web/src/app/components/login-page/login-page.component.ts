@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { SocialStatsService } from 'src/app/services/social-stats.service';
-import { map, mergeAll } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { ErrorService } from 'src/app/services/error.service';
 import { Observable } from 'rxjs';
 import { SocialStatsHistory } from 'src/app/models/socialStatsHistory';
@@ -60,11 +60,11 @@ export class LoginPageComponent {
   }
 
   saveUser(user: User, provider: string): void {
-    this.userService.saveUser(user, provider)
+    this.userService.checkNewOrExistingRecord(user)
       .pipe(
-        map(userStats => this.saveUserSocialStats(userStats, provider)),
-        map(() => this.getUser()),
-        mergeAll()
+        mergeMap((userRecord) => this.userService.saveUser({ ...user, ...userRecord }, provider)),
+        mergeMap(userStats => this.saveUserSocialStats(userStats, provider)),
+        mergeMap(() => this.getUser()),
       )
       .subscribe(
         userSocial => this.addProviderToUserSocial(userSocial),

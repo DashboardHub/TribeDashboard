@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent {
   @Input() isLogin: boolean;
+  @Input() dashboardName: string;
 
   constructor(
     private authService: AuthService,

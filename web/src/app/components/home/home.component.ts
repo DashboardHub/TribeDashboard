@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { UserSocial } from 'src/app/models/userSocial.model';
@@ -7,15 +7,23 @@ import { UserSocial } from 'src/app/models/userSocial.model';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
-  public users;
+export class HomeComponent implements OnInit {
+  public users: UserSocial[];
+  public isResponseLoading: boolean;
+
+  ngOnInit() {
+    this.isResponseLoading = true;
+  }
 
   constructor(
     private router: Router,
     private userService: UserService
   ) {
     this.userService.getUsersWithMaxFollowers()
-      .subscribe((tribeUsers: UserSocial[]) => this.users = tribeUsers);
+      .subscribe((tribeUsers: UserSocial[]) => {
+        this.isResponseLoading = false;
+        return this.users = tribeUsers;
+      });
   }
 
   navigateToLogin(): void {

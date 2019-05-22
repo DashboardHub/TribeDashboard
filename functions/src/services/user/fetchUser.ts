@@ -1,9 +1,11 @@
 import * as request from 'request-promise-native';
+import * as functions from 'firebase-functions';
 import { normalizeSocialResponse } from './normalize';
 import { saveUser } from './saveUser';
 import constant from '../../constant';
 import { User } from '../../models/user.model';
 import { UserSocial } from '../../models/userSocial.model';
+
 
 const saveRecord = async (record: User, provider: string) => {
   try {
@@ -45,7 +47,7 @@ const fetchGithubRecord = (userName: string, document: User, provider: string) =
 const fetchTwitterRecord = (userName: string, document: User, provider: string) => {
   const endPoint = constant.twitterUrl + userName
   const options = {
-    headers: { 'Authorization': 'Bearer ' }, // Fetch Token using firebase environment
+    headers: { 'Authorization': `Bearer ${functions.config().twitter.token}` }, // Fetch Token using firebase environment
     uri: endPoint
   }
   try {

@@ -15,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 // services
 import { AuthService } from './services/auth.service';
@@ -34,6 +35,7 @@ import { AlertComponent } from './components/alert/alert.component';
     NavbarComponent,
     SocialCardsComponent,
     AlertComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

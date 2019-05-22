@@ -1,5 +1,11 @@
-<div class="nav" fxLayout fxLayoutAlign="space-between space-between">
-  <div fxFlex="30" class="dashboard"> My Dashboard </div>
-  <button fxFlex="20" mat-button color="primary" *ngIf="isLogin" (click)="logout()">Logout</button>
-  <button fxFlex="20" mat-button color="primary" *ngIf="!isLogin" (click)="navigateTologin()">Login</button>
+<div class="nav" fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxFlex="15" class="dashboard" fxLayout="row" fxLayoutAlign="space-between
+    center">
+    <img height="26px" src="assets/images/dashboard1x.png" />
+    <div>{{ dashboardName }}</div>
+  </div>
+  <button fxFlex="20" mat-button color="primary" *ngIf="isLogin"
+    (click)="logout()">Logout</button>
+  <button fxFlex="20" mat-button color="primary" *ngIf="!isLogin"
+    (click)="navigateTologin()">Login</button>
 </div>

@@ -1,10 +1,11 @@
 <div fxLayout="column">
   <div class="app-nav" fxFlex="30">
-    <app-navbar [isLogin]="isLogin"></app-navbar>
+    <app-navbar [isLogin]="isLogin" [dashboardName]="'My Dashboard'"></app-navbar>
   </div>
   <div class="cards" *ngIf="!isResponseLoading">
     <div class="overview">Overview</div>
-    <app-social-cards [userSocial]="userSocial" (linkAccountRemoved)="reload($event)"></app-social-cards>
+    <app-social-cards [userSocial]="userSocial"
+      (linkAccountRemoved)="reload($event)"></app-social-cards>
   </div>
   <div *ngIf="isResponseLoading" fxLayout fxLayoutAlign="center center">
     <mat-spinner strokeWidth="4"></mat-spinner>
