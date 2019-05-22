@@ -10,9 +10,10 @@ import { UserSocial } from 'src/app/models/userSocial.model';
 export class HomeComponent implements OnInit {
   public users: UserSocial[];
   public isResponseLoading: boolean;
-
+  public isLogin: boolean;
   ngOnInit() {
     this.isResponseLoading = true;
+    this.isLogin = false;
   }
 
   constructor(
