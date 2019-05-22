@@ -24,6 +24,6 @@ export class HomeComponent {
   }
 
   getProvider(user): string {
-    return Object.keys(user)[0] === 'id' ? Object.keys(user)[1] : Object.keys(user)[0]; // Will remove the dummy field
+    return Object.keys(user)[0] === 'id' ? Object.keys(user)[1] : Object.keys(user)[0];
   }
 }
