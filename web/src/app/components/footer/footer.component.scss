@@ -1,17 +1,20 @@
 .footer {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   .dashboard {
     display: flex;
     align-items: center;
     padding: 1rem;
-    color: #69696A;
+    color: #69696a;
     font-weight: bold;
     line-height: 1.375rem
     img {
       margin-right: 0.625rem;
     }
-    .mat-icon{
+    .mat-icon {
       opacity: 0.5;
     }
+  }
+  .dashboard-xs {
+    height: 1.625rem;
   }
 }

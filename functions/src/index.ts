@@ -38,7 +38,7 @@ export const cron = functions.https.onRequest(async (request, response) => {
 
 export const getStats = functions.https.onRequest(async (request, response) => {
   if (!request.headers || request.headers['authorization'] !== Constant.authorizationPassword) {
-    response.send("User not authorized to hit the API");
+    response.status(403).send("User not authorized to hit the API");
     return;
   }
   try {
