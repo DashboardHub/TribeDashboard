@@ -1,5 +1,11 @@
 @import "../../../styles/variables.scss";
 
+.homepage-container {
+  .mat-card {
+    box-shadow: unset;
+    padding: 0.5rem;
+  }
+}
 .dashboard-img {
   object-fit: contain;
   position: absolute;
@@ -8,6 +14,30 @@
   left: 0;
   right: 0;
   top: 18.75rem;
+}
+
+.avatar {
+  img {
+    height: 3.125rem;
+    width: 3.125rem;
+    border-radius: 50%;
+    text-align: center;
+  }
+}
+
+.github {
+  background-color: $github-primary;
+  color: $text-color-accent;
+}
+
+.twitter {
+  background-color: $twitter-primary;
+  color: $text-color-accent;
+}
+
+.youtube {
+  background-color: $youtube-primary;
+  color: $text-color-accent;
 }
 
 %flex-center {
@@ -38,18 +68,19 @@
     float: right;
     padding: 0 7.5rem 9.375rem;
   }
+}
 
-  .primary-text {
-    margin-top: 0.625rem;
-    font-size: 2.75rem;
-    font-weight: bold;
-    line-height: 4.6875rem;
-  }
+.primary-text {
+  margin-top: 0.625rem;
+  font-size: 2.75rem;
+  font-weight: bold;
+  line-height: 4.6875rem;
+  text-align: center;
 }
 
 .pattern-left {
   text-align: left;
-  margin: 9.375rem 7.5rem 0px;
+  margin: 9.375rem 7.5rem 0rem;
 }
 
 .social-container {

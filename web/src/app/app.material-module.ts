@@ -43,5 +43,17 @@ export class AppMaterialModule {
       'twitter',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/twitter.svg')
     );
+    this.matIconRegistry.addSvgIcon(
+      'github1x',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/github1x.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'twitter1x',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/twitter1x.svg')
+    );
+    this.matIconRegistry.addSvgIcon(
+      'youtube1x',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/images/youtube1x.svg')
+    );
   }
 }

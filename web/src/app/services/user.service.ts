@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { map, catchError, tap, filter } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -22,6 +23,7 @@ export class UserService {
     private errorService: ErrorService,
     private authService: AuthService,
     private router: Router,
+    private http: HttpClient,
   ) {
     this.userSocial = this.db.collection('userSocial');
     this.user = this.db.collection('user');
@@ -196,5 +198,8 @@ export class UserService {
     this.updateSocialDoc(id, socialRecord)
       .subscribe(() => this.router.navigate(['/dashboard'])
       );
+  }
+  getUsersWithMaxFollowers() {
+    return this.http.get(PROVIDERS.TRIBE_COUNT_API);
   }
 }

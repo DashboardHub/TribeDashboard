@@ -6,6 +6,9 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "target": "es2015"
   },
   "compileOnSave": true,
