@@ -71,7 +71,6 @@ export class SocialCardsComponent {
         });
   }
 
-
   showDisconnectPopup(provider: string): void {
     const userType = this.accountsService.checkPrimaryOrLinkAccount(provider);
     let dialogRef;
@@ -81,7 +80,7 @@ export class SocialCardsComponent {
       });
     } else {
       dialogRef = this.matDialog.open(AlertComponent, {
-        data: { message: 'This is primary account.Do you want to remove it ?' }
+        data: { message: 'This is your primary account. Do you want to remove it ?' }
       });
     }
     dialogRef.afterClosed()

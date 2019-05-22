@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
   public user: User;
   public userSocial: UserSocial;
   public isResponseLoading: boolean;
+  public isLogin: boolean;
 
   constructor(
     private userService: UserService,
@@ -64,12 +65,14 @@ export class DashboardComponent implements OnInit {
         mergeMap((user: User) => this.getUserSocialRecord(user.uid))
       )
       .subscribe((userSocial) => {
+        const { id, ...social } = userSocial;
         if (!userSocial) {
           console.error('Error in fetching user social'); // TODO: Handle null user scenario in dashboard UI
           return;
         }
-        this.userSocial = { ...userSocial };
+        this.userSocial = { ...social, ...{ public: false } };
         this.isResponseLoading = false;
+        this.isLogin = true;
       });
   }
 
@@ -88,6 +91,7 @@ export class DashboardComponent implements OnInit {
         }
         this.userSocial = { ...social, public: true };
         this.isResponseLoading = false;
+        this.isLogin = false;
       },
         error => this.errorService.logError(error)
       );

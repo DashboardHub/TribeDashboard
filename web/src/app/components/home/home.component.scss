@@ -1,0 +1,71 @@
+@import "../../../styles/variables.scss";
+
+.dashboard-img {
+  object-fit: contain;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 18.75rem;
+}
+
+%flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.get-started-container {
+  background-color: $secondary-accent;
+  width: 100%;
+  text-align: center;
+  font-size: 1.125rem;
+  padding-top: 2.5rem;
+  line-height: 1.5rem;
+
+  .get-started-button {
+    height: 2.5rem;
+    margin: 1.25rem 0px 2.5rem;
+    width: 10.0625rem;
+    border-radius: 0.125rem;
+    color: $text-color-accent;
+    text-transform: uppercase;
+    background-color: $primary-accent;
+    box-shadow: 0 0.125rem 0.25rem 0 $shadow-color;
+  }
+
+  .pattern-right {
+    float: right;
+    padding: 0 7.5rem 9.375rem;
+  }
+
+  .primary-text {
+    margin-top: 0.625rem;
+    font-size: 2.75rem;
+    font-weight: bold;
+    line-height: 4.6875rem;
+  }
+}
+
+.pattern-left {
+  text-align: left;
+  margin: 9.375rem 7.5rem 0px;
+}
+
+.social-container {
+  @extend %flex-center;
+  justify-content: space-around;
+  .social-container-items {
+    @extend %flex-center;
+    .social-logo {
+      @extend %flex-center;
+      justify-content: center;
+      height: 3.75rem;
+      width: 3.75rem;
+      opacity: 0.1;
+      border-radius: 0.4375rem;
+      margin-right: 1.25rem;
+      background-color: $twitter-primary;
+    }
+  }
+}
