@@ -218,7 +218,8 @@ export class UserService {
           this.createUserSocialRecord(socialRecord);
           return;
         }
-        this.updateUserSocialRecord(response.id, { ...socialRecord, ...response });
+        const { id, ...socialDoc } = response;
+        this.updateUserSocialRecord(id, { ...socialRecord, ...socialDoc });
       });
   }
 

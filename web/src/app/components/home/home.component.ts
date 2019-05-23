@@ -33,6 +33,6 @@ export class HomeComponent implements OnInit {
   }
 
   getProvider(user): string {
-    return Object.keys(user)[0] === 'id' ? Object.keys(user)[1] : Object.keys(user)[0];
+    return Object.keys(user)[0] === 'uid' ? Object.keys(user)[1] : Object.keys(user)[0];
   }
 }
