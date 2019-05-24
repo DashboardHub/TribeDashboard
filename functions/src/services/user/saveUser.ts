@@ -6,6 +6,7 @@ import { getAccountStats } from './getAccountStats';
 
 const saveUserSocialRecord = async (social: UserSocial) => {
   try {
+    console.log('Record in saveUserSocialRecord', social);
     await admin.firestore().doc(`userSocial/${social.userId}`).set(social);
   }
   catch (err) {
@@ -14,6 +15,7 @@ const saveUserSocialRecord = async (social: UserSocial) => {
 }
 
 const saveUserRecord = async (record: User) => {
+  console.log('record', record);
   try {
     await admin.firestore().doc(`user/${record.uid}`).set(record)
   }
@@ -56,7 +58,7 @@ const setUserProvider = async (user: User, provider: string) => {
     }
   }
   catch (err) {
-    console.log('Error in savingUserRecord', err);
+    console.log('Error in savingUserRecord set user provider', err);
     throw err;
   }
 }

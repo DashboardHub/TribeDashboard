@@ -8,4 +8,5 @@ export interface UserSocial {
   userId: string;
   id?: string;
   empty?: boolean;
+  totalFollowers?: number;
 }

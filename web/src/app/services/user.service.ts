@@ -251,13 +251,60 @@ export class UserService {
       );
   }
 
-  getUsersWithMaxFollowers() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Accept: 'application/json',
-        Authorization: PROVIDERS.AUTHORIZATION_PASSWORD
-      })
-    };
-    return this.http.get(PROVIDERS.TRIBE_COUNT_API, httpOptions);
+  getUserSocialDocs(userRecord): UserSocial {
+    let userSocialDoc;
+    userSocialDoc = userRecord.docs.map((doc) => {
+      return doc.data();
+    });
+    return userSocialDoc;
+  }
+
+  calculateTotalFollowersCount(userSocial: UserSocial): UserSocial {
+    let githubCount = 0;
+    let twitterCount = 0;
+    let youtubeCount = 0;
+
+    if (userSocial.github) {
+      githubCount = userSocial.github.followers;
+    }
+    if (userSocial.twitter) {
+      twitterCount = userSocial.twitter.followers;
+    }
+    if (userSocial.youtube) {
+      youtubeCount = userSocial.youtube.followers;
+    }
+    const totalFollowers = githubCount + twitterCount + youtubeCount;
+    return { ...userSocial, totalFollowers };
+  }
+
+  updateFollowersCount(userSocialRecord): UserSocial[] {
+    let userTribeCount;
+    userTribeCount = userSocialRecord.map((userSocialDoc) => {
+      return this.calculateTotalFollowersCount(userSocialDoc);
+    });
+    return userTribeCount;
+  }
+
+  sortTribeUsers(userTribeCount): UserSocial[] {
+    let sortedTribeUsers;
+    sortedTribeUsers = userTribeCount.sort((a, b) => {
+      if (a.totalFollowers < b.totalFollowers) {
+        return 1;
+      }
+      if (a.totalFollowers > b.totalFollowers) {
+        return -1;
+      }
+      return 0;
+    });
+    return sortedTribeUsers;
+  }
+
+  getUsersWithMaxFollowers(): Observable<UserSocial[]> {
+    return this.userSocial.get()
+      .pipe(
+        map((records) => this.getUserSocialDocs(records)),
+        map((userSocialRecords) => this.updateFollowersCount(userSocialRecords)),
+        map((userTribeCount) => this.sortTribeUsers(userTribeCount))
+      );
   }
 }

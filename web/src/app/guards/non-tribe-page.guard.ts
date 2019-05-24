@@ -7,7 +7,7 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate {
+export class NonTribePageGuardService implements CanActivate {
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -16,12 +16,13 @@ export class AuthGuardService implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.auth.user.pipe(
       take(1),
-      map(authUser => !!authUser),
-      tap(loggedIn => {
-        if (!loggedIn) {
-          this.router.navigate(['/login']);
+      map(authUser => {
+        return (!!authUser === false);
+      }),
+      tap(loggedOut => {
+        if (loggedOut === false) {
+          this.router.navigate(['/dashboard']);
         }
-
       })
     );
   }
