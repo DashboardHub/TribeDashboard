@@ -16,9 +16,7 @@ export class NonTribePageGuardService implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.auth.user.pipe(
       take(1),
-      map(authUser => {
-        return (!!authUser === false);
-      }),
+      map(authUser => (!!authUser === false)),
       tap(loggedOut => {
         if (loggedOut === false) {
           this.router.navigate(['/dashboard']);

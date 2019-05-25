@@ -253,9 +253,7 @@ export class UserService {
 
   getUserSocialDocs(userRecord): UserSocial {
     let userSocialDoc;
-    userSocialDoc = userRecord.docs.map((doc) => {
-      return doc.data();
-    });
+    userSocialDoc = userRecord.docs.map((doc) => doc.data());
     return userSocialDoc;
   }
 
@@ -279,9 +277,7 @@ export class UserService {
 
   updateFollowersCount(userSocialRecord): UserSocial[] {
     let userTribeCount;
-    userTribeCount = userSocialRecord.map((userSocialDoc) => {
-      return this.calculateTotalFollowersCount(userSocialDoc);
-    });
+    userTribeCount = userSocialRecord.map((userSocialDoc) => this.calculateTotalFollowersCount(userSocialDoc));
     return userTribeCount;
   }
 

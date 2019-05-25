@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { UserSocial } from 'src/app/models/userSocial.model';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -13,16 +13,17 @@ export class HomeComponent implements OnInit {
   public users: UserSocial[];
   public isResponseLoading: boolean;
   public isLogin: boolean;
+
   ngOnInit() {
     this.isResponseLoading = true;
     this.isLogin = false;
     this.userService.getUsersWithMaxFollowers()
+      .pipe((
+        filter(users => users.length > 0)
+      ))
       .subscribe((tribeUsers: UserSocial[]) => {
-        if (tribeUsers.length > 0) {
-          this.isResponseLoading = false;
-          return this.users = tribeUsers;
-        }
-        return;
+        this.isResponseLoading = false;
+        return this.users = tribeUsers;
       });
   }
 

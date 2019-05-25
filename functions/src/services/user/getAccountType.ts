@@ -10,8 +10,8 @@ const selectSocialAccount = (provider: string, document: User) => {
         fetchUser.fetchGithubRecord(userName, document, provider);
         break;
       case 'twitter':
-       userName = document.twitter ? document.twitter.additionalUserInfo.username : ''
-       fetchUser.fetchTwitterRecord(userName, document, provider);
+        userName = document.twitter ? document.twitter.additionalUserInfo.username : ''
+        fetchUser.fetchTwitterRecord(userName, document, provider);
         break;
       default:
         break;

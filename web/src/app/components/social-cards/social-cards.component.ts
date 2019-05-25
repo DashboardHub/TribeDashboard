@@ -123,9 +123,7 @@ export class SocialCardsComponent {
         }
         const userSocial = { ...response, ...socialRecord };
         this.userService.addSocialProvider(userSocial)
-          .subscribe((result) => {
-            this.linkAccountRemoved.emit('reload');
-          });
+          .subscribe((result) => this.linkAccountRemoved.emit('reload'));
       });
   }
 }
