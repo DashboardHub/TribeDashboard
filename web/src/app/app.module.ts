@@ -9,21 +9,23 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-
+import { AngularFireFunctionsModule} from '@angular/fire/functions';
 
 // components
 import { HomeComponent } from './components/home/home.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 // services
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
 import { ErrorService } from './services/error.service';
-import { AuthGuardService } from './guards/auth.guard';
+import { DashboardGuardService } from './guards/dashboard.guard';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SocialCardsComponent } from './components/social-cards/social-cards.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { NonTribePageGuardService } from './guards/non-tribe-page.guard';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { AlertComponent } from './components/alert/alert.component';
     NavbarComponent,
     SocialCardsComponent,
     AlertComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,12 +47,14 @@ import { AlertComponent } from './components/alert/alert.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
     HttpClientModule,
+    AngularFireFunctionsModule
   ],
   providers: [
     AuthService,
     UserService,
     ErrorService,
-    AuthGuardService,
+    DashboardGuardService,
+    NonTribePageGuardService,
   ],
   entryComponents: [
     AlertComponent,

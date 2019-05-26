@@ -1,9 +1,10 @@
 import * as request from 'request-promise-native';
+import * as functions from 'firebase-functions';
 import { normalizeSocialResponse } from './normalize';
 import { saveUser } from './saveUser';
 import constant from '../../constant';
 import { User } from '../../models/user.model';
-import { UserSocial } from '../../models/userSocial.model';
+
 
 const saveRecord = async (record: User, provider: string) => {
   try {
@@ -20,7 +21,7 @@ const fetchGithubRecord = (userName: string, document: User, provider: string) =
   const uri = constant.githubUrl + userName;
   const options = {
     headers: {
-      'User-Agent': '', // Give a specific userName, good to configure in firebase env.
+      'User-Agent': '', // @TODO Give a specific userName, good to configure in firebase env.
       'Authorization': `${document.github ? document.github.credentials.accessToken : ''}`
     },
     uri: uri
@@ -45,7 +46,7 @@ const fetchGithubRecord = (userName: string, document: User, provider: string) =
 const fetchTwitterRecord = (userName: string, document: User, provider: string) => {
   const endPoint = constant.twitterUrl + userName
   const options = {
-    headers: { 'Authorization': 'Bearer ' }, // Fetch Token using firebase environment
+    headers: { 'Authorization': `Bearer ${functions.config().twitter.token}` }, // Fetch Token using firebase environment
     uri: endPoint
   }
   try {
@@ -65,26 +66,7 @@ const fetchTwitterRecord = (userName: string, document: User, provider: string) 
   }
 }
 
-const calculateFollowersCount = (userSocial: UserSocial) => {
-  let githubCount = 0;
-  let twitterCount = 0;
-  let youtubeCount = 0;
-
-  if (userSocial.github) {
-    githubCount = userSocial.github.followers;
-  }
-  if (userSocial.twitter) {
-    twitterCount = userSocial.twitter.followers;
-  }
-  if (userSocial.youtube) {
-    youtubeCount = userSocial.youtube.followers;
-  }
-  const totalFollowers = githubCount + twitterCount + youtubeCount;
-  return { ...userSocial, totalFollowers };
-}
-
 export const fetchUser = {
   fetchGithubRecord,
-  fetchTwitterRecord,
-  calculateFollowersCount
+  fetchTwitterRecord
 }

@@ -123,10 +123,7 @@ export class SocialCardsComponent {
         }
         const userSocial = { ...response, ...socialRecord };
         this.userService.addSocialProvider(userSocial)
-          .subscribe((result) => {
-            this.linkAccountRemoved.emit('reload');
-            console.log('result', result); // TODO: Will remove in future
-          });
+          .subscribe((result) => this.linkAccountRemoved.emit('reload'));
       });
   }
 }

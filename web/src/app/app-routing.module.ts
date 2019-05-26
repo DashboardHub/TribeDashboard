@@ -3,15 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { HomeComponent } from './components/home/home.component';
-import { AuthGuardService } from './guards/auth.guard';
+import { DashboardGuardService } from './guards/dashboard.guard';
+import { NonTribePageGuardService } from './guards/non-tribe-page.guard';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'login', component: LoginPageComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService] },
-  { path: 'dashboard/:provider/:name', component: DashboardComponent}
+  { path: 'home', component: HomeComponent, canActivate: [NonTribePageGuardService] },
+  { path: 'login', component: LoginPageComponent, canActivate: [NonTribePageGuardService] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [DashboardGuardService] },
+  { path: 'dashboard/:provider/:name', component: DashboardComponent }
 ];
 
 @NgModule({

@@ -1,54 +1,81 @@
-<div class="homepage-container" fxLayout="column" fxLayoutGap="10vh">
-  <div class="get-started-container">
-    <div>Your social tribe on a single dashboard</div>
-    <div class="primary-text">Connect your socials in one place</div>
-    <button class="get-started-button" mat-button cdkFocusInitial
-      (click)="navigateToLogin()">Get Started</button><br />
-    <img class="pattern-right" src="assets/images/OvalPattern.svg" />
-  </div>
-  <div>
-    <img class="pattern-left" src="assets/images/OvalPattern.svg" />
-  </div>
-  <img class="dashboard-img" src="assets/images/Dashboard.png" />
-  <div class="primary-text">Makers around the globe are onto it! </div>
-  <mat-card>
-    <mat-card *ngFor="let user of users" fxFlex="20">
-      <mat-card>
-        <div [ngSwitch]="getProvider(user)" class="avatar">
-          <div *ngSwitchCase="'github'">
-            <img [src]="user.github.avatarUrl" />
-            <div>User name</div>
-          </div>
-          <div *ngSwitchCase="'twitter'">
-            <img [src]="user.twitter.avatarUrl" />
-            <div>User name</div> <!-- @TODO Hard coded text will remove it in the next PR -->
-          </div>
-          <div *ngSwitchCase="'youtube'">
-            <img [src]="user.youtube.avatarUrl" />
-            <div>User name</div>
-          </div>
+<div>
+  <app-navbar [isLogin]="isLogin" [dashboardName]="'Dashboard Hub'"></app-navbar>
+  <div class="homepage-container" fxLayout="column" fxLayoutGap="10vh">
+    <div class="get-started-container">
+      <div>Your social tribe on a single dashboard</div>
+      <div class="primary-text">Connect your socials in one place</div>
+      <button class="get-started-button" mat-button cdkFocusInitial
+        (click)="navigateToLogin()">Get Started</button><br />
+      <img class="pattern-right" src="assets/images/OvalPattern.svg" />
+    </div>
+    <div>
+      <img class="pattern-left" src="assets/images/OvalPattern.svg" />
+    </div>
+    <img class="dashboard-img" src="assets/images/Dashboard.png" />
+    <div fxLayout="row" fxLayoutAlign="space-around">
+      <div fxLayout="row" fxFlex=20 fxLayoutAlign="center center">
+        <div class="shadowBox github-bg">
+          <mat-icon svgIcon="github1x"></mat-icon>
         </div>
-      </mat-card>
-      <mat-card fxLayout="row" fxLayoutGap="20px">
-        <mat-card-content *ngIf="user.github">
-          <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon svgIcon="github1x"></mat-icon>
-            <span class="stats-display">{{ user.github.followers }}</span>
+        <div>Your GitHub tribe on your dashboard</div>
+      </div>
+      <div fxLayout="row" fxFlex=20 fxLayoutAlign="center center">
+        <div class="shadowBox twitter-bg">
+          <mat-icon svgIcon="twitter1x"></mat-icon>
+        </div>
+        <div>Your Twitter tirbe on your dashboard</div>
+      </div>
+      <div fxLayout="row" fxFlex=20 fxLayoutAlign="center center">
+        <div class="shadowBox youtube-bg">
+          <mat-icon svgIcon="youtube1x"></mat-icon>
+        </div>
+        <div>your Youtube tribe on your dashboard</div>
+      </div>
+    </div>
+    <div class="primary-text">Makers around the globe are onto it! </div>
+    <mat-card *ngIf="!isResponseLoading">
+      <mat-card *ngFor="let user of users" fxFlex="20">
+        <mat-card>
+          <div [ngSwitch]="getProvider(user)" class="avatar">
+            <div *ngSwitchCase="'github'">
+              <img [src]="user.github.avatarUrl" />
+              <div>{{ user.github.username }}</div>
+            </div>
+            <div *ngSwitchCase="'twitter'">
+              <img [src]="user.twitter.avatarUrl" />
+              <div>{{ user.twitter.username }}</div>
+            </div>
+            <div *ngSwitchCase="'youtube'">
+              <img [src]="user.youtube.avatarUrl" />
+              <div>{{ user.youtube.username }}</div>
+            </div>
           </div>
-        </mat-card-content>
-        <mat-card-content *ngIf="user.twitter">
-          <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon svgIcon="twitter1x"></mat-icon>
-            <span class="stats-display">{{ user.twitter.followers }}</span>
-          </div>
-        </mat-card-content>
-        <mat-card-content *ngIf="user.youtube">
-          <div fxLayout="row" fxLayoutAlign="center center">
-            <mat-icon svgIcon="youtube1x"></mat-icon>
-            <span class="stats-display">{{ user.youtube.followers }}</span>
-          </div>
-        </mat-card-content>
+        </mat-card>
+        <mat-card fxLayout="row" fxLayoutGap="20px">
+          <mat-card-content *ngIf="user.github">
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <mat-icon svgIcon="github1x"></mat-icon>
+              <span class="stats-display">{{ user.github.followers }}</span>
+            </div>
+          </mat-card-content>
+          <mat-card-content *ngIf="user.twitter">
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <mat-icon svgIcon="twitter1x"></mat-icon>
+              <span class="stats-display">{{ user.twitter.followers }}</span>
+            </div>
+          </mat-card-content>
+          <mat-card-content *ngIf="user.youtube">
+            <div fxLayout="row" fxLayoutAlign="center center">
+              <mat-icon svgIcon="youtube1x"></mat-icon>
+              <span class="stats-display">{{ user.youtube.followers }}</span>
+            </div>
+          </mat-card-content>
+        </mat-card>
       </mat-card>
     </mat-card>
-  </mat-card>
+    <div *ngIf="isResponseLoading" fxLayout fxLayoutAlign="center center">
+      <mat-spinner strokeWidth="4"></mat-spinner>
+    </div>
+  </div>
+  <app-footer></app-footer>
 </div>

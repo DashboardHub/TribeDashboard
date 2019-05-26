@@ -36,6 +36,15 @@ Any questions please just ask :)
 - TravisCI
 - Firebase
 
+## Run Cloud functions
+
+  Make sure you have service account configured with your firebase account before starting with the below steps
+- login using your firebase account `firbease login`
+- To list the project associated with the account, use `firebase list`
+- To use the credentials associated with your project, use `firebase use project-name`
+- To run the cloud function use  `firebase serve`
+- To deploy the cloud function use `firebase deploy`
+
 ## Quickstart
 
 - Navigate to the `web` directory for the Angular project, then run `npm start`

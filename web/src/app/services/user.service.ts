@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { map, catchError, tap, filter } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -50,6 +50,9 @@ export class UserService {
       case PROVIDERS.TWITTER:
         user = { twitter: null };
         break;
+      case PROVIDERS.GOOGLE:
+        user = { youtube: null };
+        break;
       default:
         break;
     }
@@ -67,6 +70,7 @@ export class UserService {
         catchError((err) => this.errorService.logError(err)),
       );
   }
+
   saveLinkUser(user: User, provider): Observable<UserSocial> {
     return from(this.user.doc(user.uid).update(user))
       .pipe(
@@ -87,6 +91,14 @@ export class UserService {
       .pipe(
         map(response => this.getSocialDataFromPayload(response)),
         catchError(error => this.errorService.logError(error)),
+      );
+  }
+
+  getUserRecord(user: User): Observable<User> {
+    return from(this.user.ref.where('uid', '==', user.uid).get())
+      .pipe(
+        map(response => this.getUserDataFromPayload(response, user)),
+        catchError(error => this.errorService.logError(error))
       );
   }
 
@@ -111,17 +123,44 @@ export class UserService {
     return social;
   }
 
+  getUserDataFromPayload(response, userRecord): User {
+    let user;
+    if (!response) {
+      return userRecord;
+    }
+    if (response.empty) {
+      return userRecord;
+    }
+    user = { ...response.docs.pop().data(), id: response.docs.pop().id };
+    return user;
+  }
+
   addRefID(user: User, provider): UserSocial {
     let normalisedResponse;
     switch (provider) {
       case PROVIDERS.GITHUB:
-        normalisedResponse = { ...user.github.additionalUserInfo.profile, userId: user.uid };
+        normalisedResponse = {
+          ...{
+            ...user.github.additionalUserInfo.profile,
+            username: user.github.additionalUserInfo.username
+          }, userId: user.uid
+        };
         break;
       case PROVIDERS.TWITTER:
-        normalisedResponse = { ...user.twitter.additionalUserInfo.profile, userId: user.uid };
+        normalisedResponse = {
+          ...{
+            ...user.twitter.additionalUserInfo.profile,
+            username: user.twitter.additionalUserInfo.username
+          }, userId: user.uid
+        };
         break;
       case PROVIDERS.YOUTUBE:
-        normalisedResponse = { ...user.youtube.additionalUserInfo.profile, userId: user.uid };
+        normalisedResponse = {
+          ...{
+            ...user.youtube.additionalUserInfo.profile,
+            username: user.youtube.additionalUserInfo.username
+          }, userId: user.uid
+        };
         break;
       default:
         break;
@@ -179,8 +218,20 @@ export class UserService {
           this.createUserSocialRecord(socialRecord);
           return;
         }
-        this.updateUserSocialRecord(response.id, { ...socialRecord, ...response });
+        const { id, ...socialDoc } = response;
+        this.updateUserSocialRecord(id, { ...socialRecord, ...socialDoc });
       });
+  }
+
+  checkNewOrExistingRecord(user: User): Observable<User> {
+    return this.getUserRecord(user)
+      .pipe(
+        map((userRecord) => {
+          if (!userRecord) {
+            return user;
+          }
+          return userRecord;
+        }));
   }
 
   createUserSocialRecord(socialRecord: UserSocial): void {
@@ -199,7 +250,57 @@ export class UserService {
       .subscribe(() => this.router.navigate(['/dashboard'])
       );
   }
-  getUsersWithMaxFollowers() {
-    return this.http.get(PROVIDERS.TRIBE_COUNT_API);
+
+  getUserSocialDocs(userRecord): UserSocial {
+    let userSocialDoc;
+    userSocialDoc = userRecord.docs.map((doc) => doc.data());
+    return userSocialDoc;
+  }
+
+  calculateTotalFollowersCount(userSocial: UserSocial): UserSocial {
+    let githubCount = 0;
+    let twitterCount = 0;
+    let youtubeCount = 0;
+
+    if (userSocial.github) {
+      githubCount = userSocial.github.followers;
+    }
+    if (userSocial.twitter) {
+      twitterCount = userSocial.twitter.followers;
+    }
+    if (userSocial.youtube) {
+      youtubeCount = userSocial.youtube.followers;
+    }
+    const totalFollowers = githubCount + twitterCount + youtubeCount;
+    return { ...userSocial, totalFollowers };
+  }
+
+  updateFollowersCount(userSocialRecord): UserSocial[] {
+    let userTribeCount;
+    userTribeCount = userSocialRecord.map((userSocialDoc) => this.calculateTotalFollowersCount(userSocialDoc));
+    return userTribeCount;
+  }
+
+  sortTribeUsers(userTribeCount): UserSocial[] {
+    let sortedTribeUsers;
+    sortedTribeUsers = userTribeCount.sort((a, b) => {
+      if (a.totalFollowers < b.totalFollowers) {
+        return 1;
+      }
+      if (a.totalFollowers > b.totalFollowers) {
+        return -1;
+      }
+      return 0;
+    });
+    return sortedTribeUsers;
+  }
+
+  getUsersWithMaxFollowers(): Observable<UserSocial[]> {
+    return this.userSocial.get()
+      .pipe(
+        map((records) => this.getUserSocialDocs(records)),
+        map((userSocialRecords) => this.updateFollowersCount(userSocialRecords)),
+        map((userTribeCount) => this.sortTribeUsers(userTribeCount))
+      );
   }
 }

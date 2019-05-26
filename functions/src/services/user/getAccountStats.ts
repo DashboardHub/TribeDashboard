@@ -1,5 +1,6 @@
 import { User } from '../../models/user.model';
 import { UserSocial } from '../../models/userSocial.model';
+import * as admin from 'firebase-admin';
 
 const githubStats = (user: User, social: UserSocial): UserSocial | null => {
   if (user.github) {
@@ -8,7 +9,10 @@ const githubStats = (user: User, social: UserSocial): UserSocial | null => {
       github: {
         following: user.github.additionalUserInfo.profile.following,
         followers: user.github.additionalUserInfo.profile.followers,
-        updatedAt: (user.github.additionalUserInfo.profile.updatedAt ? user.github.additionalUserInfo.profile.updatedAt : new Date().toISOString())
+        updatedAt: (user.github.additionalUserInfo.profile.updatedAt ? user.github.additionalUserInfo.profile.updatedAt : admin.database.ServerValue.TIMESTAMP.toLocaleString()),
+        username: user.github.additionalUserInfo.username,
+        avatarUrl: user.github.additionalUserInfo.profile.avatarUrl,
+        createdAt: user.github.additionalUserInfo.profile.createdAt
       },
       userId: user.uid
     }
@@ -23,7 +27,10 @@ const twitterStats = (user: User, social: UserSocial): UserSocial | null => {
       twitter: {
         following: user.twitter.additionalUserInfo.profile.following,
         followers: user.twitter.additionalUserInfo.profile.followers,
-        updatedAt: (user.twitter.additionalUserInfo.profile.updatedAt ? user.twitter.additionalUserInfo.profile.updatedAt : new Date().toISOString())
+        updatedAt: (user.twitter.additionalUserInfo.profile.updatedAt ? user.twitter.additionalUserInfo.profile.updatedAt : new Date().toISOString()),
+        username: user.twitter.additionalUserInfo.username,
+        avatarUrl: user.twitter.additionalUserInfo.profile.avatarUrl,
+        createdAt: user.twitter.additionalUserInfo.profile.createdAt
       },
       userId: user.uid
     }

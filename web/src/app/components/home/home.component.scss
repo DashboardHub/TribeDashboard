@@ -100,3 +100,20 @@
     }
   }
 }
+.shadowBox {
+  @extend %flex-center;
+  justify-content: center;
+  width: 5rem;
+  height: 3.75rem;
+  border-radius: 10%;
+  margin-right: 1.25rem;
+}
+.github-bg {
+  background-color: $github-accent;
+}
+.twitter-bg {
+  background-color: $twitter-accent;
+}
+.youtube-bg {
+  background-color: $youtube-accent;
+}

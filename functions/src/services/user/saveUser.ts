@@ -56,7 +56,7 @@ const setUserProvider = async (user: User, provider: string) => {
     }
   }
   catch (err) {
-    console.log('Error in savingUserRecord', err);
+    console.log('Error in savingUserRecord set user provider', err);
     throw err;
   }
 }
